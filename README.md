@@ -1,11 +1,11 @@
 # exclusions-db
 An exclusions database that is web-based using Node, express and MongoDB/Mongoose
 
-
 # Routes
 ## GET Routes:
 - / - root, redirects to /login or /home, depending on authentication status
 - /login - renders the login page
+- /register - renders the register page, accessible only by Admin for adding new users.
 - /home - renders the exclusions page, displaying all ACTIVE exclusion orders
   - Displays all exclusions, which will be clickable to expand basic data.
     Further clickable to display the whole exclusion order (for print)
