@@ -1,15 +1,17 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const passport = require('passport');
+const passportLocalMongoose = require('passport-local-mongoose');
 
 // Initialize DB:
 require('./initDB')();
 
 const app = express();
 
-// Connect to local db:
-mongoose.connect(`mongodb://localhost:27017/${process.env.DB_NAME}`, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+app.set('view engine', 'pug');
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/static', express.static('public'));
 
 // Home GET route - redirects to login or homepage depending on authorization
 app.get('/', (req, res, next) => {
@@ -20,8 +22,8 @@ app.get('/home', (req, res, next) => {
   res.send('Home page');
 });
 
-app.get('/home', (req, res, next) => {
-  res.send('Home page');
+app.get('/login', (req, res, next) => {
+  res.send('Login page');
 });
 
 // Login POST route

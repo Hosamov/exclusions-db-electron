@@ -7,8 +7,8 @@ module.exports = () => {
 
  connect(uri, {
         dbName: process.env.DB_NAME,
-        user: process.env.DB_USER,
-        pass: process.env.DB_PASS
+        // user: process.env.DB_USER, 
+        // pass: process.env.DB_PASS
     })
         .then(() => {
             console.log('Connection established with MongoDB');
