@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/Hosamov/exclusions-db#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "body-parser": "^1.20.1",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "pug": "^3.0.2"
   }
 }
