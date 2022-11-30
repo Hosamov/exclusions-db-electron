@@ -2,8 +2,9 @@
   "name": "exclusions-db",
   "version": "1.0.0",
   "description": "An exclusions database that is web-based using Node, Express, and MongoDB/Mongoose",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
+    "start": "nodemon ./app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Hosamov/exclusions-db/issues"
   },
-  "homepage": "https://github.com/Hosamov/exclusions-db#readme"
+  "homepage": "https://github.com/Hosamov/exclusions-db#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
