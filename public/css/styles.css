@@ -1,0 +1,23 @@
+body {
+  font-family: calibri, ariel, sans-serif;
+  font-size: 1.2rem;
+}
+
+footer {
+  margin: auto;
+  width: 50%;
+  text-align: center;
+}
+
+.header {
+  margin: auto;
+  width: 50%;
+  text-align: center;
+}
+
+.main-container {
+  margin: auto;
+  width: 50%;
+  border: 3px solid green;
+  padding: 10px;
+}
