@@ -13,6 +13,8 @@ app.set('view engine', 'pug');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/static', express.static('public'));
 
+
+
 //*********** GET ROUTES ************/
 // Home GET route - redirects to login or homepage depending on authorization
 app.get('/', (req, res, next) => {
@@ -27,9 +29,10 @@ app.get('/login', (req, res, next) => {
   res.render('login', { user: req.user });
 });
 
-app.get('/register_user', (req, res, next) => {
+app.get('/register', (req, res, next) => {
   // Accessible by Admin users only
   // Set new user's auth level
+  res.render('register', { });
 });
 
 app.get('/edit_user', (req, res, next) => {
