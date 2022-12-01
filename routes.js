@@ -3,20 +3,33 @@ const Account = require('./models/account');
 
 module.exports = function (app) {
   //*********** GET ROUTES ************/
-  // Home GET route - redirects to login or homepage depending on authorization
+  //* Root(/) GET route
   app.get('/', (req, res, next) => {
     res.render('home');
   });
 
-  app.get('/home', (req, res, next) => {
-    res.render('user-home');
+  //* Unauthorized GET route
+  app.get('/unauthorized', (req, res, next) => {
+    res.render('unauthorized');
   });
 
+  //* Home GET route (for logged-in users)
+  app.get('/home', (req, res, next) => {
+    if (req.isAuthenticated()) {
+      res.render('user-home');
+    } else {
+      res.redirect('/');
+    }
+  });
+
+  //* Login GET route
   app.get('/login', (req, res, next) => {
     res.render('login', { user: req.user });
   });
 
+  //* Logout GET route
   app.get('/logout', (req, res) => {
+    //Note: Passport 0.6.0^ requires promise cb for req.logout()
     req.logout((err) => {
       if (err) {
         return next(err);
@@ -27,39 +40,45 @@ module.exports = function (app) {
     res.redirect('/');
   });
 
+  //* Register GET route
   app.get('/register', (req, res, next) => {
     // Accessible by Admin users only
     // Set new user's auth level
     res.render('register', {});
   });
 
+  //* Edit_user GET route
   app.get('/edit_user', (req, res, next) => {
     // Accessible by Admin users only
     // edit user's auth level
     res.send('Edit User page');
   });
 
+  //* Add_new_exclusion GET route
   app.get('/add_new_exclusion', (req, res, next) => {
     // Accessible by Admin and supervisors only
     res.send('Add New Exclusion Page');
   });
 
+  //* Edit_exclusion GET route
   app.get('/edit_exclusion', (req, res, next) => {
     // Accessible by Admin and supervisors only
     res.send('Edit Exclusion Page');
   });
 
+  //* Archive_exclusion GET route
   app.get('/archive_exclusion', (req, res, next) => {
     // Accessible by Admin and supervisors only
     res.send('Archive Exclusion Page');
   });
 
+  //* Past_order GET route
   app.get('/past_orders', (req, res, next) => {
     res.send('Past Exclusion Orders Page');
   });
 
   //*********** POST ROUTES ************/
-  // Login POST route
+  //* Login POST route
   app.post(
     '/login',
     passport.authenticate('local', {
@@ -72,7 +91,7 @@ module.exports = function (app) {
     }
   );
 
-  // Register POST route
+  //* Register POST route
   app.post('/register', (req, res, next) => {
     // Uses passport.js to register a new user, set their auth level
     if (req.body.password === req.body.verify_password) {
@@ -93,21 +112,22 @@ module.exports = function (app) {
     }
   });
 
+  //* Edit_user POST route
   app.post('/edit_user', (req, res, next) => {
     // Edit a registered user from /edit_user GET route
   });
 
-  // add_exclusion POST route
+  //* Add_exclusion POST route
   app.post('/add_exclusion', (req, res, next) => {
     // Add a new exclusion from /add_new_exclusion GET route
   });
 
-  // edit_exclusion POST route
+  //* Edit_exclusion POST route
   app.post('/edit_exclusion', (req, res, next) => {
     // Add a new exclusion from /edit_exclusion GET route
   });
 
-  // archive_exclusion POST route
+  //* Archive_exclusion POST route
   app.post('/archive_exclusion', (req, res, next) => {
     // Archive exclusion, from archive_exclusion GET route
   });

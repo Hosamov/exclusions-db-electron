@@ -1,0 +1,15 @@
+extends layout.pug 
+
+
+block content
+  div.error-container
+    h1= 'Error'
+    p.not-found-p= `Error:`
+
+    a.home(href='/') Return to Homepage
+
+    if err
+
+      div.page-not-found-stack
+
+        pre #{err.stack}
