@@ -8,11 +8,6 @@ module.exports = function (app) {
     res.render('home');
   });
 
-  //* Unauthorized GET route
-  app.get('/unauthorized', (req, res, next) => {
-    res.render('unauthorized');
-  });
-
   //* Home GET route (for logged-in users)
   app.get('/home', (req, res, next) => {
     if (req.isAuthenticated()) {
@@ -93,22 +88,35 @@ module.exports = function (app) {
 
   //* Register POST route
   app.post('/register', (req, res, next) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    const role = req.body.role;
+    const active = req.body.active;
     // Uses passport.js to register a new user, set their auth level
     if (req.body.password === req.body.verify_password) {
-      Account.register(
-        new Account({ username: req.body.username }),
-        req.body.password,
-        (err, account) => {
-          if (err) {
-            console.log(err);
-            res.redirect('/register');
-          }
+      Account.register({ username: username }, password, (err, user) => {
+        if (err) {
+          console.log(err);
+          res.redirect('/register');
+        } else {
           passport.authenticate('local')(req, res, () => {
             console.log('Registration successful.');
-            res.redirect('/home');
+            Account.findOne({ username: username }, (err, foundUser) => {
+              if(err) {
+                console.log(err);
+              } else {
+                foundUser.role = null;
+                foundUser.active = false;
+                console.log(foundUser);
+                res.redirect('/home');
+              }
+            });
           });
         }
-      );
+      });
+    } else {
+      console.log('Registration failed!');
+      res.redirect('/register');
     }
   });
 

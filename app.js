@@ -32,7 +32,8 @@ app.use(passport.session());
 //* Routes
 require('./routes')(app);
 
-//******* HANDLERS *******//
+
+//******* ERROR HANDLERS *******//
 
 //* 404 error handler
 app.use((req, res, next) => {
@@ -64,6 +65,7 @@ app.use((err, req, res, next) => {
   }
 });
 
+//* Server
 app.listen(3000, () => {
   console.log('Listening on port 3000...');
 });
