@@ -11,7 +11,20 @@ module.exports = function (app) {
   //* Home GET route (for logged-in users)
   app.get('/home', (req, res, next) => {
     if (req.isAuthenticated()) {
-      res.render('user-home');
+      Account.findOne({'username': {$eq: req.user.username}}, (err, foundUser) => {
+        if(err) {
+          console.log(err);
+        } else {
+          console.log(foundUser);
+          if(foundUser.active) {
+            res.render('user-home');
+          } else {
+            console.log('inactive');
+            res.render('unauthorized');
+          } 
+        }
+      });
+      
     } else {
       res.redirect('/');
     }
@@ -21,6 +34,11 @@ module.exports = function (app) {
   app.get('/login', (req, res, next) => {
     res.render('login', { user: req.user });
   });
+
+  //* Unauthorized GET route
+  app.get('/unauthorized', (req, res, next) => {
+    res.render('unauthorized');
+  })
 
   //* Logout GET route
   app.get('/logout', (req, res) => {
@@ -107,8 +125,11 @@ module.exports = function (app) {
               } else {
                 foundUser.role = null;
                 foundUser.active = false;
-                console.log(foundUser);
-                res.redirect('/home');
+                foundUser.save(() => {
+                  console.log(foundUser);
+                  console.log('New user has been registered...');
+                  res.redirect('/unauthorized');
+                });
               }
             });
           });

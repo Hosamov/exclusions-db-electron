@@ -21,3 +21,19 @@ footer {
   border: 3px solid green;
   padding: 10px;
 }
+
+input {
+  border-radius: 5px;
+  padding: 1.0rem;
+  font-size: 1.2rem;
+}
+
+.form-element {
+
+}
+
+.form-button {
+
+}
+
+

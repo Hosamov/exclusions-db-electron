@@ -2,16 +2,34 @@ extends layout.pug
 
 block content  
   .header 
-    h1 Register Page
+    h1 Exclusions DB
   .main-container
-    br
-    form(role='form', action="/register",method="post", style='max-width: 300px;')
-      .form-group
-          input.form-control(type='email', name="username", placeholder='Enter Email')
-      .form-group
+    h2 Register
+    form(role='form', action="/register",method="post")
+      .form-element
+        label(for='username') * Email
+        br
+        input.form-control(type='email', name="username", placeholder='Enter Email')
+        br
+      .form-element
+        label(for='password') * Password
+        br
         input.form-control(type='password', name="password", placeholder='Password')
-      .form-group
+        br
+      .form-element
+        label(for='verify_password') * Verify Password
+        br 
         input.form-control(type='password', name="verify_password", placeholder='Verify Password')  
-      button.btn.btn-default(type='submit') Submit
-      a(href='/')
-        button.btn.btn-primary(type="button") Cancel
+        br
+      .form-element
+        label(for='user_key') User Key (optional)
+        br
+        input.form-control(type='password', name="user_key", placeholder='Key')  
+        br
+        small * required
+        br 
+        br
+      .form-button
+        button.btn.btn-default(type='submit') Submit
+        a(href='/')
+          button.btn.btn-primary(type="button") Cancel
