@@ -110,6 +110,7 @@ module.exports = function (app) {
     const password = req.body.password;
     const role = req.body.role;
     const active = req.body.active;
+    const userKey = req.body.user_key;
     // Uses passport.js to register a new user, set their auth level
     if (req.body.password === req.body.verify_password) {
       Account.register({ username: username }, password, (err, user) => {
@@ -123,12 +124,18 @@ module.exports = function (app) {
               if(err) {
                 console.log(err);
               } else {
-                foundUser.role = null;
-                foundUser.active = false;
+                if(userKey === process.env.USER_KEY) {
+                  console.log('User Key Accepted!')
+                  foundUser.role = 'admin';
+                  foundUser.active = true;
+                } else {
+                  console.log('Invalid user key or no key entered.');
+                  foundUser.role = null;
+                  foundUser.active = false;
+                } 
                 foundUser.save(() => {
-                  console.log(foundUser);
                   console.log('New user has been registered...');
-                  res.redirect('/unauthorized');
+                  userKey===process.env.USER_KEY ? res.redirect('/home') : res.redirect('/unauthorized');
                 });
               }
             });

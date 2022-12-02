@@ -1,18 +1,18 @@
 extends layout.pug 
 
 block content
-  div.header
-    h1 Login Page
+  .header 
+    h1 Exclusions DB
   div.main-container
-    br
-    form(role='form', action="/login",method="post", style='max-width: 300px;')
+    h2 Login
+    form(role='form', action="/login",method="post")
       .form-element
-        label(name='username') Email
+        label.form-label(name='username') Email
         br
         input.form-control(type='text', name="username", placeholder='Enter Username')
         br
       .form-element
-        label(name='password') Password
+        label.form-label(name='password') Password
         br
         input.form-control(type='password', name="password", placeholder='Password')
         br

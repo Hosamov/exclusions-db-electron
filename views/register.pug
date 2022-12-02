@@ -7,22 +7,22 @@ block content
     h2 Register
     form(role='form', action="/register",method="post")
       .form-element
-        label(for='username') * Email
+        label.form-label(for='username') * Email
         br
-        input.form-control(type='email', name="username", placeholder='Enter Email')
+        input.form-control(type='email', name="username", placeholder='Enter Email' size='50')
         br
       .form-element
-        label(for='password') * Password
+        label.form-label(for='password') * Password
         br
         input.form-control(type='password', name="password", placeholder='Password')
         br
       .form-element
-        label(for='verify_password') * Verify Password
+        label.form-label(for='verify_password') * Verify Password
         br 
         input.form-control(type='password', name="verify_password", placeholder='Verify Password')  
         br
       .form-element
-        label(for='user_key') User Key (optional)
+        label.form-label(for='user_key') User Key (optional)
         br
         input.form-control(type='password', name="user_key", placeholder='Key')  
         br
