@@ -11,20 +11,22 @@ module.exports = function (app) {
   //* Home GET route (for logged-in users)
   app.get('/home', (req, res, next) => {
     if (req.isAuthenticated()) {
-      Account.findOne({'username': {$eq: req.user.username}}, (err, foundUser) => {
-        if(err) {
-          console.log(err);
-        } else {
-          console.log(foundUser);
-          if(foundUser.active) {
-            res.render('user-home');
+      Account.findOne(
+        { username: { $eq: req.user.username } },
+        (err, foundUser) => {
+          if (err) {
+            console.log(err);
           } else {
-            console.log('inactive');
-            res.render('unauthorized');
-          } 
+            console.log(foundUser);
+            if (foundUser.active) {
+              res.render('user-home');
+            } else {
+              console.log('inactive');
+              res.render('unauthorized');
+            }
+          }
         }
-      });
-      
+      );
     } else {
       res.redirect('/');
     }
@@ -38,7 +40,7 @@ module.exports = function (app) {
   //* Unauthorized GET route
   app.get('/unauthorized', (req, res, next) => {
     res.render('unauthorized');
-  })
+  });
 
   //* Logout GET route
   app.get('/logout', (req, res) => {
@@ -92,17 +94,34 @@ module.exports = function (app) {
 
   //*********** POST ROUTES ************/
   //* Login POST route
-  app.post(
-    '/login',
-    passport.authenticate('local', {
-      failureRedirect: '/login',
-      failureMessage: true,
-    }),
-    (req, res) => {
-      // Uses passport.js to authenticate user
-      res.redirect('/home');
-    }
-  );
+  app.post('/login', (req, res) => {
+    // Uses passport.js to authenticate user
+    const account = new Account({
+      username: req.body.username,
+      password: req.body.password,
+    });
+    req.login(account, (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        passport.authenticate('local')(req, res, () => {
+          Account.findOne({ username: account.username }, (err, foundUser) => {
+            if (err) {
+              console.log(err);
+            } else {
+              if (foundUser.active) {
+                console.log('User is active!');
+                res.redirect('/home');
+              } else {
+                console.log('User is not active!');
+                res.redirect('/unauthorized');
+              }
+            }
+          });
+        });
+      }
+    });
+  });
 
   //* Register POST route
   app.post('/register', (req, res, next) => {
@@ -121,21 +140,23 @@ module.exports = function (app) {
           passport.authenticate('local')(req, res, () => {
             console.log('Registration successful.');
             Account.findOne({ username: username }, (err, foundUser) => {
-              if(err) {
+              if (err) {
                 console.log(err);
               } else {
-                if(userKey === process.env.USER_KEY) {
-                  console.log('User Key Accepted!')
+                if (userKey === process.env.USER_KEY) {
+                  console.log('User Key Accepted!');
                   foundUser.role = 'admin';
                   foundUser.active = true;
                 } else {
                   console.log('Invalid user key or no key entered.');
                   foundUser.role = null;
                   foundUser.active = false;
-                } 
+                }
                 foundUser.save(() => {
                   console.log('New user has been registered...');
-                  userKey===process.env.USER_KEY ? res.redirect('/home') : res.redirect('/unauthorized');
+                  userKey === process.env.USER_KEY
+                    ? res.redirect('/home')
+                    : res.redirect('/unauthorized');
                 });
               }
             });
