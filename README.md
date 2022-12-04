@@ -23,6 +23,8 @@ An exclusions database that is web-based using Node, express and MongoDB/Mongoos
   - Length of exclusion (3, 7, 14, 30, 60, 180, 365, Lifetime, Other) - dropdown box
     - Other - input
   - Image upload
+  - Served Date
+  - Expiration Date (optional)
   - Button to save the data
 - /edit_exclusion - renders page to edit an exclusion
 - /archive_exclusion - renders page with a text area for explaining why the
