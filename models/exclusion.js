@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const passportLocalMongoose = require('passport-local-mongoose');
 
-const Exclusion = new Schema({
+const ExclusionSchema = new Schema({
   name: String,
   dob: Date,
   other: String,
@@ -12,10 +11,8 @@ const Exclusion = new Schema({
   ex_length: Number,
   img: {
     data: Buffer,
-    contentType: String
-  }
+    contentType: String,
+  },
 });
 
-Exclusion.plugin(passportLocalMongoose);
-
-module.exports = mongoose.model('Exclusion', Exclusion);
+module.exports = mongoose.model('Exclusion', ExclusionSchema);

@@ -5,6 +5,9 @@ block content
     h1 Exclusions DB
   div.main-container
     h2 Exclusions List
+    
     ul 
-      li
-        a(href="/logout") Logout
+      each exclusion in exclusions
+        li.exclusion-item HI DOOFUS 😏
+    a(href="/logout") Logout 
+    a(href="/add_new_exclusion") New

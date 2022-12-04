@@ -11,16 +11,25 @@ module.exports = function (app) {
 
   //* Home GET route (for logged-in users)
   app.get('/home', (req, res, next) => {
+    const exclusions = [];
     if (req.isAuthenticated()) {
+      Exclusion.find({ name: { $ne: null } }, (err, foundExclusion) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(foundExclusion);
+          exclusions.push(foundExclusion);
+        }
+      });
+
       Account.findOne(
         { username: { $eq: req.user.username } },
         (err, foundUser) => {
           if (err) {
             console.log(err);
           } else {
-            console.log(foundUser);
             if (foundUser.active) {
-              res.render('user-home');
+              res.render('user-home', { exclusions });
             } else {
               console.log('inactive');
               res.render('unauthorized');
@@ -77,8 +86,10 @@ module.exports = function (app) {
 
   //* Add_new_exclusion GET route
   app.get('/add_new_exclusion', (req, res, next) => {
-    // Accessible by Admin and supervisors only
-    res.send('Add New Exclusion Page');
+    if (req.isAuthenticated()) {
+      // Accessible by Admin and supervisors only
+      res.render('new-exclusion');
+    }
   });
 
   //* Edit_exclusion GET route
@@ -110,21 +121,28 @@ module.exports = function (app) {
       if (err) {
         console.log(err);
       } else {
-        passport.authenticate('local', {failureRedirect: '/retry_login'})(req, res, () => {
-          Account.findOne({ username: account.username }, (err, foundUser) => {
-            if (err) {
-              console.log(err);
-            } else {
-              if (foundUser.active) {
-                console.log('User is active!');
-                res.redirect('/home');
-              } else {
-                console.log('User is not active!');
-                res.redirect('/unauthorized');
+        passport.authenticate('local', { failureRedirect: '/retry_login' })(
+          req,
+          res,
+          () => {
+            Account.findOne(
+              { username: account.username },
+              (err, foundUser) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  if (foundUser.active) {
+                    console.log('User is active!');
+                    res.redirect('/home');
+                  } else {
+                    console.log('User is not active!');
+                    res.redirect('/unauthorized');
+                  }
+                }
               }
-            }
-          });
-        });
+            );
+          }
+        );
       }
     });
   });

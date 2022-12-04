@@ -1,0 +1,68 @@
+extends layout.pug 
+
+block content 
+  div.header
+    h1 Exclusions DB
+  div.main-container
+    h2 Add New Exclusion Order
+    
+    form(role='form', action="/add_new_exclusion",method="post")
+      .form-element
+        label.form-label(for='name') * Full Name (i.e. "John Doe")
+        input.form-control(type='text', name="name", placeholder='Full Name' size='50' required)
+        br
+      .form-element
+        label.form-label(for='dob') DOB
+        input.form-control(type='date', name="dob", placeholder='DOB')
+        br
+      .form-element
+        label.form-label(for='other_info') Other Info (i.e. gender, height, weight, etc.)
+        input.form-control(type='text', name="other_info", placeholder='Other Information')
+        br
+      .form-element
+        label.form-label(for='ordinances') *Ordinance/Policy (separated by ',')
+        input.form-control(type='text', name="ordinances", placeholder='RCW/POL#, separated by comma' required)  
+        br
+      .form-element
+        label.form-label(for='description') *Description of infraction
+        br
+        textarea.form-control(id="description" name="description" rows='4' placeholder='Description of infraction...' required)  
+        br
+      .form-element
+        label.form-label(for='exclusion_length') *Exclusion Length
+        br
+        select.form-control(name="exclusion_length" id="exclusion_length" onChange='exclusionLengthChange()' required)  
+          option(value="3") 3
+          option(value="7") 7
+          option(value="14") 14
+          option(value="30") 30
+          option(value="60") 60
+          option(value="180") 180
+          option(value="365") 365
+          option(value="lifetime") Lifetime
+          option(value="other") Other
+        br
+        label.form-label(for='other_length' id='other-label' hidden) Other Length (in days)
+        br 
+        input.form-control(type='hidden' id="other-length" name="other_length" placeholder="Other Length")  
+        br
+      .form-element
+        label.form-label(for='date_served') *Date Issued
+        br
+        input.form-control(type="date" id="date-served" name="date_served")  
+        br
+      .form-element
+        label.form-label(for='image') Upload Image
+        br 
+        input.form-control.btn(type='file' name="image" id="image" value='' required)  
+        br
+        br
+        small * required
+        br 
+        br
+      .form-button
+        button.btn.btn-default(type='submit') Submit
+        a(href='/')
+          button.btn.btn-primary(type="button") Cancel
+
+      script(src='/static/js/exclusion_form.js')

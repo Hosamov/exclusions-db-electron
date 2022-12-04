@@ -9,17 +9,17 @@ block content
       .form-element
         label.form-label(for='username') * Email
         br
-        input.form-control(type='email', name="username", placeholder='Enter Email' size='50')
+        input.form-control(type='email', name="username", placeholder='Enter Email' size='50' required)
         br
       .form-element
         label.form-label(for='password') * Password
         br
-        input.form-control(type='password', name="password", placeholder='Password')
+        input.form-control(type='password', name="password", placeholder='Password' required)
         br
       .form-element
         label.form-label(for='verify_password') * Verify Password
         br 
-        input.form-control(type='password', name="verify_password", placeholder='Verify Password')  
+        input.form-control(type='password', name="verify_password", placeholder='Verify Password' required)  
         br
       .form-element
         label.form-label(for='user_key') User Key (optional)
