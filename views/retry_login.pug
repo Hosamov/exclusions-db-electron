@@ -1,0 +1,24 @@
+extends layout.pug 
+
+block content
+  .header 
+    h1 Exclusions DB
+  div.main-container
+    h2 Retry Login
+    p Oops! Looks like those credentials didn't match a registered account. Would you like to Retry?
+    form(role='form', action="/login",method="post")
+      .form-element
+        label.form-label(name='username') Email
+        br
+        input.form-control(type='text', name="username", placeholder='Enter Username')
+        br
+      .form-element
+        label.form-label(name='password') Password
+        br
+        input.form-control(type='password', name="password", placeholder='Password')
+        br
+        br
+      .form-button
+        button.btn.btn-default(type='submit') Submit
+        a(href='/')
+          button.btn.btn-primary(type="button") Cancel

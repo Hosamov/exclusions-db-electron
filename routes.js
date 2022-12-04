@@ -37,6 +37,12 @@ module.exports = function (app) {
     res.render('login', { user: req.user });
   });
 
+  //* Retry_login GET route
+  app.get('/retry_login', (req, res, next) => {
+    res.render('retry_login', { user: req.user });
+  });
+
+
   //* Unauthorized GET route
   app.get('/unauthorized', (req, res, next) => {
     res.render('unauthorized');
@@ -104,7 +110,7 @@ module.exports = function (app) {
       if (err) {
         console.log(err);
       } else {
-        passport.authenticate('local', {failureRedirect: '/login'})(req, res, () => {
+        passport.authenticate('local', {failureRedirect: '/retry_login'})(req, res, () => {
           Account.findOne({ username: account.username }, (err, foundUser) => {
             if (err) {
               console.log(err);
