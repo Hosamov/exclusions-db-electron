@@ -1,5 +1,6 @@
 const passport = require('passport');
 const Account = require('./models/account');
+const Exclusion = require('./models/exclusion');
 
 module.exports = function (app) {
   //*********** GET ROUTES ************/
@@ -34,14 +35,13 @@ module.exports = function (app) {
 
   //* Login GET route
   app.get('/login', (req, res, next) => {
-    res.render('login', { user: req.user });
+    res.render('login');
   });
 
   //* Retry_login GET route
   app.get('/retry_login', (req, res, next) => {
-    res.render('retry_login', { user: req.user });
+    res.render('retry_login');
   });
-
 
   //* Unauthorized GET route
   app.get('/unauthorized', (req, res, next) => {
@@ -65,7 +65,7 @@ module.exports = function (app) {
   app.get('/register', (req, res, next) => {
     // Accessible by Admin users only
     // Set new user's auth level
-    res.render('register', {});
+    res.render('register');
   });
 
   //* Edit_user GET route
