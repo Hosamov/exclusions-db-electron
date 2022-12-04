@@ -104,7 +104,7 @@ module.exports = function (app) {
       if (err) {
         console.log(err);
       } else {
-        passport.authenticate('local')(req, res, () => {
+        passport.authenticate('local', {failureRedirect: '/login'})(req, res, () => {
           Account.findOne({ username: account.username }, (err, foundUser) => {
             if (err) {
               console.log(err);
@@ -127,12 +127,10 @@ module.exports = function (app) {
   app.post('/register', (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
-    const role = req.body.role;
-    const active = req.body.active;
     const userKey = req.body.user_key;
     // Uses passport.js to register a new user, set their auth level
     if (req.body.password === req.body.verify_password) {
-      Account.register({ username: username }, password, (err, user) => {
+      Account.register({ username: username }, password, (err, account) => {
         if (err) {
           console.log(err);
           res.redirect('/register');
@@ -144,11 +142,12 @@ module.exports = function (app) {
                 console.log(err);
               } else {
                 if (userKey === process.env.USER_KEY) {
+                  // Check if (admin) userkey has been inputted, and if it matches
                   console.log('User Key Accepted!');
                   foundUser.role = 'admin';
                   foundUser.active = true;
                 } else {
-                  console.log('Invalid user key or no key entered.');
+                  console.log('Invalid user key/no key entered.');
                   foundUser.role = null;
                   foundUser.active = false;
                 }
