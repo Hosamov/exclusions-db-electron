@@ -66,3 +66,8 @@ textarea {
   list-style-type: none;
 }
 
+.image {
+  max-width: 200px;
+  max-height: 300px;
+}
+

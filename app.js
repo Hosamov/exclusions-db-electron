@@ -4,6 +4,11 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const session = require('express-session');
+const multer = require('multer');
+
+const fs = require('fs');
+const path = require('path');
+require('dotenv/config');
 
 // Passport Config
 const Account = require('./models/account');
@@ -66,6 +71,6 @@ app.use((err, req, res, next) => {
 });
 
 //* Server
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log('Listening on port 3000...');
 });

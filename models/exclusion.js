@@ -3,16 +3,15 @@ const Schema = mongoose.Schema;
 
 const ExclusionSchema = new Schema({
   name: String,
-  dob: Date,
-  other: String,
+  dob: String,
+  other_info: String,
+  ordinance: String,
   description: String,
-  date: Date,
-  exp_date: Date,
-  ex_length: Number,
-  img: {
-    data: Buffer,
-    contentType: String,
-  },
+  date_served: String,
+  exp_date: String,
+  length: String,
+  other_length: Number,
+  img_url: String,
 });
 
-module.exports = mongoose.model('Exclusion', ExclusionSchema);
+module.exports = mongoose.model('Exclusion', ExclusionSchema, 'exclusions');

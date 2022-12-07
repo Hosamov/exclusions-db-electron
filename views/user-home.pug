@@ -8,6 +8,19 @@ block content
     
     ul 
       each exclusion in exclusions
-        li.exclusion-item HI DOOFUS 😏
+        li.exclusion-item
+          li.exclusion-item
+            h4 Name: #{exclusion.name}
+          li.exclusion-item DOB: #{exclusion.dob}
+          li.exclusion-item Other Info: #{exclusion.other_info}
+          li.exclusion-item Ordinance(s): #{exclusion.ordinance}
+          li.exclusion-item Description: #{exclusion.description}
+          li.exclusion-item Length: #{exclusion.length}
+          li.exclusion-item Length(other): #{exclusion.other_length}
+          li.exclusion-item Date Served: #{exclusion.date_served}
+          li.exclusion-item Expires on: #{exclusion.exp_date}
+          li.exclusion-item Image: 
+            img.image(src=`${exclusion.img_url}`) 
+    
     a(href="/logout") Logout 
     a(href="/add_new_exclusion") New

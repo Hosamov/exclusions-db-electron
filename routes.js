@@ -1,6 +1,19 @@
 const passport = require('passport');
 const Account = require('./models/account');
 const Exclusion = require('./models/exclusion');
+const multer = require('multer');
+
+// //* Multer
+// let storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'uploads');
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, file.fieldname + '-' + Date.now());
+//   },
+// });
+
+// let upload = multer({ storage: storage });
 
 module.exports = function (app) {
   //*********** GET ROUTES ************/
@@ -11,32 +24,29 @@ module.exports = function (app) {
 
   //* Home GET route (for logged-in users)
   app.get('/home', (req, res, next) => {
-    const exclusions = [];
     if (req.isAuthenticated()) {
-      Exclusion.find({ name: { $ne: null } }, (err, foundExclusion) => {
+      Exclusion.find({}, (err, foundExclusion) => {
         if (err) {
           console.log(err);
         } else {
           console.log(foundExclusion);
-          exclusions.push(foundExclusion);
+          Account.findOne(
+            { username: { $eq: req.user.username } },
+            (err, foundUser) => {
+              if (err) {
+                console.log(err);
+              } else {
+                if (foundUser.active) {
+                  res.render('user-home', { exclusions: foundExclusion });
+                } else {
+                  console.log('inactive');
+                  res.render('unauthorized');
+                }
+              }
+            }
+          );
         }
       });
-
-      Account.findOne(
-        { username: { $eq: req.user.username } },
-        (err, foundUser) => {
-          if (err) {
-            console.log(err);
-          } else {
-            if (foundUser.active) {
-              res.render('user-home', { exclusions });
-            } else {
-              console.log('inactive');
-              res.render('unauthorized');
-            }
-          }
-        }
-      );
     } else {
       res.redirect('/');
     }
@@ -87,8 +97,16 @@ module.exports = function (app) {
   //* Add_new_exclusion GET route
   app.get('/add_new_exclusion', (req, res, next) => {
     if (req.isAuthenticated()) {
+      Exclusion.find({}, (err, exclusions) => {
+        if (err) {
+          console.log(err);
+          res.status(500).send('An error occurred', err);
+        } else {
+          res.render('new-exclusion');
+        }
+      });
       // Accessible by Admin and supervisors only
-      res.render('new-exclusion');
+      // res.render('new-exclusion');
     }
   });
 
@@ -198,8 +216,43 @@ module.exports = function (app) {
   });
 
   //* Add_exclusion POST route
-  app.post('/add_exclusion', (req, res, next) => {
+  app.post('/add_exclusion', async (req, res, next) => {
     // Add a new exclusion from /add_new_exclusion GET route
+    let excl = {
+      name: req.body.name,
+      dob: req.body.dob,
+      other_info: req.body.other_info,
+      ordinance: req.body.ordinance,
+      description: req.body.description,
+      date_served: req.body.date_served,
+      exp_date: req.body.exp_date,
+      length: req.body.length,
+      other_length: req.body.other_length,
+      img_url: req.body.img_url,
+    };
+    await Exclusion.create(
+      [
+        {
+          name: excl.name,
+          dob: excl.dob,
+          other_info: excl.other_info,
+          ordinance: excl.ordinance,
+          description: excl.description,
+          date_served: excl.date_served,
+          exp_date: excl.exp_date,
+          length: excl.length,
+          other_length: excl.other_length,
+          img_url: excl.img_url,
+        },
+      ],
+      (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.redirect('/home');
+        }
+      }
+    );
   });
 
   //* Edit_exclusion POST route
