@@ -8,7 +8,7 @@ block content
 
     a(href="/logout") Logout 
     a(href="/add_new_exclusion") New
-    
+
     ul 
       each exclusion in exclusions
         li.exclusion-item
@@ -21,7 +21,7 @@ block content
           li.exclusion-item Length: #{exclusion.length}
           li.exclusion-item Length(other): #{exclusion.other_length}
           li.exclusion-item Date Served: #{exclusion.date_served}
-          li.exclusion-item Expires on: #{exclusion.exp_date}
+          li.exclusion-item Expires after: #{exclusion.exp_date}
           li.exclusion-item Image: 
             img.image(src=`${exclusion.img_url}`) 
     

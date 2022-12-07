@@ -227,24 +227,16 @@ module.exports = function (app) {
       return date;
     };
 
-    console.log('date served: ' + excl.date_served);
     const dateServed = new Date(excl.date_served);
-
-    console.log(parseInt(excl.length));
     
     if(excl.other_length !== null && excl.other_length !== '') {
-      console.log(excl.other_length);
-      console.log('excl.other_length !== null: ' + excl.other_length)
       excl.exp_date = dateServed.addDays(parseInt(excl.other_length));
-    } else if (excl.length === 'Lifetime') {
-      console.log('excl.length === lifetime: ' + excl.length);
     } else {
       console.log('A normal number/not other: ' + excl.length);
       excl.exp_date = dateServed.addDays(parseInt(excl.length));
     }
 
     console.log(excl);
-
 
     await Exclusion.create(
       [
