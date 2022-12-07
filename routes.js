@@ -1,19 +1,7 @@
 const passport = require('passport');
 const Account = require('./models/account');
 const Exclusion = require('./models/exclusion');
-const multer = require('multer');
-
-// //* Multer
-// let storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, 'uploads');
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, file.fieldname + '-' + Date.now());
-//   },
-// });
-
-// let upload = multer({ storage: storage });
+const moment = require('moment');
 
 module.exports = function (app) {
   //*********** GET ROUTES ************/
@@ -29,7 +17,7 @@ module.exports = function (app) {
         if (err) {
           console.log(err);
         } else {
-          console.log(foundExclusion);
+          // console.log(foundExclusion);
           Account.findOne(
             { username: { $eq: req.user.username } },
             (err, foundUser) => {
@@ -220,7 +208,7 @@ module.exports = function (app) {
     // Add a new exclusion from /add_new_exclusion GET route
     let excl = {
       name: req.body.name,
-      dob: req.body.dob,
+      dob: moment(req.body.dob).format('YYYY-MM-DD'),
       other_info: req.body.other_info,
       ordinance: req.body.ordinance,
       description: req.body.description,
@@ -230,16 +218,44 @@ module.exports = function (app) {
       other_length: req.body.other_length,
       img_url: req.body.img_url,
     };
+
+    //* Add calculations for adding exclusion length to served date:
+    let exclusionLength;
+    Date.prototype.addDays = function (days) {
+      let date = new Date(this.valueOf());
+      date.setDate(date.getDate() + days);
+      return date;
+    };
+
+    console.log('date served: ' + excl.date_served);
+    const dateServed = new Date(excl.date_served);
+
+    console.log(parseInt(excl.length));
+    
+    if(excl.other_length !== null && excl.other_length !== '') {
+      console.log(excl.other_length);
+      console.log('excl.other_length !== null: ' + excl.other_length)
+      excl.exp_date = dateServed.addDays(parseInt(excl.other_length));
+    } else if (excl.length === 'Lifetime') {
+      console.log('excl.length === lifetime: ' + excl.length);
+    } else {
+      console.log('A normal number/not other: ' + excl.length);
+      excl.exp_date = dateServed.addDays(parseInt(excl.length));
+    }
+
+    console.log(excl);
+
+
     await Exclusion.create(
       [
         {
           name: excl.name,
-          dob: excl.dob,
+          dob: moment(excl.dob).format('MM/DD/YYYY'),
           other_info: excl.other_info,
           ordinance: excl.ordinance,
           description: excl.description,
-          date_served: excl.date_served,
-          exp_date: excl.exp_date,
+          date_served: moment(excl.date_served).format('MM/DD/YYYY'),
+          exp_date: moment(excl.exp_date).format('MM/DD/YYYY'),
           length: excl.length,
           other_length: excl.other_length,
           img_url: excl.img_url,
