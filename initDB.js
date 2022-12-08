@@ -3,12 +3,12 @@ const { config } = require('dotenv');
 
 module.exports = () => {
  config(); //invoking the dotenv config here
- const uri = process.env.DB_LOCAL_URI;
+ const uri = process.env.DB_URI;
 
  connect(uri, {
         dbName: process.env.DB_NAME,
-        // user: process.env.DB_USER, 
-        // pass: process.env.DB_PASS
+        user: process.env.DB_USER, 
+        pass: process.env.DB_PASS
     })
         .then(() => {
             console.log('Connection established with MongoDB');
