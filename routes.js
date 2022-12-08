@@ -77,7 +77,6 @@ module.exports = function (app) {
 
   //* Edit_user GET route
   app.get('/users', (req, res, next) => {
-    //TODO: Working in this route currently.
     // Accessible by Admin users only
     // Displays a list of all users, their roles and active status
     if(req.isAuthenticated()) {
@@ -97,8 +96,30 @@ module.exports = function (app) {
     }  
   });
 
-  //* Edit_user GET route
+  //* /user/:users GET route
   app.get('/users/:user', (req, res, next) => {
+    const user = req.params.user;
+    // Accessible by Admin users only
+    // edit user's auth level, add, delete users
+    if(req.isAuthenticated()) {
+      if (req.user.role === 'admin') {
+        Account.find({username: {$eq: user}}, (err, foundUser) => {
+          if(err) {
+            console.log(err)
+          } else {
+            res.render('user', {user: foundUser});
+          }
+        });
+      } else {
+        res.redirect('/unauthorized');
+      }
+    } else {
+      res.redirect('/');
+    }  
+  });
+
+   //* /user/:users/edit_user GET route
+   app.get('/users/:user/edit_user', (req, res, next) => {
     const user = req.params.user;
     //TODO: Working in this route currently.
     // Accessible by Admin users only

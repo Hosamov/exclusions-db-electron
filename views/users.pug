@@ -10,5 +10,6 @@ block content
     ul.list 
       each user in users
         div.users-list-item#user-item(onclick=`window.location.href='/users/${user.username}'`)
-          li.exclusion-item=user.username
+          li.exclusion-item #{user.first_name} #{user.last_name}
     button.btn.btn-default(onclick="history.back()") Back
+    
