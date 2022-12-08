@@ -1,0 +1,9 @@
+extends ../layout.pug 
+
+block content  
+  .main-container    
+    h3  404 - Page not found.
+    p.not-found-p= `Oops! It looks like the page you requested doesn't exist.`
+  
+    button.home.btn(onclick="history.back()") Return to previous page
+    button.home.btn(onclick="location.href='/'") Return to Homepage

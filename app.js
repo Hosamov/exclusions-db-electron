@@ -48,14 +48,14 @@ app.use((req, res, next) => {
   console.log(err.stack);
 
   // Render the page-not-found template
-  res.status(404).render('page_not_found'); //display a generic 404 page without error stack
+  res.status(404).render('./errors/page-not-found'); //display a generic 404 page without error stack
 });
 
 //* Global error handler
 app.use((err, req, res, next) => {
   if (err) {
     if (err.status === 404) {
-      res.status(404).render('page_not_found', { err }); //render the error status with the error 
+      res.status(404).render('./errors/page-not-found', { err }); //render the error status with the error 
       console.log(err);
     } else {
       err.message = err.message; //|| "Oops, it looks like something went wrong on the server...";

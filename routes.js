@@ -47,7 +47,7 @@ module.exports = function (app) {
 
   //* Retry_login GET route
   app.get('/retry_login', (req, res, next) => {
-    res.render('retry_login');
+    res.render('retry-login');
   });
 
   //* Unauthorized GET route
@@ -85,7 +85,7 @@ module.exports = function (app) {
           if(err) {
             console.log(err)
           } else {
-            res.render('users', {users: users});
+            res.render('./users/users', {users: users});
           }
         });
       } else {
@@ -107,7 +107,7 @@ module.exports = function (app) {
           if(err) {
             console.log(err)
           } else {
-            res.render('user', {user: foundUser});
+            res.render('./users/user', {user: foundUser});
           }
         });
       } else {
@@ -130,7 +130,7 @@ module.exports = function (app) {
           if(err) {
             console.log(err)
           } else {
-            res.render('user', {user: foundUser});
+            res.render('./users/user/edit-user', {user: foundUser});
           }
         });
       } else {
