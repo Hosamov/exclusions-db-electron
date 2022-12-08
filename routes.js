@@ -205,7 +205,7 @@ module.exports = function (app) {
 
   //* Add_exclusion POST route
   app.post('/add_exclusion', async (req, res, next) => {
-    // Add a new exclusion from /add_new_exclusion GET route
+    // Add new exclusion data from /add_new_exclusion GET route
     let excl = {
       name: req.body.name,
       dob: req.body.dob,
@@ -219,7 +219,7 @@ module.exports = function (app) {
       img_url: req.body.img_url,
     };
 
-    //* Add calculations for adding exclusion length to served date:
+    //* Calculations for adding exclusion length to served date:
     let exclusionLength;
     Date.prototype.addDays = function (days) {
       let date = new Date(this.valueOf());
@@ -228,16 +228,17 @@ module.exports = function (app) {
     };
 
     const dateServed = new Date(excl.date_served);
-    
-    if(excl.other_length !== null && excl.other_length !== '') {
+
+    // Checks for which 'length' form field used:
+    if (excl.other_length !== null && excl.other_length !== '') {
       excl.exp_date = dateServed.addDays(parseInt(excl.other_length));
     } else {
-      console.log('A normal number/not other: ' + excl.length);
       excl.exp_date = dateServed.addDays(parseInt(excl.length));
     }
 
     console.log(excl);
 
+    //* Insert data into DB:
     await Exclusion.create(
       [
         {
