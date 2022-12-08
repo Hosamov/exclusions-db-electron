@@ -7,6 +7,16 @@ block content
     h2 Register
     form(role='form', action="/register",method="post")
       .form-element
+        label.form-label(for='first_name') * First Name
+        br
+        input.form-control(type='text', name="first_name", placeholder='Enter First Name' size='50' required)
+        br
+      .form-element
+        label.form-label(for='last_name') * Last Name
+        br
+        input.form-control(type='text', name="last_name", placeholder='Enter Last Name' size='50' required)
+        br
+      .form-element
         label.form-label(for='username') * Email
         br
         input.form-control(type='email', name="username", placeholder='Enter Email' size='50' required)

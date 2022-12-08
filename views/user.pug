@@ -1,0 +1,16 @@
+extends layout.pug 
+
+//- Renders individual user
+block content
+  div.header
+    h1 Exclusions DB
+  div.main-container
+    h2 #{user.username}
+    
+    ul.list 
+      each item in user
+        li.exclusion-item Email: #{item.username}
+        li.exclusion-item Role: #{item.role}
+        li.exclusion-item Is Active: #{item.active}
+        li.exclusion-item Name: #{item.first_name} #{item.last_name}
+    button.btn.btn-default(onclick="history.back()") Back

@@ -1,5 +1,6 @@
 extends layout.pug 
 
+//- Renders users page
 block content
   div.header
     h1 Exclusions DB
@@ -8,8 +9,6 @@ block content
     
     ul.list 
       each user in users
-        div.users-list-item#user-item(onclick=`window.location.href='/edit_user/${user.username}'`)
+        div.users-list-item#user-item(onclick=`window.location.href='/users/${user.username}'`)
           li.exclusion-item=user.username
-          li.exclusion-item Role: #{user.role}
-          li.exclusion-item Is Active: #{user.active}
     button.btn.btn-default(onclick="history.back()") Back

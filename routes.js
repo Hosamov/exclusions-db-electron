@@ -80,51 +80,64 @@ module.exports = function (app) {
     //TODO: Working in this route currently.
     // Accessible by Admin users only
     // Displays a list of all users, their roles and active status
-    if(req.isAuthenticated() && req.user.role === 'admin') {
-      Account.find({}, (err, users) => {
-        if(err) {
-          console.log(err)
-        } else {
-          res.render('users', {users: users});
-        }
-      });
+    if(req.isAuthenticated()) {
+      if(req.user.role === 'admin') {
+        Account.find({}, (err, users) => {
+          if(err) {
+            console.log(err)
+          } else {
+            res.render('users', {users: users});
+          }
+        });
+      } else {
+        res.redirect('/unauthorized');
+      } 
     } else {
-      res.redirect('/unauthorized');
+      res.redirect('/');
     }  
   });
 
   //* Edit_user GET route
-  app.get('/edit_user/:user', (req, res, next) => {
+  app.get('/users/:user', (req, res, next) => {
     const user = req.params.user;
     //TODO: Working in this route currently.
     // Accessible by Admin users only
     // edit user's auth level, add, delete users
-    if(req.isAuthenticated() && req.user.role === 'admin') {
-      Account.find({username: {$eq: user}}, (err, foundUser) => {
-        if(err) {
-          console.log(err)
-        } else {
-          res.render('edit-user', {user: foundUser});
-        }
-      });
+    if(req.isAuthenticated()) {
+      if (req.user.role === 'admin') {
+        Account.find({username: {$eq: user}}, (err, foundUser) => {
+          if(err) {
+            console.log(err)
+          } else {
+            res.render('user', {user: foundUser});
+          }
+        });
+      } else {
+        res.redirect('/unauthorized');
+      }
     } else {
-      res.redirect('/unauthorized');
+      res.redirect('/');
     }  
   });
 
   //* Add_new_exclusion GET route
   app.get('/add_new_exclusion', (req, res, next) => {
+    // Accessible by Admin and supervisors only
     if (req.isAuthenticated()) {
-      Exclusion.find({}, (err, exclusions) => {
-        if (err) {
-          console.log(err);
-          res.status(500).send('An error occurred', err);
-        } else {
-          res.render('new-exclusion');
-        }
-      });
-      // Accessible by Admin and supervisors only
-      // res.render('new-exclusion');
+      if(req.user.role === 'admin' || req.user.role === 'supervisor' && req.user.active === true) {
+        Exclusion.find({}, (err, exclusions) => {
+          if (err) {
+            console.log(err);
+            res.status(500).send('An error occurred', err);
+          } else {
+            res.render('new-exclusion');
+          }
+        });
+      } else {
+        res.redirect('/unauthorized');
+      }      
+    } else {
+      res.redirect('/');
     }
   });
 
@@ -188,6 +201,8 @@ module.exports = function (app) {
     const username = req.body.username;
     const password = req.body.password;
     const userKey = req.body.user_key;
+    const firstName = req.body.first_name;
+    const lastName = req.body.last_name;
     // Uses passport.js to register a new user, set their auth level
     if (req.body.password === req.body.verify_password) {
       Account.register({ username: username }, password, (err, account) => {
@@ -201,6 +216,8 @@ module.exports = function (app) {
               if (err) {
                 console.log(err);
               } else {
+                foundUser.first_name = firstName;
+                foundUser.last_name = lastName;
                 if (userKey === process.env.USER_KEY) {
                   // Check if (admin) userkey has been inputted, and if it matches
                   console.log('User Key Accepted!');
@@ -214,6 +231,8 @@ module.exports = function (app) {
                 foundUser.save(() => {
                   console.log('New user has been registered...');
                   userKey === process.env.USER_KEY
+
+
                     ? res.redirect('/home')
                     : res.redirect('/unauthorized');
                 });

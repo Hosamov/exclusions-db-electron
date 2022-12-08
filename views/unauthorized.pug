@@ -6,4 +6,5 @@ block content
   .main-container
     h3 Unauthorized.
     p Please check with your administrator. It looks like you don't have the proper credentials to access that section of the application.
-    a(href="/home") Go back
+    button.btn.btn-default(onclick="history.back()") Back
+    button.btn(onclick="location.href='/'") Home
