@@ -6,12 +6,14 @@ block content
   div.main-container
     h2 Exclusions List
 
-    a(href="/logout") Logout 
+    a(href="/logout") Logout |
     a(href="/add_new_exclusion") New
 
-    ul 
+    ul.list 
       each exclusion in exclusions
-        li.exclusion-item
+        div.right-div
+          img.image.exclusion-image(src=`${exclusion.img_url}`) 
+        div.exclusion-list-item
           li.exclusion-item
             h4 Name: #{exclusion.name}
           li.exclusion-item DOB: #{exclusion.dob}
@@ -22,8 +24,8 @@ block content
           li.exclusion-item Length(other): #{exclusion.other_length}
           li.exclusion-item Date Served: #{exclusion.date_served}
           li.exclusion-item Expires after: #{exclusion.exp_date}
-          li.exclusion-item Image: 
-            img.image(src=`${exclusion.img_url}`) 
+          li.exclusion-item  
+          
     
-    a(href="/logout") Logout 
+    a(href="/logout") Logout |
     a(href="/add_new_exclusion") New
