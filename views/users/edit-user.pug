@@ -1,0 +1,54 @@
+extends ../layout.pug 
+
+block content 
+  div.header   
+    h1 Exclusions DB
+  div.main-container
+    each item in user
+      form(role='form', action="/edit_user",method="post")
+        h3 Edit User: #{item.first_name} #{item.last_name}
+        .form-element
+          label.form-label(name='username') Email
+          br
+          input.form-control(type='text', name="username", placeholder=`${item.username}` disabled)
+          br
+          hr
+        .form-element
+          label.form-label(name='password') Change Password
+          br
+          input.form-control(type='password', name="password", placeholder='Password' required)
+          br
+        .form-element
+          label.form-label(name='confirm_password') Confirm New Password
+          br
+          input.form-control(type='password', name="confirm_password", placeholder='Password' required)
+          br 
+        if currentUser.loggedInUserRole === 'admin'
+          hr
+          h4 Admin Only
+          .admin-section
+            fieldset
+              .radio-section
+                label.admin-form-label(name='is_active') Set Active: 
+                  input.admin-form-control(type='checkbox' name='is_active') 
+            fieldset
+              .radio-section
+                label.admin-form-label(for='user') User (read access)
+                  input.admin-form-control(type='radio' name='user_role' value='user')
+                label.admin-form-label(for='supervisor') Supervisor (read/write access)
+                  input.admin-form-control(type='radio' name='user_role' value='supervisor')
+                label.admin-form-label(for='admin') Admin (Warning: Full access)
+                  input.admin-form-control(type='radio' name='user_role' value='admin')
+                br
+            fieldset
+              .radio-section 
+                p Delete user
+                label.admin-form-label(name='delete_user') Are you sure? (check box to confirm)  
+                  input.admin-form-control(type='checkbox' name='delete_user') 
+                a(href='/delete_user')
+                  button.btn.btn-default(type='delete') Delete User
+          br
+          
+        .form-button
+          button.btn.btn-default(type='submit') Submit
+           button.btn.btn-default(onclick="history.back()") Cancel

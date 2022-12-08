@@ -13,6 +13,7 @@ block content
         li.exclusion-item Role: #{item.role}
         li.exclusion-item Is Active: #{item.active}
         li.exclusion-item Name: #{item.first_name} #{item.last_name}
-    button.btn(onclick="location.href='/users/:user/edit_user'") Edit
-    button.btn.btn-default(onclick="history.back()") Back
+        br
+        button.btn(onclick=`window.location.href='/users/${item.username}/edit_user'`) Edit
+        button.btn.btn-default(onclick="history.back()") Back
     

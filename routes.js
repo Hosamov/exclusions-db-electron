@@ -125,12 +125,17 @@ module.exports = function (app) {
     // Accessible by Admin users only
     // edit user's auth level, add, delete users
     if(req.isAuthenticated()) {
-      if (req.user.role === 'admin') {
+      const thisUser = {
+        loggedInUser: req.user.username,
+        loggedInUserRole: req.user.role,
+      };
+      
+      if (thisUser.loggedInUserRole === 'admin' || thisUser.loggedInUser === user) {
         Account.find({username: {$eq: user}}, (err, foundUser) => {
           if(err) {
             console.log(err)
           } else {
-            res.render('./users/user/edit-user', {user: foundUser});
+            res.render(`./users/edit-user`, {user: foundUser, currentUser: thisUser});
           }
         });
       } else {

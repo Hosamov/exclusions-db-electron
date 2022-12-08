@@ -48,6 +48,31 @@ textarea {
   font-size: 1.3rem;
 }
 
+.admin-section {
+
+}
+
+fieldset {
+  text-align: center;
+  margin-top: 3px;
+}
+
+.radio-section {
+  display: inline;
+}
+
+.admin-form-element {
+ 
+}
+
+.admin-form-label {
+  margin-right: 3%;
+}
+
+.admin-form-control {
+
+}
+
 .btn{
   border-radius: 5px;
   border: none;
