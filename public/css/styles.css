@@ -66,6 +66,10 @@ textarea {
   padding: 0;
 }
 
+.list-item {
+  list-style-type: none;
+}
+
 .exclusion-list-item {
   list-style-type: none;
   border: 2px solid black;
