@@ -76,10 +76,40 @@ module.exports = function (app) {
   });
 
   //* Edit_user GET route
-  app.get('/edit_user', (req, res, next) => {
+  app.get('/users', (req, res, next) => {
+    //TODO: Working in this route currently.
     // Accessible by Admin users only
-    // edit user's auth level
-    res.send('Edit User page');
+    // Displays a list of all users, their roles and active status
+    if(req.isAuthenticated() && req.user.role === 'admin') {
+      Account.find({}, (err, users) => {
+        if(err) {
+          console.log(err)
+        } else {
+          res.render('users', {users: users});
+        }
+      });
+    } else {
+      res.redirect('/unauthorized');
+    }  
+  });
+
+  //* Edit_user GET route
+  app.get('/edit_user/:user', (req, res, next) => {
+    const user = req.params.user;
+    //TODO: Working in this route currently.
+    // Accessible by Admin users only
+    // edit user's auth level, add, delete users
+    if(req.isAuthenticated() && req.user.role === 'admin') {
+      Account.find({username: {$eq: user}}, (err, foundUser) => {
+        if(err) {
+          console.log(err)
+        } else {
+          res.render('edit-user', {user: foundUser});
+        }
+      });
+    } else {
+      res.redirect('/unauthorized');
+    }  
   });
 
   //* Add_new_exclusion GET route

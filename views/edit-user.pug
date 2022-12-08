@@ -1,0 +1,15 @@
+extends layout.pug 
+
+block content
+  div.header
+    h1 Exclusions DB
+  div.main-container
+    h2 Edit User
+    
+    ul.list 
+      each item in user
+        div.users-list-item
+          li.exclusion-item=item.username
+          li.exclusion-item Role: #{item.role}
+          li.exclusion-item Is Active: #{item.active}
+    button.btn.btn-default(onclick="history.back()") Back

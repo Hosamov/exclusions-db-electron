@@ -74,6 +74,7 @@ textarea {
   list-style-type: none;
   border: 2px solid black;
   padding: 0 5px 0 5px;
+  margin-bottom: 2px;
 }
 
 .exclusion-item {
@@ -90,5 +91,19 @@ textarea {
 
 .exclusion-image {
   float: right;
+}
+
+.users-list-item {
+  list-style-type: none;
+  border: 2px solid black;
+  padding: 0 5px 0 5px;
+  margin-bottom: 2px;
+  border-radius: 5px;
+}
+
+.users-list-item:hover {
+  cursor: pointer;
+  background-color: #21a0e1;
+  color: #fff;
 }
 

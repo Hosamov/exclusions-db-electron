@@ -31,6 +31,8 @@ An exclusions database that is web-based using Node, express and MongoDB/Mongoos
   active exclusion is being archived.
 - /past_orders - renders list of individuals who have previously been served an
   exclusion order, with the violations.
+  /edit_user - renders list of all site users. Accessible by admin to change
+  roles, edit, and delete details as necessary.
 
 ## POST Routes:
 - /login
@@ -38,3 +40,9 @@ An exclusions database that is web-based using Node, express and MongoDB/Mongoos
 - /add_exclusion
 - /edit_exclusion
 - /archive_exclusion
+
+
+## TODOS:
+- Setup CAPTCHA for /login and /register routes
+- Setup '/edit_user' GET and POST routes
+- Setup '/edit_exclusion' GET and POST routes
