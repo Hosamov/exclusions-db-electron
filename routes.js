@@ -79,21 +79,21 @@ module.exports = function (app) {
   app.get('/users', (req, res, next) => {
     // Accessible by Admin users only
     // Displays a list of all users, their roles and active status
-    if(req.isAuthenticated()) {
-      if(req.user.role === 'admin') {
+    if (req.isAuthenticated()) {
+      if (req.user.role === 'admin') {
         Account.find({}, (err, users) => {
-          if(err) {
-            console.log(err)
+          if (err) {
+            console.log(err);
           } else {
-            res.render('./users/users', {users: users});
+            res.render('./users/users', { users: users });
           }
         });
       } else {
         res.redirect('/unauthorized');
-      } 
+      }
     } else {
       res.redirect('/');
-    }  
+    }
   });
 
   //* /user/:users GET route
@@ -101,13 +101,13 @@ module.exports = function (app) {
     const user = req.params.user;
     // Accessible by Admin users only
     // edit user's auth level, add, delete users
-    if(req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
       if (req.user.role === 'admin') {
-        Account.find({username: {$eq: user}}, (err, foundUser) => {
-          if(err) {
-            console.log(err)
+        Account.find({ username: { $eq: user } }, (err, foundUser) => {
+          if (err) {
+            console.log(err);
           } else {
-            res.render('./users/user', {user: foundUser});
+            res.render('./users/user', { user: foundUser });
           }
         });
       } else {
@@ -115,27 +115,33 @@ module.exports = function (app) {
       }
     } else {
       res.redirect('/');
-    }  
+    }
   });
 
-   //* /user/:users/edit_user GET route
-   app.get('/users/:user/edit_user', (req, res, next) => {
+  //* /user/:users/edit_user GET route
+  app.get('/users/:user/edit_user', (req, res, next) => {
     const user = req.params.user;
-    //TODO: Working in this route currently.
     // Accessible by Admin users only
     // edit user's auth level, add, delete users
-    if(req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
       const thisUser = {
         loggedInUser: req.user.username,
         loggedInUserRole: req.user.role,
+        active: req.user.active,
       };
-      
-      if (thisUser.loggedInUserRole === 'admin' || thisUser.loggedInUser === user) {
-        Account.find({username: {$eq: user}}, (err, foundUser) => {
-          if(err) {
-            console.log(err)
+
+      if (
+        thisUser.loggedInUserRole === 'admin' ||
+        thisUser.loggedInUser === user
+      ) {
+        Account.find({ username: { $eq: user } }, (err, foundUser) => {
+          if (err) {
+            console.log(err);
           } else {
-            res.render(`./users/edit-user`, {user: foundUser, currentUser: thisUser});
+            res.render(`./users/edit-user`, {
+              user: foundUser,
+              currentUser: thisUser,
+            });
           }
         });
       } else {
@@ -143,14 +149,17 @@ module.exports = function (app) {
       }
     } else {
       res.redirect('/');
-    }  
+    }
   });
 
   //* Add_new_exclusion GET route
   app.get('/add_new_exclusion', (req, res, next) => {
     // Accessible by Admin and supervisors only
     if (req.isAuthenticated()) {
-      if(req.user.role === 'admin' || req.user.role === 'supervisor' && req.user.active === true) {
+      if (
+        req.user.role === 'admin' ||
+        (req.user.role === 'supervisor' && req.user.active === true)
+      ) {
         Exclusion.find({}, (err, exclusions) => {
           if (err) {
             console.log(err);
@@ -161,7 +170,7 @@ module.exports = function (app) {
         });
       } else {
         res.redirect('/unauthorized');
-      }      
+      }
     } else {
       res.redirect('/');
     }
@@ -257,8 +266,6 @@ module.exports = function (app) {
                 foundUser.save(() => {
                   console.log('New user has been registered...');
                   userKey === process.env.USER_KEY
-
-
                     ? res.redirect('/home')
                     : res.redirect('/unauthorized');
                 });
@@ -275,7 +282,60 @@ module.exports = function (app) {
 
   //* Edit_user POST route
   app.post('/edit_user', (req, res, next) => {
+    //TODO: Working in this route currently.
     // Edit a registered user from /edit_user GET route
+    let userInfo = {
+      username: req.body.email,
+      currentPassword: req.body.current_password,
+      newPassword: req.body.new_password,
+      confirmedPassword: req.body.confirm_password,
+      active: req.body.is_active,
+      userRole: req.body.user_role,
+      firstName: req.body.first_name,
+      lastName: req.body.last_name,
+    };
+
+    console.log(userInfo);
+    // First, check if the user has updated their password:
+
+    Account.findOne({ username: userInfo.username }, (err, foundUser) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(foundUser);
+        if (foundUser.newPassword === foundUser.confirmedPassword) {
+          // https://alto-palo.com/blogs/nodejs-authentication-with-passportjs-passport-local-mongoose/
+          foundUser.changePassword(
+            userInfo.currentPassword,
+            userInfo.newPassword,
+            (err, user) => {
+              if (err) {
+                console.log(err);
+              } else {
+                res.render('./users/account-success');
+              }
+            }
+          );
+        }
+        //FIXME: Working here.
+        foundUser.username = userInfo.username;
+        foundUser.active = userInfo.active;
+        foundUser.role = userInfo.userRole;
+        foundUser.first_name = userInfo.firstName;
+        foundUser.last_name = userInfo.lastName;
+        foundUser.save(() => {
+          console.log(foundUser.username + ' has been successfully changed.');
+          res.render('./users/account-success');
+        });
+      }
+    });
+  });
+
+  //* Delete_user POST route
+  //TODO: Next place to work...
+  app.post('/delete_user', (req, res, next) => {
+    // Edit a registered user from /edit_user GET route
+    let info = {};
   });
 
   //* Add_exclusion POST route

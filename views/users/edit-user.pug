@@ -5,23 +5,51 @@ block content
     h1 Exclusions DB
   div.main-container
     each item in user
-      form(role='form', action="/edit_user",method="post")
-        h3 Edit User: #{item.first_name} #{item.last_name}
+      form(role='form' action="/edit_user" method="post")
+        h3 Update User: #{item.first_name} #{item.last_name}
         .form-element
-          label.form-label(name='username') Email
-          br
-          input.form-control(type='text', name="username", placeholder=`${item.username}` disabled)
-          br
-          hr
+          if currentUser.loggedInUserRole === 'admin'
+            label.form-label(name='email') Email
+            br
+            input.form-control(type='text', name="email", placeholder=`${item.username}` value=`${item.username}`)
+            br
+            hr
+          else 
+            input.form-control(type='hidden', name="email", placeholder=`${item.username}` value=`${item.username}`)
+            br  
+        if currentUser.loggedInUserRole === 'admin'
+          .form-element
+            label.form-label(name='first_name') First Name
+            br
+            input.form-control(type='text', name="first_name", placeholder=`${item.first_name}` value=`${item.first_name}`)
+            br
+          .form-element
+            label.form-label(name='last_name') Last Name
+            br
+            input.form-control(type='text', name="last_name", placeholder=`${item.last_name}` value=`${item.last_name}`)
+            br
+            hr
+        else 
+          .form-element
+            input.form-control(type='hidden', name="first_name", placeholder=`${item.first_name}` value=`${item.first_name}`)
+            br
+          .form-element
+            input.form-control(type='hidden', name="last_name", placeholder=`${item.last_name}` value=`${item.last_name}`)
+
         .form-element
-          label.form-label(name='password') Change Password
+          label.form-label(name='current_password') Current Password
           br
-          input.form-control(type='password', name="password", placeholder='Password' required)
+          input.form-control(type='password', name="current_password", placeholder='Current Password')
+          br
+        .form-element
+          label.form-label(name='new_password') Change Password
+          br
+          input.form-control(type='password', name="new_password", placeholder='New Password')
           br
         .form-element
           label.form-label(name='confirm_password') Confirm New Password
           br
-          input.form-control(type='password', name="confirm_password", placeholder='Password' required)
+          input.form-control(type='password', name="confirm_password", placeholder='Confirm New Password')
           br 
         if currentUser.loggedInUserRole === 'admin'
           hr
@@ -30,25 +58,54 @@ block content
             fieldset
               .radio-section
                 label.admin-form-label(name='is_active') Set Active: 
-                  input.admin-form-control(type='checkbox' name='is_active') 
+                  if user.active
+                    input.admin-form-control(type='checkbox' name='is_active' value=true checked) 
+                  else 
+                    input.admin-form-control(type='checkbox' name='is_active') 
             fieldset
               .radio-section
-                label.admin-form-label(for='user') User (read access)
-                  input.admin-form-control(type='radio' name='user_role' value='user')
-                label.admin-form-label(for='supervisor') Supervisor (read/write access)
-                  input.admin-form-control(type='radio' name='user_role' value='supervisor')
-                label.admin-form-label(for='admin') Admin (Warning: Full access)
-                  input.admin-form-control(type='radio' name='user_role' value='admin')
-                br
+                if user.role === 'admin'
+                  label.admin-form-label(for='user') User (read access)
+                    input.admin-form-control(type='radio' name='user_role' value='user')
+                  label.admin-form-label(for='supervisor') Supervisor (read/write access)
+                    input.admin-form-control(type='radio' name='user_role' value='supervisor')
+                  label.admin-form-label(for='admin') Admin (Warning: Full access)
+                    input.admin-form-control(type='radio' name='user_role' value='admin' checked)
+                  br
+                else if user.role === 'supervisor'
+                  label.admin-form-label(for='user') User (read access)
+                    input.admin-form-control(type='radio' name='user_role' value='user')
+                  label.admin-form-label(for='supervisor') Supervisor (read/write access)
+                    input.admin-form-control(type='radio' name='user_role' value='supervisor' checked)
+                  label.admin-form-label(for='admin') Admin (Warning: Full access)
+                    input.admin-form-control(type='radio' name='user_role' value='admin')
+                  br
+                else if user.role === 'user'
+                  label.admin-form-label(for='user') User (read access)
+                    input.admin-form-control(type='radio' name='user_role' value='user' checked)
+                  label.admin-form-label(for='supervisor') Supervisor (read/write access)
+                    input.admin-form-control(type='radio' name='user_role' value='supervisor')
+                  label.admin-form-label(for='admin') Admin (Warning: Full access)
+                    input.admin-form-control(type='radio' name='user_role' value='admin')
+                  br
+                else if user.role === '' || user.role === undefined
+                  label.admin-form-label(for='user') User (read access)
+                    input.admin-form-control(type='radio' name='user_role' value='user')
+                  label.admin-form-label(for='supervisor') Supervisor (read/write access)
+                    input.admin-form-control(type='radio' name='user_role' value='supervisor')
+                  label.admin-form-label(for='admin') Admin (Warning: Full access)
+                    input.admin-form-control(type='radio' name='user_role' value='admin')
+                  br
             fieldset
               .radio-section 
                 p Delete user
                 label.admin-form-label(name='delete_user') Are you sure? (check box to confirm)  
                   input.admin-form-control(type='checkbox' name='delete_user') 
                 a(href='/delete_user')
-                  button.btn.btn-default(type='delete') Delete User
+                  button.btn.btn-default(type='button') Delete User
           br
-          
+ 
         .form-button
           button.btn.btn-default(type='submit') Submit
-           button.btn.btn-default(onclick="history.back()") Cancel
+      
+      button.btn.btn-default(onclick="history.back()") Cancel
