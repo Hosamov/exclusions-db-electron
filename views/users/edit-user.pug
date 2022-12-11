@@ -6,7 +6,7 @@ block content
   div.main-container
     each item in user
       form(role='form' action="/edit_user" method="post")
-        h3 Update User: #{item.first_name} #{item.last_name} #{currentUser.role}
+        h3 Update User: #{item.first_name} #{item.last_name}
         .form-element
           if currentUser.loggedInUserRole === 'admin'
             label.form-label(name='email') Email
@@ -35,6 +35,10 @@ block content
             br
           .form-element
             input.form-control(type='hidden', name="last_name", placeholder=`${item.last_name}` value=`${item.last_name}`)
+          .form-element
+            input.form-control(type='hidden', name="is_active", value=`${item.active}`)
+          .form-element
+            input.form-control(type='hidden', name="user_role", value=`${item.role}`)
 
         .form-element
           label.form-label(name='current_password') Current Password

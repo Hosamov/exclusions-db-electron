@@ -291,7 +291,7 @@ module.exports = function (app) {
       currentPassword: req.body.current_password,
       newPassword: req.body.new_password,
       confirmedPassword: req.body.confirm_password,
-      active: req.body.is_active === 'on' ? true: false,
+      active: req.body.is_active,
       userRole: req.body.user_role,
       firstName: req.body.first_name,
       lastName: req.body.last_name,
@@ -304,7 +304,7 @@ module.exports = function (app) {
       if (err) {
         console.log(err);
       } else {
-        console.log(foundUser);
+        // console.log(foundUser);
         if (
           foundUser.newPassword === foundUser.confirmedPassword &&
           foundUser.newPassword !== ''
@@ -322,9 +322,9 @@ module.exports = function (app) {
             }
           );
         }
-        //FIXME: Working here.
+        // Post data to user account:
         foundUser.username = userInfo.username;
-        foundUser.active = userInfo.active;
+        foundUser.active = userInfo.active === 'on' || userInfo.active === 'true' ? true: false;
         foundUser.role = userInfo.userRole;
         foundUser.first_name = userInfo.firstName;
         foundUser.last_name = userInfo.lastName;
@@ -333,8 +333,7 @@ module.exports = function (app) {
             console.log(err);
           } else {
             console.log(foundUser.username + ' has been successfully updated.');
-            res.render('./users/account-success');
-            console.log(foundUser);
+            res.render('./users/account-success');  
           }
         });
       }
