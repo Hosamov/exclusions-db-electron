@@ -154,6 +154,29 @@ module.exports = function (app) {
     }
   });
 
+  //* /user/:users/DELETE_user GET route
+  app.get('/users/:user/delete_user', async (req, res, next) => {
+    //TODO: Working here.
+
+    // Accessible by Admin users only
+    // edit user's auth level, add, delete users
+    if (req.isAuthenticated()) {
+      const loggedInUser = req.user.username;
+      const user = req.params.user;
+
+      if (req.user.role === 'admin') {
+        await Account.deleteOne({ username: user })
+          .then(() => {
+            res.redirect('/users');
+            console.log(`Account for ${user} successfully deleted.`);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    }
+  });
+
   //* Add_new_exclusion GET route
   app.get('/add_new_exclusion', (req, res, next) => {
     // Accessible by Admin and supervisors only
@@ -324,7 +347,8 @@ module.exports = function (app) {
         }
         // Post data to user account:
         foundUser.username = userInfo.username;
-        foundUser.active = userInfo.active === 'on' || userInfo.active === 'true' ? true: false;
+        foundUser.active =
+          userInfo.active === 'on' || userInfo.active === 'true' ? true : false;
         foundUser.role = userInfo.userRole;
         foundUser.first_name = userInfo.firstName;
         foundUser.last_name = userInfo.lastName;
@@ -333,7 +357,7 @@ module.exports = function (app) {
             console.log(err);
           } else {
             console.log(foundUser.username + ' has been successfully updated.');
-            res.render('./users/account-success');  
+            res.render('./users/account-success');
           }
         });
       }
@@ -344,7 +368,8 @@ module.exports = function (app) {
   //TODO: Next place to work...
   app.post('/delete_user', (req, res, next) => {
     // Edit a registered user from /edit_user GET route
-    let info = {};
+    user = req.body.username;
+    res.send(username);
   });
 
   //* Add_exclusion POST route
