@@ -6,7 +6,7 @@ block content
   div.main-container
     each item in user
       form(role='form' action="/edit_user" method="post")
-        h3 Update User: #{item.first_name} #{item.last_name}
+        h3 Update User: #{item.first_name} #{item.last_name} #{currentUser.role}
         .form-element
           if currentUser.loggedInUserRole === 'admin'
             label.form-label(name='email') Email
@@ -58,43 +58,48 @@ block content
             fieldset
               .radio-section
                 label.admin-form-label(name='is_active') Set Active: 
-                  if user.active
-                    input.admin-form-control(type='checkbox' name='is_active' value=true checked) 
-                  else 
-                    input.admin-form-control(type='checkbox' name='is_active') 
+                  input.admin-form-control(type='checkbox' name='is_active' checked=item.active) 
             fieldset
               .radio-section
-                if user.role === 'admin'
+                if item.role === 'admin'
                   label.admin-form-label(for='user') User (read access)
                     input.admin-form-control(type='radio' name='user_role' value='user')
                   label.admin-form-label(for='supervisor') Supervisor (read/write access)
                     input.admin-form-control(type='radio' name='user_role' value='supervisor')
                   label.admin-form-label(for='admin') Admin (Warning: Full access)
                     input.admin-form-control(type='radio' name='user_role' value='admin' checked)
+                  label.admin-form-label(for='inactive') No Access
+                    input.admin-form-control(type='radio' name='user_role' value='inactive')
                   br
-                else if user.role === 'supervisor'
+                else if item.role === 'supervisor'
                   label.admin-form-label(for='user') User (read access)
                     input.admin-form-control(type='radio' name='user_role' value='user')
                   label.admin-form-label(for='supervisor') Supervisor (read/write access)
                     input.admin-form-control(type='radio' name='user_role' value='supervisor' checked)
                   label.admin-form-label(for='admin') Admin (Warning: Full access)
                     input.admin-form-control(type='radio' name='user_role' value='admin')
+                  label.admin-form-label(for='inactive') No Access
+                    input.admin-form-control(type='radio' name='user_role' value='inactive')
                   br
-                else if user.role === 'user'
+                else if item.role === 'user'
                   label.admin-form-label(for='user') User (read access)
                     input.admin-form-control(type='radio' name='user_role' value='user' checked)
                   label.admin-form-label(for='supervisor') Supervisor (read/write access)
                     input.admin-form-control(type='radio' name='user_role' value='supervisor')
                   label.admin-form-label(for='admin') Admin (Warning: Full access)
                     input.admin-form-control(type='radio' name='user_role' value='admin')
+                  label.admin-form-label(for='inactive') No Access
+                    input.admin-form-control(type='radio' name='user_role' value='inactive')
                   br
-                else if user.role === '' || user.role === undefined
+                else if user.role === '' || user.role === undefined || !user.active
                   label.admin-form-label(for='user') User (read access)
                     input.admin-form-control(type='radio' name='user_role' value='user')
                   label.admin-form-label(for='supervisor') Supervisor (read/write access)
                     input.admin-form-control(type='radio' name='user_role' value='supervisor')
                   label.admin-form-label(for='admin') Admin (Warning: Full access)
                     input.admin-form-control(type='radio' name='user_role' value='admin')
+                  label.admin-form-label(for='inactive') No Access
+                    input.admin-form-control(type='radio' name='user_role' value='inactive' checked)
                   br
             fieldset
               .radio-section 

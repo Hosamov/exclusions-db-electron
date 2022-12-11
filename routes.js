@@ -128,6 +128,7 @@ module.exports = function (app) {
         loggedInUser: req.user.username,
         loggedInUserRole: req.user.role,
         active: req.user.active,
+        role: req.user.role,
       };
 
       if (
@@ -138,6 +139,7 @@ module.exports = function (app) {
           if (err) {
             console.log(err);
           } else {
+            console.log(foundUser);
             res.render(`./users/edit-user`, {
               user: foundUser,
               currentUser: thisUser,
@@ -289,7 +291,7 @@ module.exports = function (app) {
       currentPassword: req.body.current_password,
       newPassword: req.body.new_password,
       confirmedPassword: req.body.confirm_password,
-      active: req.body.is_active,
+      active: req.body.is_active === 'on' ? true: false,
       userRole: req.body.user_role,
       firstName: req.body.first_name,
       lastName: req.body.last_name,
@@ -298,12 +300,15 @@ module.exports = function (app) {
     console.log(userInfo);
     // First, check if the user has updated their password:
 
-    Account.findOne({ username: userInfo.username }, (err, foundUser) => {
+    Account.findOne({ username: userInfo.username }, async (err, foundUser) => {
       if (err) {
         console.log(err);
       } else {
         console.log(foundUser);
-        if (foundUser.newPassword === foundUser.confirmedPassword) {
+        if (
+          foundUser.newPassword === foundUser.confirmedPassword &&
+          foundUser.newPassword !== ''
+        ) {
           // https://alto-palo.com/blogs/nodejs-authentication-with-passportjs-passport-local-mongoose/
           foundUser.changePassword(
             userInfo.currentPassword,
@@ -323,9 +328,14 @@ module.exports = function (app) {
         foundUser.role = userInfo.userRole;
         foundUser.first_name = userInfo.firstName;
         foundUser.last_name = userInfo.lastName;
-        foundUser.save(() => {
-          console.log(foundUser.username + ' has been successfully changed.');
-          res.render('./users/account-success');
+        await foundUser.save((err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(foundUser.username + ' has been successfully updated.');
+            res.render('./users/account-success');
+            console.log(foundUser);
+          }
         });
       }
     });
