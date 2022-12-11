@@ -83,8 +83,18 @@ fieldset {
   margin: 2px .25rem;
 }
 
+.btn:disabled {
+  background-color: gray;
+}
+
+.btn:disabled:hover {
+  background-color: gray;
+}
+
+
 .btn:hover {
   background-color: tomato;
+  cursor: pointer;
 }
 
 .list {

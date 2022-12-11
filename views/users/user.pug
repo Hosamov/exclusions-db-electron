@@ -15,5 +15,7 @@ block content
         li.exclusion-item Name: #{item.first_name} #{item.last_name}
         br
         button.btn(onclick=`window.location.href='/users/${item.username}/edit_user'`) Edit
-        button.btn.btn-default(onclick="history.back()") Back
+        button.btn(onclick=`window.location.href='/users/${item.username}/confirm_delete'`) Delete
+      hr
+    button.btn.btn-default(onclick='window.location.href=/users/') Back
     

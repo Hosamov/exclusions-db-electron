@@ -154,14 +154,26 @@ module.exports = function (app) {
     }
   });
 
+  //* /user/:users/confirm_delete GET route
+  app.get('/users/:user/confirm_delete', (req, res, next) => {
+    //TODO: Working here currently.
+    if (req.isAuthenticated()) {
+      const user = req.params.user;
+      if (req.user.role === 'admin') { 
+        res.render('./users/delete-confirm', {user: user})
+      }
+    } else {
+      res.redirect('/unauthorized');
+    }
+  });
+
   //* /user/:users/DELETE_user GET route
   app.get('/users/:user/delete_user', async (req, res, next) => {
-    //TODO: Working here.
+    //TODO: Working here next
 
     // Accessible by Admin users only
     // edit user's auth level, add, delete users
     if (req.isAuthenticated()) {
-      const loggedInUser = req.user.username;
       const user = req.params.user;
 
       if (req.user.role === 'admin') {
@@ -174,6 +186,8 @@ module.exports = function (app) {
             console.log(err);
           });
       }
+    } else {
+      res.redirect('/unauthorized');
     }
   });
 
