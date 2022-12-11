@@ -3,11 +3,13 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const session = require('express-session');
+const memoryStore = require('memorystore')(session);
 
 require('dotenv/config');
 
 // Passport Config
 const Account = require('./models/account');
+const { MemoryStore } = require('express-session');
 passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
@@ -18,10 +20,15 @@ require('./initDB')();
 const app = express();
 
 app.set('view engine', 'pug');
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/static', express.static('public'));
 app.use(
   session({
+    cookie: { maxAge: 86400000 },
+    store: new MemoryStore({
+      checkPeriod: 86400000 // prune expired entries every 24h
+    }),
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
