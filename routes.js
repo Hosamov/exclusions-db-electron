@@ -7,7 +7,6 @@ const Exclusion = require('./models/exclusion');
 
 const email = require('./helpers');
 const emailBodies = require('./includes/email-bodies');
-console.log(emailBodies.register_body);
 
 module.exports = function (app) {
   //*********** GET ROUTES ************/
@@ -85,8 +84,6 @@ module.exports = function (app) {
 
   //* Register GET route
   app.get('/register', (req, res, next) => {
-    // Accessible by Admin users only
-    // Set new user's auth level
     res.render('register');
   });
 
@@ -122,8 +119,9 @@ module.exports = function (app) {
   //* /user/:users GET route
   app.get('/users/:user', (req, res, next) => {
     const user = req.params.user;
-    // Accessible by Admin users only
-    // edit user's auth level, add, delete users
+    // Accessible by Admin and all individual users
+    // Admin allowances: Edit/set user's auth level, add, delete users
+    // User allowance: Reset password
     if (req.isAuthenticated()) {
       const thisUser = {
         loggedInUser: req.user.username,
@@ -162,7 +160,6 @@ module.exports = function (app) {
         active: req.user.active,
         role: req.user.role,
       };
-
       if (
         thisUser.loggedInUserRole === 'admin' ||
         thisUser.loggedInUser === user
@@ -248,14 +245,20 @@ module.exports = function (app) {
     }
   });
 
+  app.get('/home/:exclusion', (req, res, next) => {
+    //TODO: Work here next.
+    // Viewable by all users
+    res.send('Single exclusion page.');
+  });
+
   //* Edit_exclusion GET route
-  app.get('/edit_exclusion', (req, res, next) => {
+  app.get('home/edit_exclusion', (req, res, next) => {
     // Accessible by Admin and supervisors only
     res.send('Edit Exclusion Page');
   });
 
   //* Archive_exclusion GET route
-  app.get('/archive_exclusion', (req, res, next) => {
+  app.get('home/archive_exclusion', (req, res, next) => {
     // Accessible by Admin and supervisors only
     res.send('Archive Exclusion Page');
   });
@@ -359,7 +362,6 @@ module.exports = function (app) {
 
   //* Edit_user POST route
   app.post('/edit_user', (req, res, next) => {
-    //TODO: Working in this route currently.
     // Edit a registered user from /edit_user GET route
     let userInfo = {
       username: req.body.email,
