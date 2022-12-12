@@ -14,8 +14,9 @@ block content
         li.exclusion-item Is Active: #{item.active}
         li.exclusion-item Name: #{item.first_name} #{item.last_name}
         br
-        button.btn(onclick=`window.location.href='/users/${item.username}/edit_user'`) Edit
-        button.btn(onclick=`window.location.href='/users/${item.username}/confirm_delete'`) Delete
+        button.btn(onclick=`window.location.href='/users/${item.username}/edit_user'`) Edit User
+        if currentUser.loggedInUserRole === 'admin'
+          button.btn(onclick=`window.location.href='/users/${item.username}/confirm_delete'`) Delete
       hr
-    button.btn.btn-default(onclick='window.location.href=/users/') Back
+      button.btn(onclick=`history.back()`) Back
     

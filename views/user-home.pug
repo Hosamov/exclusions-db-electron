@@ -28,4 +28,8 @@ block content
           
     
     a(href="/logout") Logout |
-    a(href="/add_new_exclusion") New
+    a(href="/add_new_exclusion") New |
+    if user.role === 'admin'
+      a(href="/users/") Users
+    else 
+      a(href=`/users/${user.loggedInUser}`) Account

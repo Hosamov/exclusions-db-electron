@@ -13,6 +13,12 @@ module.exports = function (app) {
   //* Home GET route (for logged-in users)
   app.get('/home', (req, res, next) => {
     if (req.isAuthenticated()) {
+      const thisUser = {
+        loggedInUser: req.user.username,
+        loggedInUserRole: req.user.role,
+        active: req.user.active,
+        role: req.user.role,
+      };
       Exclusion.find({}, (err, foundExclusion) => {
         if (err) {
           console.log(err);
@@ -25,7 +31,7 @@ module.exports = function (app) {
                 console.log(err);
               } else {
                 if (foundUser.active) {
-                  res.render('user-home', { exclusions: foundExclusion });
+                  res.render('user-home', { exclusions: foundExclusion, user: thisUser });
                 } else {
                   console.log('inactive');
                   res.render('unauthorized');
@@ -75,6 +81,14 @@ module.exports = function (app) {
     res.render('register');
   });
 
+  app.get('/register_success', (req, res, next) => {
+    if(req.isAuthenticated()) {
+      res.render('register-success');
+    } else {
+      res.render('/unauthorized');
+    }
+  });
+
   //* Edit_user GET route
   app.get('/users', (req, res, next) => {
     // Accessible by Admin users only
@@ -102,12 +116,18 @@ module.exports = function (app) {
     // Accessible by Admin users only
     // edit user's auth level, add, delete users
     if (req.isAuthenticated()) {
-      if (req.user.role === 'admin') {
+      const thisUser = {
+        loggedInUser: req.user.username,
+        loggedInUserRole: req.user.role,
+        active: req.user.active,
+        role: req.user.role,
+      };
+      if (req.user.role === 'admin' || req.user.username === user) {
         Account.find({ username: { $eq: user } }, (err, foundUser) => {
           if (err) {
             console.log(err);
           } else {
-            res.render('./users/user', { user: foundUser });
+            res.render('./users/user', { user: foundUser, currentUser: thisUser });
           }
         });
       } else {
@@ -156,7 +176,8 @@ module.exports = function (app) {
 
   //* /user/:users/confirm_delete GET route
   app.get('/users/:user/confirm_delete', (req, res, next) => {
-    //TODO: Working here currently.
+    // Renders delete-confirm template, presents confirmation page prior to
+    // deletion of user
     if (req.isAuthenticated()) {
       const user = req.params.user;
       if (req.user.role === 'admin') { 
@@ -304,9 +325,7 @@ module.exports = function (app) {
                 }
                 foundUser.save(() => {
                   console.log('New user has been registered...');
-                  userKey === process.env.USER_KEY
-                    ? res.redirect('/home')
-                    : res.redirect('/unauthorized');
+                  res.redirect('/register_success');
                 });
               }
             });
@@ -371,7 +390,7 @@ module.exports = function (app) {
             console.log(err);
           } else {
             console.log(foundUser.username + ' has been successfully updated.');
-            res.render('./users/account-success');
+            res.render('./users/account-success', { user: userInfo});
           }
         });
       }
@@ -379,7 +398,6 @@ module.exports = function (app) {
   });
 
   //* Delete_user POST route
-  //TODO: Next place to work...
   app.post('/delete_user', (req, res, next) => {
     // Edit a registered user from /edit_user GET route
     user = req.body.username;
