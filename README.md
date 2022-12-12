@@ -47,3 +47,4 @@ An exclusions database that is web-based using Node, express and MongoDB/Mongoos
 - DONE » Setup '/edit_user' GET and POST routes
 - Setup '/edit_exclusion' GET and POST routes
 - DONE » Setup system for resetting user password
+- Setup email system for new logins and user edits

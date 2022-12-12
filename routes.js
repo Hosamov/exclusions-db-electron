@@ -1,7 +1,13 @@
 const passport = require('passport');
+const moment = require('moment');
+const nodemailer = require('nodemailer');
+
 const Account = require('./models/account');
 const Exclusion = require('./models/exclusion');
-const moment = require('moment');
+
+const email = require('./helpers');
+const emailBodies = require('./includes/email-bodies');
+console.log(emailBodies.register_body);
 
 module.exports = function (app) {
   //*********** GET ROUTES ************/
@@ -31,7 +37,10 @@ module.exports = function (app) {
                 console.log(err);
               } else {
                 if (foundUser.active) {
-                  res.render('user-home', { exclusions: foundExclusion, user: thisUser });
+                  res.render('user-home', {
+                    exclusions: foundExclusion,
+                    user: thisUser,
+                  });
                 } else {
                   console.log('inactive');
                   res.render('unauthorized');
@@ -82,10 +91,10 @@ module.exports = function (app) {
   });
 
   app.get('/register_success', (req, res, next) => {
-    if(req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
       res.render('register-success');
     } else {
-      res.render('/unauthorized');
+      res.render('unauthorized');
     }
   });
 
@@ -127,7 +136,10 @@ module.exports = function (app) {
           if (err) {
             console.log(err);
           } else {
-            res.render('./users/user', { user: foundUser, currentUser: thisUser });
+            res.render('./users/user', {
+              user: foundUser,
+              currentUser: thisUser,
+            });
           }
         });
       } else {
@@ -180,8 +192,8 @@ module.exports = function (app) {
     // deletion of user
     if (req.isAuthenticated()) {
       const user = req.params.user;
-      if (req.user.role === 'admin') { 
-        res.render('./users/delete-confirm', {user: user})
+      if (req.user.role === 'admin') {
+        res.render('./users/delete-confirm', { user: user });
       }
     } else {
       res.redirect('/unauthorized');
@@ -307,6 +319,13 @@ module.exports = function (app) {
         } else {
           passport.authenticate('local')(req, res, () => {
             console.log('Registration successful.');
+            // Send email to newly registered user:
+            email(
+              'Successful Registration - Exclusion DB',
+              `<p>Congrats, ${firstName}!</p> ${emailBodies.register_body}`,
+              username
+            ).catch(console.error);
+
             Account.findOne({ username: username }, (err, foundUser) => {
               if (err) {
                 console.log(err);
@@ -390,7 +409,7 @@ module.exports = function (app) {
             console.log(err);
           } else {
             console.log(foundUser.username + ' has been successfully updated.');
-            res.render('./users/account-success', { user: userInfo});
+            res.render('./users/account-success', { user: userInfo });
           }
         });
       }
