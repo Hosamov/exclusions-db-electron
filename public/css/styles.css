@@ -110,6 +110,12 @@ fieldset {
   border: 2px solid black;
   padding: 0 5px 0 5px;
   margin-bottom: 2px;
+  border-radius: 5px;
+}
+
+.exclusion-list-item:hover {
+  cursor: pointer;
+  background-color: #dee3e3;
 }
 
 .exclusion-item {
@@ -140,5 +146,23 @@ fieldset {
   cursor: pointer;
   background-color: #21a0e1;
   color: #fff;
+}
+
+.link:link {
+  color: black;
+  text-decoration: none;
+}
+
+a:visited {
+  color: black;
+}
+
+a:hover {
+  color: black;
+  text-decoration: underline dotted
+}
+
+a:active {
+  color: black;
 }
 

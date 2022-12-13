@@ -48,3 +48,5 @@ An exclusions database that is web-based using Node, express and MongoDB/Mongoos
 - Setup '/edit_exclusion' GET and POST routes
 - DONE » Setup system for resetting user password
 - Setup email system for new logins and user edits
+- TODO: In /home route, render each exclusion with a hyperlink, linking to
+  /home/[exclusion _id], which will display the entire exclusion.

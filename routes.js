@@ -15,45 +15,6 @@ module.exports = function (app) {
     res.render('home');
   });
 
-  //* Home GET route (for logged-in users)
-  app.get('/home', (req, res, next) => {
-    if (req.isAuthenticated()) {
-      const thisUser = {
-        loggedInUser: req.user.username,
-        loggedInUserRole: req.user.role,
-        active: req.user.active,
-        role: req.user.role,
-      };
-      Exclusion.find({}, (err, foundExclusion) => {
-        if (err) {
-          console.log(err);
-        } else {
-          // console.log(foundExclusion);
-          Account.findOne(
-            { username: { $eq: req.user.username } },
-            (err, foundUser) => {
-              if (err) {
-                console.log(err);
-              } else {
-                if (foundUser.active) {
-                  res.render('user-home', {
-                    exclusions: foundExclusion,
-                    user: thisUser,
-                  });
-                } else {
-                  console.log('inactive');
-                  res.render('unauthorized');
-                }
-              }
-            }
-          );
-        }
-      });
-    } else {
-      res.redirect('/');
-    }
-  });
-
   //* Login GET route
   app.get('/login', (req, res, next) => {
     res.render('login');
@@ -219,6 +180,45 @@ module.exports = function (app) {
     }
   });
 
+  //* Home GET route (for logged-in users)
+  app.get('/home', (req, res, next) => {
+    if (req.isAuthenticated()) {
+      const thisUser = {
+        loggedInUser: req.user.username,
+        loggedInUserRole: req.user.role,
+        active: req.user.active,
+        role: req.user.role,
+      };
+      Exclusion.find({}, (err, foundExclusion) => {
+        if (err) {
+          console.log(err);
+        } else {
+          // console.log(foundExclusion);
+          Account.findOne(
+            { username: { $eq: req.user.username } },
+            (err, foundUser) => {
+              if (err) {
+                console.log(err);
+              } else {
+                if (foundUser.active) {
+                  res.render('user-home', {
+                    exclusions: foundExclusion,
+                    user: thisUser,
+                  });
+                } else {
+                  console.log('inactive');
+                  res.render('unauthorized');
+                }
+              }
+            }
+          );
+        }
+      });
+    } else {
+      res.redirect('/');
+    }
+  });
+
   //* Add_new_exclusion GET route
   app.get('/add_new_exclusion', (req, res, next) => {
     // Accessible by Admin and supervisors only
@@ -244,10 +244,23 @@ module.exports = function (app) {
   });
 
   //* Single exclusion GET route
-  app.get('/home/:exclusion', (req, res, next) => {
-    //TODO: Work here next.
-    // Viewable by all users
-    res.send('Single exclusion page.');
+  app.get('/home/:exclusion_id', (req, res, next) => {
+    const exclusionId = req.params.exclusion_id;
+    if (req.isAuthenticated()) {
+      Exclusion.findOne({ _id: { $eq: exclusionId } }, (err, exclusion) => {
+        if (err) {
+          console.log(err);
+        } else {
+          // Test to ensure the id param can be used:
+          //TODO: Work here next.
+          res.send(exclusion.name);
+        }
+      });
+    } else {
+      res.redirect('/unauthorized');
+    }
+    // // Viewable by all users
+    // res.send('Single exclusion page.' + exclusion);
   });
 
   //* Delete exclusion GET route
@@ -261,7 +274,7 @@ module.exports = function (app) {
     // Accessible by Admin and supervisors only
     res.send('Edit Exclusion Page');
   });
-  
+
   //* Archive exclusion GET route
   app.get('home/:exclusion/archive', (req, res, next) => {
     //FIXME: Is this a necessary route?
