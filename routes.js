@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer');
 const Account = require('./models/account');
 const Exclusion = require('./models/exclusion');
 
-const email = require('./helpers');
+const email = require('./emailer');
 const emailBodies = require('./includes/email-bodies');
 
 module.exports = function (app) {
@@ -199,8 +199,6 @@ module.exports = function (app) {
 
   //* /user/:users/DELETE_user GET route
   app.get('/users/:user/delete_user', async (req, res, next) => {
-    //TODO: Working here next
-
     // Accessible by Admin users only
     // edit user's auth level, add, delete users
     if (req.isAuthenticated()) {
@@ -245,27 +243,35 @@ module.exports = function (app) {
     }
   });
 
+  //* Single exclusion GET route
   app.get('/home/:exclusion', (req, res, next) => {
     //TODO: Work here next.
     // Viewable by all users
     res.send('Single exclusion page.');
   });
 
-  //* Edit_exclusion GET route
-  app.get('home/edit_exclusion', (req, res, next) => {
+  //* Delete exclusion GET route
+  app.get('/home/:exclusion/delete', (req, res, next) => {
+    // Viewable by all users
+    res.send('Delete exclusion confirmation page.');
+  });
+
+  //* Edit exclusion GET route
+  app.get('home/:exclusion/edit', (req, res, next) => {
     // Accessible by Admin and supervisors only
     res.send('Edit Exclusion Page');
   });
-
-  //* Archive_exclusion GET route
-  app.get('home/archive_exclusion', (req, res, next) => {
+  
+  //* Archive exclusion GET route
+  app.get('home/:exclusion/archive', (req, res, next) => {
+    //FIXME: Is this a necessary route?
     // Accessible by Admin and supervisors only
     res.send('Archive Exclusion Page');
   });
 
-  //* Past_order GET route
-  app.get('/past_orders', (req, res, next) => {
-    res.send('Past Exclusion Orders Page');
+  //* Archive GET route
+  app.get('/home/archive', (req, res, next) => {
+    res.send('Archived/Past Exclusion Orders Page');
   });
 
   //*********** POST ROUTES ************/
@@ -416,13 +422,6 @@ module.exports = function (app) {
         });
       }
     });
-  });
-
-  //* Delete_user POST route
-  app.post('/delete_user', (req, res, next) => {
-    // Edit a registered user from /edit_user GET route
-    user = req.body.username;
-    res.send(username);
   });
 
   //* Add_exclusion POST route
