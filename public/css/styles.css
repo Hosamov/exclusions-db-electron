@@ -166,3 +166,39 @@ a:active {
   color: black;
 }
 
+.excl-container {
+  margin: auto;
+  width: 50%;
+  border: 3px solid green;
+  padding: 10px;
+  position: relative;
+}
+
+.excl-picture {
+  background-color: gray;
+  border-radius: 5px;
+  border: 1px solid black;
+  width: 200px;
+  max-height: 300px;
+  position: absolute;
+  top: 90px;
+  right: 40px;
+}
+
+.excl-head {
+  width: 100%;
+  display: inline-block;
+  /* background: red; */
+}
+
+.excl-title {
+  text-align: right;
+  margin-right: 10%;
+}
+
+.logo {
+  /* background-color: #3a3b3d; */
+  border-radius: 10px;
+  max-width: 200px;
+  float: left;
+}

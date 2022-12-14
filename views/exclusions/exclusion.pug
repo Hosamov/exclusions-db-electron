@@ -3,8 +3,24 @@ extends ../layout.pug
 block content 
   div.header
     h1 Exclusions DB
-  div.main-container
-    h2 Exclusion Order 
-    h3=exclusion.name
-
+  div.excl-container
+    div.excl-head
+      img.logo(src='/static/images/logo-mta.png')
+      h2.excl-title MTA Exclusion Order 
+    img.excl-picture(src=`${exclusion.img_url}`)
+    p Date: #{exclusion.date_served}
+    p EXCLUDED PERSON: 
+      strong #{exclusion.name}
+    p This exclusion is effective:  #{exclusion.date_served}
+    p This exclusion expires on: #{exclusion.exp_date}
+    p Exclusion Length: #{exclusion.length} days
+    p Throughout this period you are barred from entering in or onto 
+      strong any Mason Transit Authority (MTA) vehicle, facility or property. Failure to comply with this Exclusion Order shall be grounds for criminal prosecution for trespass.
+    p This action is being taken because: #{exclusion.description}
+    p If you wish to appeal this decision, you need to contact the Operations Manager, in writing, at the address below withing 15 days after the effective date of this Exclusion Order. You may request a hearing 
+      i or a review
+      | without a hearing based on a written statement why you believe this exclusion is invalid or improper.
+      strong This exclusion will remain in effect throughout the appeal process.
+    p ____________________________
+    p Operations Supervisor
     a(href=`/home`) Home
