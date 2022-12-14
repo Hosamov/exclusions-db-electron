@@ -5,6 +5,8 @@ An exclusions database that is web-based using Node, express and MongoDB/Mongoos
 # Routes
 
 ## GET Routes:
+
+### Routine GET Routes
 - / - root, redirects to /login or /home, depending on authentication status
 - /login - renders the login page
 - /retry_login - A redirect page for unsuccessful login attempts.
