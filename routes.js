@@ -10,6 +10,7 @@ const emailBodies = require('./includes/email-bodies');
 
 module.exports = function (app) {
   //*********** GET ROUTES ************/
+
   //* Root(/) GET route
   app.get('/', (req, res, next) => {
     res.render('home');
@@ -56,7 +57,9 @@ module.exports = function (app) {
     }
   });
 
-  //* Edit_user GET route
+  ////* BEGIN USERS Routes ////
+
+  //* Users GET route
   app.get('/users', (req, res, next) => {
     // Accessible by Admin users only
     // Displays a list of all users, their roles and active status
@@ -180,7 +183,11 @@ module.exports = function (app) {
     }
   });
 
-  //* Home GET route (for logged-in users)
+  ////* END USER Routes ////
+
+  ////* BEGIN EXCLUSIONS Routes ////
+
+  //* Home GET route (for logged-in users) - Displays list of all active exclusions
   app.get('/home', (req, res, next) => {
     if (req.isAuthenticated()) {
       const thisUser = {
@@ -232,7 +239,7 @@ module.exports = function (app) {
             console.log(err);
             res.status(500).send('An error occurred', err);
           } else {
-            res.render('new-exclusion');
+            res.render('./exclusions/new-exclusion');
           }
         });
       } else {
@@ -243,17 +250,18 @@ module.exports = function (app) {
     }
   });
 
-  //* Single exclusion GET route
+  //* Single exclusion GET route - display only one (selected) exclusion order
   app.get('/home/:exclusion_id', (req, res, next) => {
     const exclusionId = req.params.exclusion_id;
     if (req.isAuthenticated()) {
       Exclusion.findOne({ _id: { $eq: exclusionId } }, (err, exclusion) => {
         if (err) {
           console.log(err);
+          res.redirect('/error'); // Render /error route
         } else {
           // Test to ensure the id param can be used:
           //TODO: Work here next.
-          res.send(exclusion.name);
+          res.render('./exclusions/exclusion');
         }
       });
     } else {
@@ -286,6 +294,8 @@ module.exports = function (app) {
   app.get('/home/archive', (req, res, next) => {
     res.send('Archived/Past Exclusion Orders Page');
   });
+
+  ////* END EXCLUSIONS Routes ////
 
   //*********** POST ROUTES ************/
   //* Login POST route
