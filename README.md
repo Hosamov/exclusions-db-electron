@@ -56,6 +56,7 @@ An exclusions database that is web-based using Node, express and MongoDB/Mongoos
 
 - /login
 - /register (accessibly only by admin)
+- /edit_user
 - /add_exclusion
 - /edit_exclusion
 - /archive_exclusion
