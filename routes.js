@@ -147,20 +147,6 @@ module.exports = function (app) {
     }
   });
 
-  //* /user/:users/confirm_delete GET route
-  app.get('/users/:user/confirm_delete', (req, res, next) => {
-    // Renders delete-confirm template, presents confirmation page prior to
-    // deletion of user
-    if (req.isAuthenticated()) {
-      const user = req.params.user;
-      if (req.user.role === 'admin') {
-        res.render('./users/delete-confirm', { user: user });
-      }
-    } else {
-      res.redirect('/unauthorized');
-    }
-  });
-
   //* /user/:users/DELETE_user GET route
   app.get('/users/:user/delete_user', async (req, res, next) => {
     // Accessible by Admin users only
@@ -177,6 +163,20 @@ module.exports = function (app) {
           .catch((err) => {
             console.log(err);
           });
+      }
+    } else {
+      res.redirect('/unauthorized');
+    }
+  });
+
+  //* /user/:users/confirm_delete GET route
+  app.get('/users/:user/confirm_delete', (req, res, next) => {
+    // Renders delete-confirm template, presents confirmation page prior to
+    // deletion of user
+    if (req.isAuthenticated()) {
+      const user = req.params.user;
+      if (req.user.role === 'admin') {
+        res.render('./users/delete-confirm', { user: user });
       }
     } else {
       res.redirect('/unauthorized');
@@ -261,7 +261,7 @@ module.exports = function (app) {
         } else {
           // Test to ensure the id param can be used:
           //TODO: Work here next.
-          res.render('./exclusions/exclusion');
+          res.render('./exclusions/exclusion', {exclusion: exclusion});
         }
       });
     } else {
