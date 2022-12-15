@@ -14,25 +14,6 @@ const recaptcha = new reCAPTCHA({
   secretKey: process.env.SECRETKEY, // retrieved during setup
 });
 
-function submitForm(req, res, err) {
-  console.log(recaptcha);
-  if (err) {
-    console.log(err);
-  } else {
-    recaptcha
-      .validateRequest(req)
-      .then(function () {
-        res.json({ formSubmit: true });
-      })
-      .catch(function (errorCodes) {
-        res.json({
-          formSubmit: false,
-          errors: recaptcha.translateErrors(errorCodes),
-        });
-      });
-  }
-}
-
 module.exports = function (app) {
   //*********** GET ROUTES ************/
 
@@ -50,7 +31,9 @@ module.exports = function (app) {
 
   //* Retry_login GET route
   app.get('/retry_login', (req, res, next) => {
-    res.render('retry-login');
+    res.render('retry-login', {
+      recaptcha: recaptcha.formElement('g-recaptcha'),
+    });
   });
 
   //* Unauthorized GET route
@@ -73,7 +56,9 @@ module.exports = function (app) {
 
   //* Register GET route
   app.get('/register', (req, res, next) => {
-    res.render('register');
+    res.render('register', {
+      recaptcha: recaptcha.formElement('g-recaptcha'),
+    });
   });
 
   app.get('/register_success', (req, res, next) => {
@@ -332,35 +317,32 @@ module.exports = function (app) {
       if (err) {
         console.log(err);
       } else {
-        recaptcha.validateRequest(req)
-          .then(() => {
-            console.log('formSubmit: true');
-            passport.authenticate('local', { failureRedirect: '/retry_login' })(req, res, () => {
-                Account.findOne(
-                  { username: account.username },
-                  (err, foundUser) => {
-                    if (err) {
-                      console.log(err);
+        // Validate reCAPTCHA
+        recaptcha.validateRequest(req).then(() => {
+          // If validated, continue with passport authentication process:
+          passport.authenticate('local', { failureRedirect: '/retry_login' })
+          (req, res, () => {
+              Account.findOne({ username: account.username }, (err, foundUser) => {
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    if (foundUser.active) {
+                      console.log('User is active!');
+                      res.redirect('/home');
                     } else {
-                      if (foundUser.active) {
-                        console.log('User is active!');
-                        res.redirect('/home');
-                      } else {
-                        console.log('User is not active!');
-                        res.redirect('/unauthorized');
-                      }
+                      console.log('User is not active!');
+                      res.redirect('/unauthorized');
                     }
                   }
-                );
-              }
-            );
-          })
-          .catch((errorCodes) => {
-            res.json({
-              formSubmit: false,
-              errors: recaptcha.translateErrors(errorCodes),
-            });
-          });
+                }
+              );
+            }
+          );
+        }).catch((err) => {
+          // If there is a reCAPTCHA error, redirect to /retry_login route
+          console.log('reCAPTCHA was not verified.');
+          res.redirect('/retry_login');
+        });
       }
     });
   });
@@ -374,44 +356,50 @@ module.exports = function (app) {
     const lastName = req.body.last_name;
     // Uses passport.js to register a new user, set their auth level
     if (req.body.password === req.body.verify_password) {
-      Account.register({ username: username }, password, (err, account) => {
-        if (err) {
-          console.log(err);
-          res.redirect('/register');
-        } else {
-          passport.authenticate('local')(req, res, () => {
-            console.log('Registration successful.');
-            // Send email to newly registered user:
-            email(
-              'Successful Registration - Exclusion DB',
-              `<p>Congrats, ${firstName}!</p> ${emailBodies.register_body}`,
-              username
-            ).catch(console.error);
+      recaptcha.validateRequest(req).then(() => {
+        Account.register({ username: username }, password, (err, account) => {
+          if (err) {
+            console.log(err);
+            res.redirect('/register');
+          } else {
+            passport.authenticate('local')(req, res, () => {
+              console.log('Registration successful.');
+              // Send email to newly registered user:
+              email(
+                'Successful Registration - Exclusion DB',
+                `<p>Congrats, ${firstName}!</p> ${emailBodies.register_body}`,
+                username
+              ).catch(console.error);
 
-            Account.findOne({ username: username }, (err, foundUser) => {
-              if (err) {
-                console.log(err);
-              } else {
-                foundUser.first_name = firstName;
-                foundUser.last_name = lastName;
-                if (userKey === process.env.USER_KEY) {
-                  // Check if (admin) userkey has been inputted, and if it matches
-                  console.log('User Key Accepted!');
-                  foundUser.role = 'admin';
-                  foundUser.active = true;
+              Account.findOne({ username: username }, (err, foundUser) => {
+                if (err) {
+                  console.log(err);
                 } else {
-                  console.log('Invalid user key/no key entered.');
-                  foundUser.role = null;
-                  foundUser.active = false;
+                  foundUser.first_name = firstName;
+                  foundUser.last_name = lastName;
+                  if (userKey === process.env.USER_KEY) {
+                    // Check if (admin) userkey has been inputted, and if it matches
+                    console.log('User Key Accepted!');
+                    foundUser.role = 'admin';
+                    foundUser.active = true;
+                  } else {
+                    console.log('Invalid user key/no key entered.');
+                    foundUser.role = null;
+                    foundUser.active = false;
+                  }
+                  foundUser.save(() => {
+                    console.log('New user has been registered...');
+                    res.redirect('/register_success');
+                  });
                 }
-                foundUser.save(() => {
-                  console.log('New user has been registered...');
-                  res.redirect('/register_success');
-                });
-              }
+              });
             });
-          });
-        }
+          }
+        });
+      }).catch((err) => {
+        // If there is a reCAPTCHA error, redirect to /retry_login route
+        console.log('reCAPTCHA was not verified.');
+        res.redirect('/register');
       });
     } else {
       console.log('Registration failed!');
