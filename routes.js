@@ -1,6 +1,6 @@
 const passport = require('passport');
 const moment = require('moment');
-const Recaptcha = require('node-recaptcha2').Recaptcha;
+const reCAPTCHA = require('recaptcha2');
 
 const Account = require('./models/account');
 const Exclusion = require('./models/exclusion');
@@ -8,8 +8,24 @@ const Exclusion = require('./models/exclusion');
 const email = require('./emailer');
 const emailBodies = require('./includes/email-bodies');
 
-const PUBLIC_KEY = process.env.SITEKEY;
-const PRIVATE_KEY = process.env.SECRETKEY;
+const recaptcha = new reCAPTCHA({
+  siteKey: process.env.SITEKEY, // retrieved during setup
+  secretKey: process.env, // retrieved during setup
+});
+
+function submitForm(req, res) {
+  recaptcha
+    .validateRequest(req)
+    .then(function () {
+      res.json({ formSubmit: true });
+    })
+    .catch(function (errorCodes) {
+      res.json({
+        formSubmit: false,
+        errors: recaptcha.translateErrors(errorCodes),
+      });
+    });
+}
 
 module.exports = function (app) {
   //*********** GET ROUTES ************/
@@ -21,14 +37,9 @@ module.exports = function (app) {
 
   //* Login GET route
   app.get('/login', (req, res, next) => {
-    // TODO: Working here on recaptcha
-    const recaptcha = new Recaptcha(PUBLIC_KEY, PRIVATE_KEY);
-
     res.render('login', {
       layout: false,
-      locals: {
-        recaptcha_form: recaptcha.toHTML(),
-      },
+      recaptcha: recaptcha.formElement(),
     });
   });
 
@@ -307,53 +318,38 @@ module.exports = function (app) {
   //*********** POST ROUTES ************/
   //* Login POST route
   app.post('/login', (req, res) => {
-    const data = {
-      remoteip: req.connection.remoteAddress,
-      response: req.body['g-recaptcha-response'],
-    };
-    const recaptcha = new Recaptcha(PUBLIC_KEY, PRIVATE_KEY, data);
     // Uses passport.js to authenticate user
     const account = new Account({
       username: req.body.username,
       password: req.body.password,
     });
-    recaptcha.verify((success, err) => {
-      if (success) {
-        req.login(account, (err) => {
-          if (err) {
-            console.log(err);
-          } else {
-            passport.authenticate('local', { failureRedirect: '/retry_login' })(
-              req,
-              res,
-              () => {
-                Account.findOne(
-                  { username: account.username },
-                  (err, foundUser) => {
-                    if (err) {
-                      console.log(err);
-                    } else {
-                      if (foundUser.active) {
-                        console.log('User is active!');
-                        res.redirect('/home');
-                      } else {
-                        console.log('User is not active!');
-                        res.redirect('/unauthorized');
-                      }
-                    }
+    req.login(account, (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        submitForm(req, res);
+        passport.authenticate('local', { failureRedirect: '/retry_login' })(
+          req,
+          res,
+          () => {
+            Account.findOne(
+              { username: account.username },
+              (err, foundUser) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  if (foundUser.active) {
+                    console.log('User is active!');
+                    res.redirect('/home');
+                  } else {
+                    console.log('User is not active!');
+                    res.redirect('/unauthorized');
                   }
-                );
+                }
               }
             );
           }
-        });
-      } else {
-        res.render('login', {
-          layout: false,
-          locals: {
-            recaptcha_form: recaptcha.toHTML(),
-          },
-        });
+        );
       }
     });
   });

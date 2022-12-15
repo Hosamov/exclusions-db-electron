@@ -1,12 +1,13 @@
 extends layout.pug 
 
+
 block content
+  script(src="https://www.google.com/recaptcha/api.js" async defer)
   .header 
     h1 Exclusions DB
   div.main-container
     h2 Login
-    form(role='form', action="/login",method="post")
-      != recaptcha_form
+    form.login-form(role='form', action="/login",method="post")
       .form-element
         label.form-label(name='username') Email
         br
@@ -19,6 +20,9 @@ block content
         br
         br
       .form-button
-        button.btn.btn-default(type='submit', value='Check Recaptcha') Submit
+        button.btn.btn-default(type='submit') Submit
         a(href='/')
           button.btn.btn-primary(type="button") Cancel
+        p!= recaptcha
+
+        
