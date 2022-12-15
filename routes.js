@@ -15,8 +15,7 @@ const recaptcha = new reCAPTCHA({
 });
 
 function submitForm(req, res) {
-  recaptcha
-    .validateRequest(req)
+  recaptcha.validateRequest(req)
     .then(function () {
       res.json({ formSubmit: true });
     })
@@ -39,9 +38,7 @@ module.exports = function (app) {
   //* Login GET route
   app.get('/login', (req, res, next) => {
     res.render('login', {
-      layout: false,
       recaptcha: recaptcha,
-      ssl: false,
     });
   });
 
