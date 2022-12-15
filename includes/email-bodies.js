@@ -12,6 +12,7 @@ const emailBodies = {
   account_activated_body: `
     <p> Your account for the Exclusions DB has been successfully activated/reactivated. You may now 
     login and use the application.</p>
+    <p>Please click the folowing link, or copy & paste it into your browser: <a href="https://www.mta-exclusions.net">https://www.mta-exclusions.net</a></p>
     <p>Thank you!</p>
     <br>
     <p>Backyard Dev</p>`,

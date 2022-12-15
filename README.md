@@ -63,7 +63,7 @@ An exclusions database that is web-based using Node, express and MongoDB/Mongoos
 
 ## TODOS:
 
-- Setup CAPTCHA for /login and /register routes
+- DONE » Setup CAPTCHA for /login and /register routes
 - DONE » Setup '/edit_user' GET and POST routes
 - Setup '/edit_exclusion' GET and POST routes
 - DONE » Setup system for resetting user password

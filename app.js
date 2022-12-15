@@ -9,7 +9,7 @@ require('dotenv/config');
 
 // Passport Config
 const Account = require('./models/account');
-const { MemoryStore } = require('express-session');
+const { MemoryStore } = require('express-session'); 
 passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());

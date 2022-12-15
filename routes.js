@@ -25,14 +25,14 @@ module.exports = function (app) {
   //* Login GET route
   app.get('/login', (req, res, next) => {
     res.render('login', {
-      recaptcha: recaptcha.formElement('g-recaptcha'),
+      recaptcha: recaptcha.formElement(),
     });
   });
 
   //* Retry_login GET route
   app.get('/retry_login', (req, res, next) => {
     res.render('retry-login', {
-      recaptcha: recaptcha.formElement('g-recaptcha'),
+      recaptcha: recaptcha.formElement(),
     });
   });
 
@@ -56,7 +56,7 @@ module.exports = function (app) {
 
   //* Register GET route
   app.get('/register', (req, res, next) => {
-    res.render('register', {
+    res.render('retry-login', {
       recaptcha: recaptcha.formElement('g-recaptcha'),
     });
   });
@@ -428,6 +428,7 @@ module.exports = function (app) {
       if (err) {
         console.log(err);
       } else {
+        
         // console.log(foundUser);
         if (
           foundUser.newPassword === foundUser.confirmedPassword &&
@@ -453,6 +454,14 @@ module.exports = function (app) {
         foundUser.role = userInfo.userRole;
         foundUser.first_name = userInfo.firstName;
         foundUser.last_name = userInfo.lastName;
+        if(foundUser.active === true) {
+          email(
+            'User Activated - Exclusion DB',
+            `<p>Greetings, ${foundUser.first_name}!</p> ${emailBodies.account_activated_body}`,
+            foundUser.username
+          ).catch(console.error);
+
+        }
         await foundUser.save((err) => {
           if (err) {
             console.log(err);
