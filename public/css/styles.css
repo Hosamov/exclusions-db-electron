@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
 body {
   font-family: calibri, ariel, sans-serif;
   font-size: 1.2rem;
@@ -105,17 +107,18 @@ fieldset {
   list-style-type: none;
 }
 
+
+.excl-card:hover {
+  cursor: pointer;
+  background-color: #dee3e3;
+}
+
 .exclusion-list-item {
   list-style-type: none;
   border: 2px solid black;
   padding: 0 5px 0 5px;
   margin-bottom: 2px;
   border-radius: 5px;
-}
-
-.exclusion-list-item:hover {
-  cursor: pointer;
-  background-color: #dee3e3;
 }
 
 .exclusion-item {
@@ -128,6 +131,10 @@ fieldset {
   border-radius: 5px;
   border-style: solid;
   border-width: 2px;
+}
+
+.image:hover {
+  transform: scale(1.2);
 }
 
 .exclusion-image {
@@ -174,17 +181,6 @@ a:active {
   position: relative;
 }
 
-.excl-picture {
-  background-color: gray;
-  border-radius: 5px;
-  border: 1px solid black;
-  width: 200px;
-  max-height: 300px;
-  position: absolute;
-  top: 90px;
-  right: 40px;
-}
-
 .excl-head {
   width: 100%;
   display: inline-block;
@@ -201,4 +197,35 @@ a:active {
   border-radius: 10px;
   max-width: 200px;
   float: left;
+}
+
+.excl-body {
+  width: 100%;
+  display: inline-block;
+}
+
+.excl-picture {
+  text-align: right;
+  margin-right: 5%;
+  margin-top: -5%;
+  max-width: 250px;
+  max-height: 280px;
+  border-radius: 5px;
+  border: 1px solid black;
+  float: right;
+}
+
+.excl-foot {
+  text-align: center;
+}
+
+.signature {
+  margin: 0;
+  line-height: 3px;
+}
+
+.name {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2rem;
+  padding-left: 10px;
 }

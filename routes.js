@@ -239,7 +239,7 @@ module.exports = function (app) {
             console.log(err);
             res.status(500).send('An error occurred', err);
           } else {
-            res.render('./exclusions/new-exclusion');
+            res.render('./exclusions/new-exclusion', { currentUser: req.user });
           }
         });
       } else {
@@ -252,16 +252,14 @@ module.exports = function (app) {
 
   //* Single exclusion GET route - display only one (selected) exclusion order
   app.get('/home/:exclusion_id', (req, res, next) => {
-    const exclusionId = req.params.exclusion_id;
+    const exclusionId = req.params.exclusion_id; // Find user based on ID
     if (req.isAuthenticated()) {
       Exclusion.findOne({ _id: { $eq: exclusionId } }, (err, exclusion) => {
         if (err) {
           console.log(err);
           res.redirect('/error'); // Render /error route
         } else {
-          // Test to ensure the id param can be used:
-          //TODO: Work here next.
-          res.render('./exclusions/exclusion', {exclusion: exclusion});
+          res.render('./exclusions/exclusion', { exclusion: exclusion });
         }
       });
     } else {
@@ -461,6 +459,7 @@ module.exports = function (app) {
       length: req.body.length,
       other_length: req.body.other_length,
       img_url: req.body.img_url,
+      signature: req.body.signature,
     };
 
     //* Calculations for adding exclusion length to served date:
@@ -496,6 +495,7 @@ module.exports = function (app) {
           length: excl.length,
           other_length: excl.other_length,
           img_url: excl.img_url,
+          signature: excl.signature,
         },
       ],
       (err) => {

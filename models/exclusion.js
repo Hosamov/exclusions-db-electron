@@ -12,6 +12,7 @@ const ExclusionSchema = new Schema({
   length: String,
   other_length: Number,
   img_url: String,
+  signature: String,
 });
 
 module.exports = mongoose.model('Exclusion', ExclusionSchema, 'exclusions');

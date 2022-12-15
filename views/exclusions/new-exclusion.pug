@@ -5,6 +5,7 @@ block content
     h1 Exclusions DB
   div.main-container
     h2 Add New Exclusion Order
+    h3 #{currentUser.first_name} #{currentUser.last_name}
     
     form(role='form', action="/add_exclusion",method="post")
       .form-element
@@ -55,6 +56,10 @@ block content
         label.form-label(for='img_url') Image URL
         br 
         input.form-control(type='text' name="img_url" id="image_url" placeholder="Image URL")  
+      .form-element
+        label.form-control(for='signature') Signature
+        br
+        input.form-control(type='text' name="signature" id="signature" placeholder=`${currentUser.first_name} ${currentUser.last_name}` value=`${currentUser.first_name} ${currentUser.last_name}`)  
         br
         br
         small * required
