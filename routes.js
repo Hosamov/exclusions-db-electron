@@ -1,12 +1,15 @@
 const passport = require('passport');
 const moment = require('moment');
-const nodemailer = require('nodemailer');
+const Recaptcha = require('node-recaptcha2').Recaptcha;
 
 const Account = require('./models/account');
 const Exclusion = require('./models/exclusion');
 
 const email = require('./emailer');
 const emailBodies = require('./includes/email-bodies');
+
+const PUBLIC_KEY = process.env.SITEKEY;
+const PRIVATE_KEY = process.env.SECRETKEY;
 
 module.exports = function (app) {
   //*********** GET ROUTES ************/
@@ -18,7 +21,15 @@ module.exports = function (app) {
 
   //* Login GET route
   app.get('/login', (req, res, next) => {
-    res.render('login');
+    // TODO: Working here on recaptcha
+    const recaptcha = new Recaptcha(PUBLIC_KEY, PRIVATE_KEY);
+
+    res.render('login', {
+      layout: false,
+      locals: {
+        recaptcha_form: recaptcha.toHTML(),
+      },
+    });
   });
 
   //* Retry_login GET route
@@ -265,20 +276,18 @@ module.exports = function (app) {
     } else {
       res.redirect('/unauthorized');
     }
-    // // Viewable by all users
-    // res.send('Single exclusion page.' + exclusion);
-  });
-
-  //* Delete exclusion GET route
-  app.get('/home/:exclusion/delete', (req, res, next) => {
-    // Viewable by all users
-    res.send('Delete exclusion confirmation page.');
   });
 
   //* Edit exclusion GET route
   app.get('home/:exclusion/edit', (req, res, next) => {
     // Accessible by Admin and supervisors only
     res.send('Edit Exclusion Page');
+  });
+
+  //* Delete exclusion GET route
+  app.get('/home/:exclusion/delete', (req, res, next) => {
+    // Viewable by all users
+    res.send('Delete exclusion confirmation page.');
   });
 
   //* Archive exclusion GET route
@@ -298,37 +307,53 @@ module.exports = function (app) {
   //*********** POST ROUTES ************/
   //* Login POST route
   app.post('/login', (req, res) => {
+    const data = {
+      remoteip: req.connection.remoteAddress,
+      response: req.body['g-recaptcha-response'],
+    };
+    const recaptcha = new Recaptcha(PUBLIC_KEY, PRIVATE_KEY, data);
     // Uses passport.js to authenticate user
     const account = new Account({
       username: req.body.username,
       password: req.body.password,
     });
-    req.login(account, (err) => {
-      if (err) {
-        console.log(err);
-      } else {
-        passport.authenticate('local', { failureRedirect: '/retry_login' })(
-          req,
-          res,
-          () => {
-            Account.findOne(
-              { username: account.username },
-              (err, foundUser) => {
-                if (err) {
-                  console.log(err);
-                } else {
-                  if (foundUser.active) {
-                    console.log('User is active!');
-                    res.redirect('/home');
-                  } else {
-                    console.log('User is not active!');
-                    res.redirect('/unauthorized');
+    recaptcha.verify((success, err) => {
+      if (success) {
+        req.login(account, (err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            passport.authenticate('local', { failureRedirect: '/retry_login' })(
+              req,
+              res,
+              () => {
+                Account.findOne(
+                  { username: account.username },
+                  (err, foundUser) => {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      if (foundUser.active) {
+                        console.log('User is active!');
+                        res.redirect('/home');
+                      } else {
+                        console.log('User is not active!');
+                        res.redirect('/unauthorized');
+                      }
+                    }
                   }
-                }
+                );
               }
             );
           }
-        );
+        });
+      } else {
+        res.render('login', {
+          layout: false,
+          locals: {
+            recaptcha_form: recaptcha.toHTML(),
+          },
+        });
       }
     });
   });
