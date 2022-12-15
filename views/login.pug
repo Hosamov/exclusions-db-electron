@@ -8,6 +8,7 @@ block content
   div.main-container
     h2 Login
     form.login-form(role='form', action="/login",method="post")
+      p!= recaptcha
       .form-element
         label.form-label(name='username') Email
         br
@@ -23,6 +24,6 @@ block content
         button.btn.btn-default(type='submit') Submit
         a(href='/')
           button.btn.btn-primary(type="button") Cancel
-        p!= recaptcha
+       
 
         
