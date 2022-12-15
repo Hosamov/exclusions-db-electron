@@ -14,18 +14,23 @@ const recaptcha = new reCAPTCHA({
   secretKey: process.env.SECRETKEY, // retrieved during setup
 });
 
-function submitForm(req, res) {
+function submitForm(req, res, err) {
   console.log(recaptcha);
-  recaptcha.validateRequest(req)
-    .then(function () {
-      res.json({ formSubmit: true });
-    })
-    .catch(function (errorCodes) {
-      res.json({
-        formSubmit: false,
-        errors: recaptcha.translateErrors(errorCodes),
+  if (err) {
+    console.log(err);
+  } else {
+    recaptcha
+      .validateRequest(req)
+      .then(function () {
+        res.json({ formSubmit: true });
+      })
+      .catch(function (errorCodes) {
+        res.json({
+          formSubmit: false,
+          errors: recaptcha.translateErrors(errorCodes),
+        });
       });
-    });
+  }
 }
 
 module.exports = function (app) {
@@ -327,29 +332,35 @@ module.exports = function (app) {
       if (err) {
         console.log(err);
       } else {
-        submitForm(req, res);
-        // passport.authenticate('local', { failureRedirect: '/retry_login' })(
-        //   req,
-        //   res,
-        //   () => {
-        //     Account.findOne(
-        //       { username: account.username },
-        //       (err, foundUser) => {
-        //         if (err) {
-        //           console.log(err);
-        //         } else {
-        //           if (foundUser.active) {
-        //             console.log('User is active!');
-        //             res.redirect('/home');
-        //           } else {
-        //             console.log('User is not active!');
-        //             res.redirect('/unauthorized');
-        //           }
-        //         }
-        //       }
-        //     );
-        //   }
-        // );
+        recaptcha.validateRequest(req)
+          .then(() => {
+            console.log('formSubmit: true');
+            passport.authenticate('local', { failureRedirect: '/retry_login' })(req, res, () => {
+                Account.findOne(
+                  { username: account.username },
+                  (err, foundUser) => {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      if (foundUser.active) {
+                        console.log('User is active!');
+                        res.redirect('/home');
+                      } else {
+                        console.log('User is not active!');
+                        res.redirect('/unauthorized');
+                      }
+                    }
+                  }
+                );
+              }
+            );
+          })
+          .catch((errorCodes) => {
+            res.json({
+              formSubmit: false,
+              errors: recaptcha.translateErrors(errorCodes),
+            });
+          });
       }
     });
   });
