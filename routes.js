@@ -1,6 +1,7 @@
 const passport = require('passport');
 const moment = require('moment');
 const reCAPTCHA = require('recaptcha2');
+const mongoose = require('mongoose');
 
 const Account = require('./models/account');
 const Exclusion = require('./models/exclusion');
@@ -10,7 +11,7 @@ const emailBodies = require('./includes/email-bodies');
 
 const recaptcha = new reCAPTCHA({
   siteKey: process.env.SITEKEY, // retrieved during setup
-  secretKey: process.env, // retrieved during setup
+  secretKey: process.env.SECRETKEY, // retrieved during setup
 });
 
 function submitForm(req, res) {
@@ -39,7 +40,8 @@ module.exports = function (app) {
   app.get('/login', (req, res, next) => {
     res.render('login', {
       layout: false,
-      recaptcha: recaptcha.formElement(),
+      recaptcha: recaptcha,
+      ssl: false,
     });
   });
 
@@ -328,28 +330,28 @@ module.exports = function (app) {
         console.log(err);
       } else {
         submitForm(req, res);
-        passport.authenticate('local', { failureRedirect: '/retry_login' })(
-          req,
-          res,
-          () => {
-            Account.findOne(
-              { username: account.username },
-              (err, foundUser) => {
-                if (err) {
-                  console.log(err);
-                } else {
-                  if (foundUser.active) {
-                    console.log('User is active!');
-                    res.redirect('/home');
-                  } else {
-                    console.log('User is not active!');
-                    res.redirect('/unauthorized');
-                  }
-                }
-              }
-            );
-          }
-        );
+        // passport.authenticate('local', { failureRedirect: '/retry_login' })(
+        //   req,
+        //   res,
+        //   () => {
+        //     Account.findOne(
+        //       { username: account.username },
+        //       (err, foundUser) => {
+        //         if (err) {
+        //           console.log(err);
+        //         } else {
+        //           if (foundUser.active) {
+        //             console.log('User is active!');
+        //             res.redirect('/home');
+        //           } else {
+        //             console.log('User is not active!');
+        //             res.redirect('/unauthorized');
+        //           }
+        //         }
+        //       }
+        //     );
+        //   }
+        // );
       }
     });
   });

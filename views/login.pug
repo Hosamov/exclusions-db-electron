@@ -8,7 +8,7 @@ block content
   div.main-container
     h2 Login
     form.login-form(role='form', action="/login",method="post")
-      p!= recaptcha
+      p!= recaptcha.formElement()
       .form-element
         label.form-label(name='username') Email
         br
