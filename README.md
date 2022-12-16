@@ -5,16 +5,16 @@ An exclusions database that is web-based using Node, express and MongoDB/Mongoos
 
 # Site Members
 
-## Admin
+### Admin
 - Admins have complete access to the entire system, with full control in order to create, edit,
   and delete exclusion orders, as well as authorize, edit, and delete all other individual
   users.
 
-## Supervisor
+### Supervisor
 - Supervisors have the ability to create, read, edit, and delete exclusion
   orders. Users may access their private account to change password.
 
-## User
+### User
 - User is the most basic class of site member, having the ability to view and
   print exclusion orders. Users may access their private account to change password.
 
