@@ -65,8 +65,9 @@ An exclusions database that is web-based using Node, express and MongoDB/Mongoos
 
 - DONE » Setup CAPTCHA for /login and /register routes
 - DONE » Setup '/edit_user' GET and POST routes
-- Setup '/edit_exclusion' GET and POST routes
 - DONE » Setup system for resetting user password
-- Setup email system for new logins and user edits
-- TODO: In /home route, render each exclusion with a hyperlink, linking to
+- DONE » Setup email system for new logins and user edits
+- DONE » In /home route, render each exclusion with a hyperlink, linking to
   /home/[exclusion _id], which will display the entire exclusion.
+- Setup '/home/:exclusion/edit' GET and POST routes
+- Setup '/home/:exclusion/delete' GET route
