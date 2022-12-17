@@ -30,12 +30,9 @@ block content
         label.form-label.tooltip(for='ordinance') * Ordinance/Policy (separated by ',')
           .tooltiptext Example: RCW 9.91.025(a), POL-310(13)
         input.form-control(type='text', name="ordinance", placeholder='RCW/POL#, separated by comma' value=`${exclusion.ordinance}` required)  
-        br
       .form-element
         label.form-label(for='description') * Description of infraction
-        br
-        textarea.form-control(id="description" name="description" rows='4' cols="50" required)  
-          | #{exclusion.description}
+        textarea.form-control(id="description" name="description" rows='4' cols="50" required) #{exclusion.description}
         br
       .form-exclusion-section
         .form-element
