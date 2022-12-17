@@ -6,63 +6,61 @@ block content
   div.main-container
     h2 Edit existing Exclusion Order
     
-    form(role='form', action="/add_exclusion",method="post")
+    form(role='form', action="/edit_exclusion",method="post")
+      .form-exclusion-section
+        .form-element
+          label.form-label.name-label.tooltip(for='first_name') * First Name
+            .tooltiptext Add middle initial, if known
+          input.form-control.name-input(type='text', name="first_name", placeholder='First Name' size='50' value=`${exclusion.first_name}` required)
+          br
+        .form-element
+          label.form-label.name-label(for='last_name') * Last Name
+          input.form-control.name-input(type='text', name="last_name", placeholder='Last Name' size='50' value=`${exclusion.last_name}` required)
+          br
+      .form-exclusion-section
+        .form-element
+          label.form-label(for='dob') DOB
+          input.form-control(type='date', name="dob", placeholder=`${exclusion.dob}` value=`${dates.dobDate}`)
+          br
+        .form-element
+          label.form-label(for='other_info') Other Info (i.e. gender, height, weight, etc.)
+          input.form-control(type='text', name="other_info", placeholder='Other Information' value=`${exclusion.other_info}`)
+          br
       .form-element
-        label.form-label(for='first_name') * First Name & Middle Initial (if known) (i.e. "John D.")
-        input.form-control(type='text', name="first_name", placeholder='First Name' size='50' required)
+        label.form-label.tooltip(for='ordinance') * Ordinance/Policy (separated by ',')
+          .tooltiptext Example: RCW 9.91.025(a), POL-310(13)
+        input.form-control(type='text', name="ordinance", placeholder='RCW/POL#, separated by comma' value=`${exclusion.ordinance}` required)  
         br
       .form-element
-        label.form-label(for='last_name') * Last Name
-        input.form-control(type='text', name="last_name", placeholder='Last Name' size='50' required)
+        label.form-label(for='description') * Description of infraction
         br
+        textarea.form-control(id="description" name="description" rows='4' cols="50" required)  
+          | #{exclusion.description}
+        br
+      .form-exclusion-section
+        .form-element
+          label.form-label.tooltip(for='length' id='exclusion-label') Exclusion Length
+            .tooltiptext Enter any number -or- Lifetime
+          br 
+          input.form-control(type='text' id="exclusion-length" name="length" placeholder=`${exclusion.length}` value=`${exclusion.length}`)  
+          br
+      .form-exclusion-section
+        .form-element
+          label.form-label(for='date_served') *Date Issued
+          br
+          input.form-control(type="date" id="date-served" name="date_served" value=`${dates.exclDate}`)  
+          br
       .form-element
-        label.form-label(for='dob') DOB
-        input.form-control(type='date', name="dob", placeholder='DOB')
-        br
-      .form-element
-        label.form-label(for='other_info') Other Info (i.e. gender, height, weight, etc.)
-        input.form-control(type='text', name="other_info", placeholder='Other Information')
-        br
-      .form-element
-        label.form-label(for='ordinance') *Ordinance/Policy (separated by ',')
-        input.form-control(type='text', name="ordinance", placeholder='RCW/POL#, separated by comma' required)  
-        br
-      .form-element
-        label.form-label(for='description') *Description of infraction
-        br
-        textarea.form-control(id="description" name="description" rows='4' placeholder='Description of infraction...' required)  
-        br
-      .form-element
-        label.form-label(for='length') *Exclusion Length
-        br
-        select.form-control(name="length" id="exclusion_length" onChange='exclusionLengthChange()' required)  
-          option(value="3") 3
-          option(value="7") 7
-          option(value="14") 14
-          option(value="30") 30
-          option(value="60") 60
-          option(value="180") 180
-          option(value="365") 365
-          option(value="Lifetime") Lifetime
-          option(value="other") Other
-        br
-        label.form-label(for='other_length' id='other-label' hidden) Other Length (in days)
+        label.form-label.tooltip(for='img_url') Image URL
+          .tooltiptext Copy and paste readable image link from Google Photos
         br 
-        input.form-control(type='hidden' id="other-length" name="other_length" placeholder="Other Length")  
-        br
+        input.form-control(type='text' name="img_url" id="image_url" placeholder="Image URL" value=`${exclusion.img_url}`)  
       .form-element
-        label.form-label(for='date_served') *Date Issued
-        br
-        input.form-control(type="date" id="date-served" name="date_served")  
-        br
-      .form-element
-        label.form-label(for='img_url') Image URL
-        br 
-        input.form-control(type='text' name="img_url" id="image_url" placeholder="Image URL")  
-      .form-element
-        label.form-control(for='signature') Supevisor Signature
+        label.form-control(for='signature') Issuing Supervisor: 
         br
         input.form-control(type='text' name="signature" id="signature" placeholder=`${currentUser.first_name} ${currentUser.last_name}` value=`${currentUser.first_name} ${currentUser.last_name}`)  
+        br
+        input.form-control(type='hidden' name="id" id="id" value=`${id}`)  
         br
         br
         small * required
