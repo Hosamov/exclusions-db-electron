@@ -89,7 +89,7 @@ An exclusions database that is web-based using Node, express and MongoDB/Mongoos
 - Setup '/home/:exclusion/delete' GET route
 - Setup '/home/archive' GET route - displays list of all past exclusion orders
   by name
-- Setup '/home/archive/exclusion_id' GET route - displays the archived exclusion
+- Setup '/home/archive/:exclusion_id' GET route - displays the archived exclusion
   order selected by the user.
 
-### Created: 11/29/2022; Last edited 12/15/2022
+### Created: 11/29/2022; Last edited 12/16/2022

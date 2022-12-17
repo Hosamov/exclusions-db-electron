@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ExclusionSchema = new Schema({
-  name: String,
+  first_name: String,
+  last_name: String,
   dob: String,
   other_info: String,
   ordinance: String,

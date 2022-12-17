@@ -4,12 +4,16 @@ block content
   div.header
     h1 Exclusions DB
   div.main-container
-    h2 Edit Exclusion Order
+    h2 Edit existing Exclusion Order
     
     form(role='form', action="/add_exclusion",method="post")
       .form-element
-        label.form-label(for='name') * Full Name (i.e. "John Doe")
-        input.form-control(type='text', name="name", placeholder='Full Name' size='50' required)
+        label.form-label(for='first_name') * First Name & Middle Initial (if known) (i.e. "John D.")
+        input.form-control(type='text', name="first_name", placeholder='First Name' size='50' required)
+        br
+      .form-element
+        label.form-label(for='last_name') * Last Name
+        input.form-control(type='text', name="last_name", placeholder='Last Name' size='50' required)
         br
       .form-element
         label.form-label(for='dob') DOB
@@ -56,7 +60,7 @@ block content
         br 
         input.form-control(type='text' name="img_url" id="image_url" placeholder="Image URL")  
       .form-element
-        label.form-control(for='signature') Signature
+        label.form-control(for='signature') Supevisor Signature
         br
         input.form-control(type='text' name="signature" id="signature" placeholder=`${currentUser.first_name} ${currentUser.last_name}` value=`${currentUser.first_name} ${currentUser.last_name}`)  
         br

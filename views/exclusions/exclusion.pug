@@ -11,13 +11,13 @@ block content
       img.excl-picture(src=`${exclusion.img_url}`)
       p Date: #{exclusion.date_served}
       p EXCLUDED PERSON: 
-        strong #{exclusion.name}
+        strong #{exclusion.first_name} #{exclusion.last_name}
       p This exclusion is effective:  
         strong #{exclusion.date_served}
       p This exclusion expires after: 
-        strong #{exclusion.exp_date}
+        strong #{exclusion.exp_date !== 'Invalid date' ? exclusion.exp_date : 'Lifetime'}
       p Exclusion Length: 
-        strong #{exclusion.length} days
+        strong #{exclusion.length === 'Infinity' ? 'Lifetime' : exclusion.length + ' days'} 
       p Throughout this period you are barred from entering in or onto 
         strong any Mason Transit Authority (MTA) vehicle, facility or property. Failure to comply with this Exclusion Order shall be grounds for criminal prosecution for trespass.
       p This action is being taken because: #{exclusion.description}

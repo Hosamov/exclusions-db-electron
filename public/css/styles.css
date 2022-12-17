@@ -50,6 +50,25 @@ textarea {
   font-size: 1.3rem;
 }
 
+.form-exclusion-section {
+  display: flex;
+  width: 100%;
+}
+
+.form-element {
+  margin: 0 5px 0 5px;
+}
+
+.form-control {
+  margin-right: 8px;
+}
+
+.select-input {
+  margin-top: 8px;
+  width: 200px;
+  height: 50px;
+}
+
 .admin-section {
 
 }
@@ -228,4 +247,47 @@ a:active {
   font-family: 'Great Vibes', cursive;
   font-size: 2rem;
   padding-left: 10px;
+}
+
+
+/* Tooltip */
+/* https://www.w3schools.com/css/css_tooltip.asp */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  min-width: 150px;
+  max-width: 290px;
+  background-color: #5c8186;
+  border: 1px solid #fff;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+.tooltip .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  top: 100%; /* At the bottom of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #5c8186 transparent transparent transparent;
 }

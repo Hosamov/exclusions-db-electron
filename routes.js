@@ -293,14 +293,14 @@ module.exports = function (app) {
   });
 
   //* Archive exclusion GET route
-  app.get('home/:exclusion/archive', (req, res, next) => {
-    //FIXME: Is this a necessary route?
+  app.get('home/archive', (req, res, next) => {
+    //Renders a list of all archived exclusion orders, by name.
     // Accessible by Admin and supervisors only
     res.send('Archive Exclusion Page');
   });
 
   //* Archive GET route
-  app.get('/home/archive', (req, res, next) => {
+  app.get('/home/archive/:exclusion_id', (req, res, next) => {
     res.send('Archived/Past Exclusion Orders Page');
   });
 
@@ -479,7 +479,8 @@ module.exports = function (app) {
   app.post('/add_exclusion', async (req, res, next) => {
     // Add new exclusion data from /add_new_exclusion GET route
     let excl = {
-      name: req.body.name,
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
       dob: req.body.dob,
       other_info: req.body.other_info,
       ordinance: req.body.ordinance,
@@ -514,15 +515,16 @@ module.exports = function (app) {
     //* Insert data into DB:
     await Exclusion.create(
       [
-        {
-          name: excl.name,
+        {  
+          first_name: excl.first_name,
+          last_name: excl.last_name,
           dob: moment(excl.dob).format('MM/DD/YYYY'),
           other_info: excl.other_info,
           ordinance: excl.ordinance,
           description: excl.description,
           date_served: moment(excl.date_served.toString()).format('MM/DD/YYYY'),
           exp_date: moment(excl.exp_date.toString()).format('MM/DD/YYYY'),
-          length: excl.length,
+          length: excl.length === 'Lifetime' ? Infinity : excl.length,
           other_length: excl.other_length,
           img_url: excl.img_url,
           signature: excl.signature,
