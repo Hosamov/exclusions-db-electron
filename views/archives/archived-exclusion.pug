@@ -1,0 +1,37 @@
+extends ../layout.pug 
+
+block content 
+  div.excl-container
+    div.excl-head
+      img.logo(src='/static/images/logo-mta.png')
+      h2.excl-title MTA Exclusion Order 
+    div.excl-body
+      img.excl-picture(src=`${exclusion.img_url}`)
+      p Date: #{exclusion.date_served}
+      p EXCLUDED PERSON: 
+        strong #{exclusion.first_name} #{exclusion.last_name}
+      p This exclusion is effective:  
+        strong #{exclusion.date_served}
+      p This exclusion expires after: 
+        strong #{exclusion.exp_date !== 'Invalid date' ? exclusion.exp_date : 'Lifetime'}
+      p Exclusion Length: 
+        strong #{exclusion.length === 'Infinity' || exclusion.length === 'Lifetime' ? 'Lifetime' : exclusion.length + ' days'} 
+      p Throughout this period you are barred from entering in or onto 
+        strong any Mason Transit Authority (MTA) vehicle, facility or property. Failure to comply with this Exclusion Order shall be grounds for criminal prosecution for trespass.
+      p This action is being taken because: #{exclusion.description}
+      p Further violations will result in extended exclusion length up to and including a lifetime trespass from all MTA vehicles, facilities, and services.
+      p If you wish to appeal this decision, you need to contact the Operations Manager, in writing, at the address below within 15 days after the effective date of this Exclusion Order. You may request a hearing 
+        i or a review
+        |  without a hearing based on a written statement why you believe this exclusion is invalid or improper.
+        strong  This exclusion will remain in effect throughout the appeal process.
+      br
+    p.signature.name #{exclusion.signature}
+    p.signature ____________________________
+    p Operations Supervisor
+    div.excl-foot 
+      small Mason Transit 790 E Johns Prairie Rd, Shelton, WA 98584 360-427-5033
+  
+    a(href=`/archive`) Archives | 
+    if user.role === 'admin'
+      a(href=`/home/${id}/edit`) Edit |
+    

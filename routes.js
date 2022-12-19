@@ -10,6 +10,7 @@ const email = require('./emailer');
 const emailBodies = require('./includes/email-bodies');
 const archiveHelper = require('./includes/archive-helper');
 const exclusion = require('./models/exclusion');
+const e = require('express');
 
 const recaptcha = new reCAPTCHA({
   siteKey: process.env.SITEKEY, // retrieved during setup
@@ -40,6 +41,7 @@ module.exports = function (app) {
 
   //* Unauthorized GET route
   app.get('/unauthorized', (req, res, next) => {
+    // Most popular GET route XD
     res.render('unauthorized');
   });
 
@@ -78,7 +80,7 @@ module.exports = function (app) {
     // Accessible by Admin users only
     // Displays a list of all users, their roles and active status
     if (req.isAuthenticated()) {
-      if (req.user.role === 'admin') {
+      if (req.user.role === 'admin') { // Authorized user: Admin
         Account.find({}, (err, users) => {
           if (err) {
             console.log(err);
@@ -129,8 +131,9 @@ module.exports = function (app) {
   //* /user/:users/edit_user GET route
   app.get('/users/:user/edit_user', (req, res, next) => {
     const user = req.params.user;
-    // Accessible by Admin users only
+    // Full control accessible by Admin only:
     // edit user's auth level, add, delete users
+    // Individuals users may edit their own passwords
     if (req.isAuthenticated()) {
       const thisUser = {
         loggedInUser: req.user.username,
@@ -138,6 +141,7 @@ module.exports = function (app) {
         active: req.user.active,
         role: req.user.role,
       };
+      // Make accessible to admin or current user only
       if (
         thisUser.loggedInUserRole === 'admin' ||
         thisUser.loggedInUser === user
@@ -163,12 +167,10 @@ module.exports = function (app) {
 
   //* /user/:users/DELETE_user GET route
   app.get('/users/:user/delete_user', async (req, res, next) => {
-    // Accessible by Admin users only
-    // edit user's auth level, add, delete users
+    // Edit user's auth level, add, delete users
     if (req.isAuthenticated()) {
       const user = req.params.user;
-
-      if (req.user.role === 'admin') {
+      if (req.user.role === 'admin') { // Make accessible to admin user only
         await Account.deleteOne({ username: user })
           .then(() => {
             res.redirect('/users');
@@ -189,7 +191,7 @@ module.exports = function (app) {
     // deletion of user
     if (req.isAuthenticated()) {
       const user = req.params.user;
-      if (req.user.role === 'admin') {
+      if (req.user.role === 'admin') { // Make accessible to admin user only
         res.render('./users/delete-confirm', { user: user });
       }
     } else {
@@ -210,49 +212,53 @@ module.exports = function (app) {
         active: req.user.active,
         role: req.user.role,
       };
-      Exclusion.find({}, async (err, foundExclusion) => {
-        if (err) {
-          console.log(err);
-        } else {
-          const currentExclusionsArr = []; // Holds unarchived exclusions
-          await foundExclusion.forEach((item) => {
-            // Check all unarchived exclusions
-            if (!item.archived) {
-              item.archived = archiveHelper(item.exp_date); // Returns Boolean
-              currentExclusionsArr.push(item);
-              if (item.archived) { 
-                // Archive all exclusions due/past due for archive
-                item.save((err) => { 
-                  if (err) {
-                    console.log(err);
-                  } else {
-                    console.log(item._id + ' has been archived.');
-                  }
-                });
-              }
-            }
-          });
-          // Find the current user, check if user's account is activated:
-          Account.findOne(
-            { username: { $eq: req.user.username } },
-            (err, foundUser) => {
-              if (err) {
-                console.log(err);
-              } else {
-                if (foundUser.active) {
-                  res.render('user-home', {
-                    exclusions: currentExclusionsArr, // Display current exclusions only
-                    user: thisUser,
+      if (req.user.active) { // First, ensure current user is active
+        Exclusion.find({}, async (err, foundExclusion) => {
+          if (err) {
+            console.log(err);
+          } else {
+            const currentExclusionsArr = []; // Holds unarchived exclusions
+            await foundExclusion.forEach((item) => {
+              // Check all unarchived exclusions
+              if (!item.archived) {
+                item.archived = archiveHelper(item.exp_date); // Returns Boolean
+                currentExclusionsArr.push(item);
+                if (item.archived) {
+                  // Archive all exclusions due/past due for archive
+                  item.save((err) => {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      console.log(item._id + ' has been archived.');
+                    }
                   });
-                } else {
-                  console.log('inactive');
-                  res.render('unauthorized');
                 }
               }
-            }
-          );
-        }
-      });
+            });
+            // Find the current user, check if user's account is activated:
+            Account.findOne(
+              { username: { $eq: req.user.username } },
+              (err, foundUser) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  if (foundUser.active) {
+                    res.render('user-home', {
+                      exclusions: currentExclusionsArr, // Display current exclusions only
+                      user: thisUser,
+                    });
+                  } else {
+                    console.log('inactive');
+                    res.render('unauthorized');
+                  }
+                }
+              }
+            );
+          }
+        });
+      } else {
+        res.redirect('/unauthorized');
+      }
     } else {
       res.redirect('/unauthorized');
     }
@@ -285,18 +291,27 @@ module.exports = function (app) {
   //* Single exclusion GET route - display only one (selected) exclusion order
   app.get('/home/:exclusion_id', (req, res, next) => {
     const exclusionId = req.params.exclusion_id; // Find user based on ID
+    const thisUser = {
+      user: req.user.username,
+      role: req.user.role,
+    };
     if (req.isAuthenticated()) {
-      Exclusion.findOne({ _id: { $eq: exclusionId } }, (err, exclusion) => {
-        if (err) {
-          console.log(err);
-          res.redirect('/error'); // Render /error route
-        } else {
-          res.render('./exclusions/exclusion', {
-            exclusion: exclusion,
-            id: exclusionId,
-          });
-        }
-      });
+      if (req.user.active === true) {
+        Exclusion.findOne({ _id: { $eq: exclusionId } }, (err, exclusion) => {
+          if (err) {
+            console.log(err);
+            res.redirect('/error'); // Render /error route
+          } else {
+            res.render('./exclusions/exclusion', {
+              exclusion: exclusion,
+              id: exclusionId,
+              user: thisUser,
+            });
+          }
+        });
+      } else {
+        res.redirect('/unauthorized');
+      }
     } else {
       res.redirect('/unauthorized');
     }
@@ -335,6 +350,8 @@ module.exports = function (app) {
             }
           }
         );
+      } else {
+        res.redirect('/unauthorized');
       }
     } else {
       res.redirect('/unauthorized');
@@ -346,21 +363,25 @@ module.exports = function (app) {
     // Accessible by Admin or Supervisor users only
     if (req.isAuthenticated()) {
       const exclusion_id = req.params.exclusion;
-      Exclusion.findOne(
-        { _id: { $eq: exclusion_id } },
-        (err, foundExclusion) => {
-          if (err) {
-            console.log(err);
-          } else {
-            if (req.user.role === 'admin' || req.user.role === 'supervisor') {
-              res.render('./exclusions/delete-confirm', {
-                // Render delete-confirm template
-                exclusion: foundExclusion,
-              });
+      if (req.user.role === 'admin' || req.user.role === 'supervisor') {
+        Exclusion.findOne(
+          { _id: { $eq: exclusion_id } },
+          (err, foundExclusion) => {
+            if (err) {
+              console.log(err);
+            } else {
+              if (req.user.role === 'admin' || req.user.role === 'supervisor') {
+                res.render('./exclusions/delete-confirm', {
+                  // Render delete-confirm template
+                  exclusion: foundExclusion,
+                });
+              }
             }
           }
-        }
-      );
+        );
+      } else {
+        res.redirect('/unauthorized');
+      }
     } else {
       res.redirect('/unauthorized');
     }
@@ -381,6 +402,8 @@ module.exports = function (app) {
           .catch((err) => {
             console.log(err);
           });
+      } else {
+        res.redirect('/unauthorized');
       }
     } else {
       res.redirect('/unauthorized');
@@ -389,10 +412,8 @@ module.exports = function (app) {
 
   //* Archive exclusion GET route
   app.get('/archive', (req, res, next) => {
-    // TODO: Working here now.
     //Renders a list of all archived exclusion orders, by name.
     // Accessible by Admin and supervisors only
-
     if (req.isAuthenticated()) {
       const thisUser = {
         loggedInUser: req.user.username,
@@ -400,31 +421,39 @@ module.exports = function (app) {
         active: req.user.active,
         role: req.user.role,
       };
-      Exclusion.find({}, (err, foundExclusion) => {
-        if (err) {
-          console.log(err);
-        } else {
-          // console.log(foundExclusion);
-          Account.findOne(
-            { username: { $eq: req.user.username } },
-            (err, foundUser) => {
-              if (err) {
-                console.log(err);
-              } else {
-                if (foundUser.active) {
-                  res.render('./archives/archive-list', {
-                    exclusions: foundExclusion,
-                    user: thisUser,
-                  });
+      if (thisUser.role === 'admin' || thisUser.role === 'supervisor') {
+        Exclusion.find({}, async (err, foundExclusion) => {
+          if (err) {
+            console.log(err);
+          } else {
+            archivedExclusionArr = [];
+            // Create list of all archived exclusion orders:
+            await foundExclusion.forEach((item) => {
+              if (item.archived) archivedExclusionArr.push(item);
+            });
+            Account.findOne(
+              { username: { $eq: req.user.username } },
+              (err, foundUser) => {
+                if (err) {
+                  console.log(err);
                 } else {
-                  console.log('inactive');
-                  res.render('unauthorized');
+                  if (foundUser.active) {
+                    res.render('./archives/archive-list', {
+                      exclusions: archivedExclusionArr, // Display only archived orders
+                      user: thisUser,
+                    });
+                  } else {
+                    console.log('inactive');
+                    res.render('unauthorized');
+                  }
                 }
               }
-            }
-          );
-        }
-      });
+            );
+          }
+        });
+      } else {
+        res.redirect('/unauthorized');
+      }
     } else {
       res.redirect('/');
     }
@@ -432,7 +461,34 @@ module.exports = function (app) {
 
   //* Archive GET route
   app.get('/archive/:exclusion_id', (req, res, next) => {
-    res.send('Archived/Past Exclusion Orders Page');
+    // TODO: Working here now.
+    // Displays individual past/archived exclusion order
+    // Accessible by admin and supervisor users only
+    if (req.isAuthenticated()) {
+      const exclusionId = req.params.exclusion_id; // Find user based on ID
+      const thisUser = {
+        user: req.user.username,
+        role: req.user.role,
+      };
+      if (thisUser.role === 'admin' || thisUser.role === 'supervisor') {
+        Exclusion.findOne({ _id: { $eq: exclusionId } }, (err, exclusion) => {
+          if (err) {
+            console.log(err);
+            res.redirect('/error'); // Render /error route
+          } else {
+            res.render('./archives/archived-exclusion', {
+              exclusion: exclusion,
+              id: exclusionId,
+              user: thisUser,
+            });
+          }
+        });
+      } else {
+        res.redirect('/unauthorized');
+      }
+    } else {
+      res.redirect('/unauthorized');
+    }
   });
 
   ////* END EXCLUSIONS Routes ////
@@ -761,7 +817,7 @@ module.exports = function (app) {
 
   //* Archive_exclusion POST route
   app.post('/archive', (req, res, next) => {
-    // Archive exclusion, from archive_exclusion GET route
+    // Archive exclusion - send to /archive list
   });
 
   app.post('/unarchive', (req, res, next) => {
