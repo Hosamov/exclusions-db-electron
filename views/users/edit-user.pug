@@ -4,7 +4,7 @@ block content
   div.main-container
     each item in user
       form(role='form' action="/edit_user" method="post")
-        h3 Update User: #{item.first_name} #{item.last_name}
+        h2 Update Account
         .form-element
           if currentUser.loggedInUserRole === 'admin'
             label.form-label(name='email') Email
@@ -106,6 +106,6 @@ block content
           br
  
         .form-button
-          button.btn.btn-default(type='submit') Submit
-      
-      button.btn.btn-default(onclick="history.back()") Cancel
+          button.btn.btn-default.list-btn(type='submit') Submit
+      hr
+      button.btn.btn-default.list-btn(onclick="history.back()") Cancel

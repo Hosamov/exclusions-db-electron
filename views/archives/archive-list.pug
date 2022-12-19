@@ -26,9 +26,17 @@ block content
               li.exclusion-item Date Served: #{exclusion.date_served}
               li.exclusion-item Expires after: #{exclusion.exp_date !== 'Invalid date' ? exclusion.exp_date : 'Lifetime'}
     
-    a(href="/logout") Logout |
-    a(href="/home") Home |
-    if user.role === 'admin'
-      a(href="/users/") Users
-    else 
-      a(href=`/users/${user.loggedInUser}`) Account
+    //- Render links based on authorization:
+    .left-btn-div
+      if user.role === 'admin' || user.role === 'supervisor'
+      a(href='/home')
+        button.btn.btn-primary.list-btn(type="button") Home
+      if user.role === 'admin'
+        a(href='/users')
+          button.btn.btn-primary.list-btn(type="button") Users
+      else
+        a(href=`/users/${user.loggedInUser}`)
+          button.btn.btn-primary.list-btn(type="button") Account
+    .right-btn-div
+      a(href='/logout')
+        button.btn.btn-primary.list-btn(type="button") Logout

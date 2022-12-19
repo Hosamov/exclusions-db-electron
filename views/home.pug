@@ -2,9 +2,12 @@ extends layout.pug
 
 block content 
   div.main-container
-    ul 
-      li.list-item
-        a(href="/login") Login
-      li.list-item
-        a(href="/register") Register 
+    .home-container
+      ul
+        li.list-item
+          a(href='/login')
+            button.btn.btn-primary.home-btn(type="button") Login
+        li.list-item
+          a(href='/register')
+            button.btn.btn-primary.home-btn(type="button") Register
         

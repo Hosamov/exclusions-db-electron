@@ -3,18 +3,20 @@ extends ../layout.pug
 //- Renders individual user
 block content
   div.main-container
-    h2 #{user.username}
-    
+    h2 User Account Details
     ul.list 
       each item in user
-        li.exclusion-item Email: #{item.username}
-        li.exclusion-item Role: #{item.role}
-        li.exclusion-item Is Active: #{item.active}
-        li.exclusion-item Name: #{item.first_name} #{item.last_name}
+        li.exclusion-item Username/Email: #{item.username}
+        li.exclusion-item User Role: #{item.role}
+        li.exclusion-item Active User: #{item.active}
+        li.exclusion-item Full Name: #{item.first_name} #{item.last_name}
         br
-        button.btn(onclick=`window.location.href='/users/${item.username}/edit_user'`) Edit User
         if currentUser.loggedInUserRole === 'admin'
-          button.btn(onclick=`window.location.href='/users/${item.username}/confirm_delete'`) Delete
+          button.btn.btn-list.list-btn(onclick=`window.location.href='/users/${item.username}/edit_user'`) Edit User
+        else 
+          button.btn.btn-list.list-btn(onclick=`window.location.href='/users/${item.username}/edit_user'`) Edit
+        if currentUser.loggedInUserRole === 'admin'
+          button.btn.list-btn(onclick=`window.location.href='/users/${item.username}/confirm_delete'`) Delete
       hr
-      button.btn(onclick=`history.back()`) Back
+      button.btn.list-btn(onclick=`history.back()`) Back
     

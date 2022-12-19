@@ -4,8 +4,9 @@ block content
   div.main-container
     h2 Exclusions List
 
-    a(href="/logout") Logout |
-    a(href="/add_new_exclusion") New
+    if user.role === 'admin' || user.role === 'supervisor'
+        a(href='/add_new_exclusion')
+          button.btn.btn-primary.list-btn(type="button") New Excl.
 
     ul.list 
       each exclusion in exclusions
@@ -26,11 +27,18 @@ block content
               li.exclusion-item Date Served: #{exclusion.date_served}
               li.exclusion-item Expires after: #{exclusion.exp_date !== 'Invalid date' ? exclusion.exp_date : 'Lifetime'}
     //- Render links based on authorization:
-    a(href="/logout") Logout |
-    if user.role === 'admin' || user.role === 'supervisor'
-      a(href="/add_new_exclusion") New |
-      a(href="/archive") Archives |
-    if user.role === 'admin'
-      a(href="/users/") Users
-    else 
-      a(href=`/users/${user.loggedInUser}`) Account
+    .left-btn-div
+      if user.role === 'admin' || user.role === 'supervisor'
+        a(href='/add_new_exclusion')
+          button.btn.btn-primary.list-btn(type="button") New Excl.
+        a(href='/archive')
+          button.btn.btn-primary.list-btn(type="button") Archives
+      if user.role === 'admin'
+        a(href='/users')
+          button.btn.btn-primary.list-btn(type="button") Users
+      else 
+        a(href=`/users/${user.loggedInUser}`)
+          button.btn.btn-primary.list-btn(type="button") Account
+    .right-btn-div
+      a(href='/logout')
+        button.btn.btn-primary.list-btn(type="button") Logout

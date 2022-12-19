@@ -30,9 +30,14 @@ block content
     p Operations Supervisor
     div.excl-foot 
       small Mason Transit 790 E Johns Prairie Rd, Shelton, WA 98584 360-427-5033
-  
-    a(href=`/home`) Home | 
-    if user.role === 'admin' || user.role === 'supervisor'
-      a(href=`/home/${id}/edit`) Edit |
-      a(href=`/home/${id}/confirm_delete`) Delete
+    hr
+    .left-btn-div
+      a(href=`/home`)
+        button.btn.btn-primary.list-btn(type="button") Home 
+    .right-btn-div
+      if user.role === 'admin' || user.role === 'supervisor'
+        a(href=`/home/${id}/edit`)
+          button.btn.btn-primary.list-btn(type="button") Edit
+        a(href=`/home/${id}/confirm_delete`)
+          button.btn.btn-primary.list-btn(type="button") Delete
     

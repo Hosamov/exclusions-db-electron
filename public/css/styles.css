@@ -3,25 +3,48 @@
 body {
   font-family: calibri, ariel, sans-serif;
   font-size: 1.2rem;
+  background: #d5dcd1;
 }
 
 footer {
   margin: auto;
   width: 50%;
   text-align: center;
+  color: #2e3629;
+}
+
+a:visited {
+  color: black;
+}
+
+a {
+  text-decoration: none
+}
+
+a:hover {
+  color: black;
+  text-decoration: none
+}
+
+a:active {
+  color: black;
+  text-decoration: none
 }
 
 .header {
   margin: auto;
   width: 50%;
   text-align: center;
+  color: #2e3629;
 }
 
 .main-container {
   margin: auto;
-  width: 50%;
-  border: 3px solid green;
+  width: 65%;
+  border: 2px solid #4d7b31;
+  border-radius: 5px;
   padding: 10px;
+  background: #eff2ee;
 }
 
 input {
@@ -41,6 +64,17 @@ textarea {
   box-sizing: border-box;
   width: 100%;
 }
+
+/* Home page */
+.home-container {
+  text-align: center;
+}
+
+.home-btn {
+  width: 300px;
+}
+
+/* User Home*/
 
 .form-label {
   font-size: 1.3rem;
@@ -69,10 +103,6 @@ textarea {
   height: 50px;
 }
 
-.admin-section {
-
-}
-
 fieldset {
   text-align: center;
   margin-top: 3px;
@@ -98,7 +128,7 @@ fieldset {
   border-radius: 5px;
   border: none;
   padding: .5rem;
-  background-color: #21a0e1;
+  background-color: #4d7b31;
   color: white;
   font-size: 1.2rem;
   margin: 2px .25rem;
@@ -114,8 +144,21 @@ fieldset {
 
 
 .btn:hover {
-  background-color: tomato;
+  background-color: #2e3629;
   cursor: pointer;
+}
+
+.list-btn {
+  width: 120px;
+}
+
+.left-btn-div {
+  display: inline;
+}
+
+.right-btn-div {
+  float: right;
+  text-align: right;
 }
 
 .list {
@@ -126,10 +169,9 @@ fieldset {
   list-style-type: none;
 }
 
-
 .excl-card:hover {
   cursor: pointer;
-  background-color: #dee3e3;
+  background-color: #d5dcd1;
 }
 
 .exclusion-list-item {
@@ -181,25 +223,14 @@ fieldset {
   text-decoration: none;
 }
 
-a:visited {
-  color: black;
-}
-
-a:hover {
-  color: black;
-  text-decoration: underline dotted
-}
-
-a:active {
-  color: black;
-}
-
 .excl-container {
   margin: auto;
-  width: 50%;
-  border: 3px solid green;
+  width: 65%;
+  border: 2px solid #4d7b31;
+  border-radius: 5px;
   padding: 10px;
   position: relative;
+  background: #eff2ee;
 }
 
 .excl-head {
@@ -257,15 +288,15 @@ a:active {
 .tooltip {
   position: relative;
   display: inline-block;
-  border-bottom: 1px dotted black;
+  border-bottom: 1px dotted #2e3629;
 }
 
 .tooltip .tooltiptext {
   visibility: hidden;
   min-width: 150px;
   max-width: 290px;
-  background-color: #5c8186;
-  border: 1px solid #fff;
+  background-color: #4d7b31;
+  border: 1px solid #2e3629;
   color: #fff;
   text-align: center;
   border-radius: 6px;
