@@ -214,10 +214,12 @@ module.exports = function (app) {
         if (err) {
           console.log(err);
         } else {
+          const currentExclusionsArr = []; // Holds unarchived exclusions
           await foundExclusion.forEach((item) => {
             // Check all unarchived exclusions
             if (!item.archived) {
               item.archived = archiveHelper(item.exp_date); // Returns Boolean
+              currentExclusionsArr.push(item);
               if (item.archived) { 
                 // Archive all exclusions due/past due for archive
                 item.save((err) => { 
@@ -230,6 +232,7 @@ module.exports = function (app) {
               }
             }
           });
+          // Find the current user, check if user's account is activated:
           Account.findOne(
             { username: { $eq: req.user.username } },
             (err, foundUser) => {
@@ -238,7 +241,7 @@ module.exports = function (app) {
               } else {
                 if (foundUser.active) {
                   res.render('user-home', {
-                    exclusions: foundExclusion,
+                    exclusions: currentExclusionsArr, // Display current exclusions only
                     user: thisUser,
                   });
                 } else {
@@ -251,7 +254,7 @@ module.exports = function (app) {
         }
       });
     } else {
-      res.redirect('/');
+      res.redirect('/unauthorized');
     }
   });
 
