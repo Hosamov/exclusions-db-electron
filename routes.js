@@ -213,7 +213,6 @@ module.exports = function (app) {
         if (err) {
           console.log(err);
         } else {
-          if(foundUser.exp_date)
           // console.log(foundExclusion);
           Account.findOne(
             { username: { $eq: req.user.username } },
@@ -273,6 +272,7 @@ module.exports = function (app) {
           console.log(err);
           res.redirect('/error'); // Render /error route
         } else {
+          archiveHelper(exclusion.exp_date);
           res.render('./exclusions/exclusion', {
             exclusion: exclusion,
             id: exclusionId,
@@ -373,6 +373,7 @@ module.exports = function (app) {
     // TODO: Working here now.
     //Renders a list of all archived exclusion orders, by name.
     // Accessible by Admin and supervisors only
+    
     if (req.isAuthenticated()) {
       const thisUser = {
         loggedInUser: req.user.username,
@@ -381,6 +382,7 @@ module.exports = function (app) {
         role: req.user.role,
       };
       Exclusion.find({}, (err, foundExclusion) => {
+        
         if (err) {
           console.log(err);
         } else {
