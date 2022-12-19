@@ -1,8 +1,6 @@
 extends ../layout.pug 
 
 block content 
-  div.header   
-    h1 Exclusions DB
   div.main-container
     each item in user
       form(role='form' action="/edit_user" method="post")
