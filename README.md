@@ -85,11 +85,11 @@ An exclusions database that is web-based using Node, express and MongoDB/Mongoos
 - DONE » Setup email system for new logins and user edits
 - DONE » In /home route, render each exclusion with a hyperlink, linking to
   /home/[exclusion _id], which will display the entire exclusion.
-- Setup '/home/:exclusion/edit' GET and POST routes
-- Setup '/home/:exclusion/delete' GET route
-- Setup '/home/archive' GET route - displays list of all past exclusion orders
+- DONE » Setup '/home/:exclusion/edit' GET and POST routes
+- DONE » Setup '/home/:exclusion/delete' GET route
+- Setup '/archive' GET route - displays list of all past exclusion orders
   by name
-- Setup '/home/archive/:exclusion_id' GET route - displays the archived exclusion
-  order selected by the user.
+- Setup '/archive/:exclusion_id' GET route - displays the archived exclusion
+  order selected by the user. (only admins can delete these)
 
 ### Created: 11/29/2022; Last edited 12/16/2022

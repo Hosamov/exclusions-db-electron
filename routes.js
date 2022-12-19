@@ -8,6 +8,7 @@ const Exclusion = require('./models/exclusion');
 
 const email = require('./emailer');
 const emailBodies = require('./includes/email-bodies');
+const archiveHelper = require('./includes/archive-helper');
 
 const recaptcha = new reCAPTCHA({
   siteKey: process.env.SITEKEY, // retrieved during setup
@@ -212,6 +213,7 @@ module.exports = function (app) {
         if (err) {
           console.log(err);
         } else {
+          if(foundUser.exp_date)
           // console.log(foundExclusion);
           Account.findOne(
             { username: { $eq: req.user.username } },
@@ -271,7 +273,10 @@ module.exports = function (app) {
           console.log(err);
           res.redirect('/error'); // Render /error route
         } else {
-          res.render('./exclusions/exclusion', { exclusion: exclusion, id: exclusionId });
+          res.render('./exclusions/exclusion', {
+            exclusion: exclusion,
+            id: exclusionId,
+          });
         }
       });
     } else {
@@ -318,21 +323,95 @@ module.exports = function (app) {
     }
   });
 
+  //* /home/:exclusion/confirm_delete GET route
+  app.get('/home/:exclusion/confirm_delete', (req, res, next) => {
+    // Accessible by Admin or Supervisor users only
+    if (req.isAuthenticated()) {
+      const exclusion_id = req.params.exclusion;
+      Exclusion.findOne(
+        { _id: { $eq: exclusion_id } },
+        (err, foundExclusion) => {
+          if (err) {
+            console.log(err);
+          } else {
+            if (req.user.role === 'admin' || req.user.role === 'supervisor') {
+              res.render('./exclusions/delete-confirm', { // Render delete-confirm template
+                exclusion: foundExclusion,
+              });
+            }
+          }
+        }
+      );
+    } else {
+      res.redirect('/unauthorized');
+    }
+  });
+
   //* Delete exclusion GET route
-  app.get('/home/:exclusion/delete', (req, res, next) => {
-    // Viewable by all users
-    res.send('Delete exclusion confirmation page.');
+  app.get('/home/:exclusion/delete', async (req, res, next) => {
+    // Accessible by Admin or Supervisor users only
+    // Delete selected exclusion order from database
+    if (req.isAuthenticated()) {
+      const exclusion_id = req.params.exclusion;
+      if (req.user.role === 'admin' || req.user.role === 'supervisor') {
+        await Exclusion.deleteOne({ _id: {$eq: exclusion_id }}) // locate by id
+          .then(() => {
+            res.redirect('/home');
+            console.log(`Exclusion for ${exclusion_id} successfully deleted.`);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    } else {
+      res.redirect('/unauthorized');
+    }
   });
 
   //* Archive exclusion GET route
-  app.get('home/archive', (req, res, next) => {
+  app.get('/archive', (req, res, next) => {
+    // TODO: Working here now.
     //Renders a list of all archived exclusion orders, by name.
     // Accessible by Admin and supervisors only
-    res.send('Archive Exclusion Page');
+    if (req.isAuthenticated()) {
+      const thisUser = {
+        loggedInUser: req.user.username,
+        loggedInUserRole: req.user.role,
+        active: req.user.active,
+        role: req.user.role,
+      };
+      Exclusion.find({}, (err, foundExclusion) => {
+        if (err) {
+          console.log(err);
+        } else {
+          // console.log(foundExclusion);
+          Account.findOne(
+            { username: { $eq: req.user.username } },
+            (err, foundUser) => {
+              if (err) {
+                console.log(err);
+              } else {
+                if (foundUser.active) {
+                  res.render('./archives/archive-list', {
+                    exclusions: foundExclusion,
+                    user: thisUser,
+                  });
+                } else {
+                  console.log('inactive');
+                  res.render('unauthorized');
+                }
+              }
+            }
+          );
+        }
+      });
+    } else {
+      res.redirect('/');
+    }
   });
 
   //* Archive GET route
-  app.get('/home/archive/:exclusion_id', (req, res, next) => {
+  app.get('/archive/:exclusion_id', (req, res, next) => {
     res.send('Archived/Past Exclusion Orders Page');
   });
 
@@ -533,6 +612,11 @@ module.exports = function (app) {
       signature: req.body.signature,
     };
 
+    // If other_length has a value, push that value to length instead.
+    if (excl.other_length) {
+      excl.length = excl.other_length;
+    }
+
     //* Calculations for adding exclusion length to served date:
     let exclusionLength;
     Date.prototype.addDays = function (days) {
@@ -565,7 +649,6 @@ module.exports = function (app) {
           date_served: moment(excl.date_served.toString()).format('MM/DD/YYYY'),
           exp_date: moment(excl.exp_date.toString()).format('MM/DD/YYYY'),
           length: excl.length === 'Lifetime' ? Infinity : excl.length,
-          other_length: excl.other_length,
           img_url: excl.img_url,
           signature: excl.signature,
         },
@@ -582,7 +665,6 @@ module.exports = function (app) {
 
   //* Edit_exclusion POST route
   app.post('/edit_exclusion', (req, res, next) => {
-    //TODO: Working here currently.
     // Add a new exclusion from /edit_exclusion GET route
     let excl = {
       id: req.body.id,
@@ -614,41 +696,58 @@ module.exports = function (app) {
       excl.exp_date = dateServed.addDays(parseInt(excl.length));
     }
 
-    Exclusion.findOne({ _id: { $eq: excl.id } }, async (err, foundExclusion) => {
-      if (err) {
-        console.log(err);
-      } else {
-        // Post data to exclusion:
-        foundExclusion.first_name = excl.first_name;
-        foundExclusion.last_name = excl.last_name;
-        foundExclusion.dob = moment(excl.dob).format('MM/DD/YYYY'),
-        foundExclusion.other_info = excl.other_info;
-        foundExclusion.ordinance = excl.ordinance;
-        foundExclusion.description = excl.description;
-        foundExclusion.date_served = moment(excl.date_served.toString()).format('MM/DD/YYYY');
-        foundExclusion.exp_date = moment(excl.exp_date.toString()).format('MM/DD/YYYY');
-        foundExclusion.length = excl.length;
-        foundExclusion.img_url = excl.img_url;
-        foundExclusion.signature = excl.signature;
+    Exclusion.findOne(
+      { _id: { $eq: excl.id } },
+      async (err, foundExclusion) => {
+        if (err) {
+          console.log(err);
+        } else {
+          // Post data to exclusion:
+          foundExclusion.first_name = excl.first_name;
+          foundExclusion.last_name = excl.last_name;
+          (foundExclusion.dob = moment(excl.dob).format('MM/DD/YYYY')),
+            (foundExclusion.other_info = excl.other_info);
+          foundExclusion.ordinance = excl.ordinance;
+          foundExclusion.description = excl.description;
+          foundExclusion.date_served = moment(
+            excl.date_served.toString()
+          ).format('MM/DD/YYYY');
+          foundExclusion.exp_date = moment(excl.exp_date.toString()).format(
+            'MM/DD/YYYY'
+          );
+          foundExclusion.length = excl.length;
+          foundExclusion.img_url = excl.img_url;
+          foundExclusion.signature = excl.signature;
 
-        console.log(foundExclusion);
+          console.log(foundExclusion);
 
-        await foundExclusion.save((err) => {
-          if (err) {
-            console.log(err);
-          } else {
-            console.log(
-              foundExclusion.first_name + ' ' + foundExclusion.last_name + ' has been successfully updated.'
-            );
-            res.redirect('/home');
-          }
-        });
+          await foundExclusion.save((err) => {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log(
+                foundExclusion.first_name +
+                  ' ' +
+                  foundExclusion.last_name +
+                  ' has been successfully updated.'
+              );
+              res.redirect('/home');
+            }
+          });
+        }
       }
-    });
+    );
   });
 
   //* Archive_exclusion POST route
-  app.post('/archive_exclusion', (req, res, next) => {
+  app.post('/archive', (req, res, next) => {
     // Archive exclusion, from archive_exclusion GET route
+  });
+
+  app.post('/unarchive', (req, res, next) => {
+    // Unarchive exclusion
+    //* May not need:
+    // Find exclusion and served date
+    // Based on served date, determine if this is archived or unarchived...
   });
 };

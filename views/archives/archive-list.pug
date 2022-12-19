@@ -1,14 +1,14 @@
-extends layout.pug 
+extends ../layout.pug 
 
 block content 
   div.header
     h1 Exclusions DB
   div.main-container
-    h2 Exclusions List
+    h2 Archived Exclusions
 
     a(href="/logout") Logout |
     a(href="/add_new_exclusion") New
-
+    //- TODO: Render the list by last name
     ul.list 
       each exclusion in exclusions
         div.excl-card

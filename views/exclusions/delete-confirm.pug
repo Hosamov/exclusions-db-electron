@@ -1,0 +1,12 @@
+extends ../layout.pug 
+
+block content 
+  div.header   
+    h1 Exclusions DB
+  div.main-container
+    h3 Delete Exclusion
+    p Are you sure you would like to delete the exclusion for 
+      strong #{exclusion.first_name} #{exclusion.last_name}
+      | ? This action cannot be undone.
+    button.btn(onclick=`window.location.href='/home/${exclusion._id}/delete'`) Yes, Delete
+    button.btn(onclick=`window.location.href='/home/${exclusion._id}'`) No, Go back

@@ -11,9 +11,9 @@ const ExclusionSchema = new Schema({
   date_served: String,
   exp_date: String,
   length: String,
-  other_length: Number,
   img_url: String,
   signature: String,
+  archived: Boolean,
 });
 
 module.exports = mongoose.model('Exclusion', ExclusionSchema, 'exclusions');
