@@ -9,6 +9,7 @@ const Exclusion = require('./models/exclusion');
 const email = require('./emailer');
 const emailBodies = require('./includes/email-bodies');
 const archiveHelper = require('./includes/archive-helper');
+const exclusion = require('./models/exclusion');
 
 const recaptcha = new reCAPTCHA({
   siteKey: process.env.SITEKEY, // retrieved during setup
@@ -201,7 +202,7 @@ module.exports = function (app) {
   ////* BEGIN EXCLUSIONS Routes ////
 
   //* Home GET route (for logged-in users) - Displays list of all active exclusions
-  app.get('/home', (req, res, next) => {
+  app.get('/home', async (req, res, next) => {
     if (req.isAuthenticated()) {
       const thisUser = {
         loggedInUser: req.user.username,
@@ -209,11 +210,26 @@ module.exports = function (app) {
         active: req.user.active,
         role: req.user.role,
       };
-      Exclusion.find({}, (err, foundExclusion) => {
+      Exclusion.find({}, async (err, foundExclusion) => {
         if (err) {
           console.log(err);
         } else {
-          // console.log(foundExclusion);
+          await foundExclusion.forEach((item) => {
+            // Check all unarchived exclusions
+            if (!item.archived) {
+              item.archived = archiveHelper(item.exp_date); // Returns Boolean
+              if (item.archived) { 
+                // Archive all exclusions due/past due for archive
+                item.save((err) => { 
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    console.log(item._id + ' has been archived.');
+                  }
+                });
+              }
+            }
+          });
           Account.findOne(
             { username: { $eq: req.user.username } },
             (err, foundUser) => {
@@ -272,7 +288,6 @@ module.exports = function (app) {
           console.log(err);
           res.redirect('/error'); // Render /error route
         } else {
-          archiveHelper(exclusion.exp_date);
           res.render('./exclusions/exclusion', {
             exclusion: exclusion,
             id: exclusionId,
@@ -335,7 +350,8 @@ module.exports = function (app) {
             console.log(err);
           } else {
             if (req.user.role === 'admin' || req.user.role === 'supervisor') {
-              res.render('./exclusions/delete-confirm', { // Render delete-confirm template
+              res.render('./exclusions/delete-confirm', {
+                // Render delete-confirm template
                 exclusion: foundExclusion,
               });
             }
@@ -354,7 +370,7 @@ module.exports = function (app) {
     if (req.isAuthenticated()) {
       const exclusion_id = req.params.exclusion;
       if (req.user.role === 'admin' || req.user.role === 'supervisor') {
-        await Exclusion.deleteOne({ _id: {$eq: exclusion_id }}) // locate by id
+        await Exclusion.deleteOne({ _id: { $eq: exclusion_id } }) // locate by id
           .then(() => {
             res.redirect('/home');
             console.log(`Exclusion for ${exclusion_id} successfully deleted.`);
@@ -373,7 +389,7 @@ module.exports = function (app) {
     // TODO: Working here now.
     //Renders a list of all archived exclusion orders, by name.
     // Accessible by Admin and supervisors only
-    
+
     if (req.isAuthenticated()) {
       const thisUser = {
         loggedInUser: req.user.username,
@@ -382,7 +398,6 @@ module.exports = function (app) {
         role: req.user.role,
       };
       Exclusion.find({}, (err, foundExclusion) => {
-        
         if (err) {
           console.log(err);
         } else {
