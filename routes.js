@@ -255,7 +255,7 @@ module.exports = function (app) {
               }
             );
           }
-        });
+        }).sort({last_name: 1}); // Sort list in ascending order
       } else {
         res.redirect('/unauthorized');
       }
@@ -450,7 +450,7 @@ module.exports = function (app) {
               }
             );
           }
-        });
+        }).sort({last_name: 1}); // Sort list in ascending order
       } else {
         res.redirect('/unauthorized');
       }
@@ -461,7 +461,6 @@ module.exports = function (app) {
 
   //* Archive GET route
   app.get('/archive/:exclusion_id', (req, res, next) => {
-    // TODO: Working here now.
     // Displays individual past/archived exclusion order
     // Accessible by admin and supervisor users only
     if (req.isAuthenticated()) {

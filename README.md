@@ -81,6 +81,11 @@ An exclusions database that is web-based using Node, express and MongoDB/Mongoos
 - /edit_exclusion
 - /archive_exclusion
 
+## Technologies:
+- Node.js
+- Express.js
+- Pug.js
+
 ## TODOS:
 
 - DONE » Setup CAPTCHA for /login and /register routes

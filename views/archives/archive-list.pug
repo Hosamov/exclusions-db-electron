@@ -15,7 +15,7 @@ block content
               img.image.exclusion-image(src=`${exclusion.img_url}`) 
             div.exclusion-list-item
               li.exclusion-item
-                h4 Name: #{exclusion.first_name} #{exclusion.last_name}
+                h4 Name: #{exclusion.last_name}, #{exclusion.first_name}
               if exclusion.dob !== '' && exclusion.dob !== 'Invalid date'
                 li.exclusion-item DOB: #{exclusion.dob}
               if exclusion.other_info !== ''

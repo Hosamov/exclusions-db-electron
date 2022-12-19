@@ -32,6 +32,7 @@ block content
       small Mason Transit 790 E Johns Prairie Rd, Shelton, WA 98584 360-427-5033
   
     a(href=`/home`) Home | 
-    a(href=`/home/${id}/edit`) Edit |
-    a(href=`/home/${id}/confirm_delete`) Delete
+    if user.role === 'admin' || user.role === 'supervisor'
+      a(href=`/home/${id}/edit`) Edit |
+      a(href=`/home/${id}/confirm_delete`) Delete
     
