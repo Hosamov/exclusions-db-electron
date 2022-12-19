@@ -68,6 +68,10 @@ An exclusions database that is web-based using Node, express and MongoDB/Mongoos
 - /users/:user/confirm_delete - Renders page to confirm deletion of selected
   user. Redirects to /users/:user/delete_user route.
 
+### Archive GET Routes
+- /archive - Renders list of all archived exclusions
+- /archive/:exclusion - Renders individual archived/past exclusion order
+
 ## POST Routes:
 
 - /login
@@ -91,5 +95,8 @@ An exclusions database that is web-based using Node, express and MongoDB/Mongoos
   by name
 - DONE » Setup '/archive/:exclusion_id' GET route - displays the archived exclusion
   order selected by the user. (only admins can delete these)
+- Sort both current and archived lists based on exclusion last name
+- Display excerpt on /home and /archive routes for exclusion description
+- Complete styling for desktop and mobile
 
 ### Created: 11/29/2022; Last edited 12/19/2022
