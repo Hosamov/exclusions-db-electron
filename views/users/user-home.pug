@@ -22,7 +22,7 @@ block content
               li.exclusion-item
                 strong Length: 
                 if exclusion.length === 'Infinity' || exclusion.length === 'Lifetime'
-                  strong(class='lifetime') Lifetime 
+                  strong(class='red-filter') Lifetime 
                 else 
                   | #{exclusion.length} days
               li.exclusion-item 
