@@ -243,7 +243,7 @@ module.exports = function (app) {
                   console.log(err);
                 } else {
                   if (foundUser.active) {
-                    res.render('user-home', {
+                    res.render('./users/user-home', {
                       exclusions: currentExclusionsArr, // Display current exclusions only
                       user: thisUser,
                     });

@@ -1,4 +1,4 @@
-extends layout.pug 
+extends ../layout.pug 
 
 block content 
   div.main-container
@@ -16,16 +16,36 @@ block content
               img.image.exclusion-image(src=`${exclusion.img_url}`) 
             div.exclusion-list-item
               li.exclusion-item
-                h4 Name: #{exclusion.last_name}, #{exclusion.first_name}
-              if exclusion.dob !== '' && exclusion.dob !== 'Invalid date'
-                li.exclusion-item DOB: #{exclusion.dob}
+                h4 Name: #{exclusion.last_name}, #{exclusion.first_name} 
+                  if exclusion.dob !== '' && exclusion.dob !== 'Invalid date'
+                    | (DOB: #{exclusion.dob})
+              li.exclusion-item
+                strong Length: 
+                if exclusion.length === 'Infinity' || exclusion.length === 'Lifetime'
+                  strong(class='lifetime') Lifetime 
+                else 
+                  | #{exclusion.length} days
+              li.exclusion-item 
+                strong Date Served: 
+                | #{exclusion.date_served}
+              li.exclusion-item 
+                strong Expires after: 
+                | #{exclusion.exp_date !== 'Invalid date' ? exclusion.exp_date : 'N/A'}
+              li.exclusion-item 
+                strong Violation(s): 
+                | #{exclusion.ordinance}
+              li.exclusion-item 
+                strong Description: 
+                | #{exclusion.description.split(' ').slice(0,32).join(' ')}...
               if exclusion.other_info !== ''
-                li.exclusion-item Other Info: #{exclusion.other_info}
-              li.exclusion-item Violation(s): #{exclusion.ordinance}
-              li.exclusion-item Description: #{exclusion.description}
-              li.exclusion-item Length: #{exclusion.length}
-              li.exclusion-item Date Served: #{exclusion.date_served}
-              li.exclusion-item Expires after: #{exclusion.exp_date !== 'Invalid date' ? exclusion.exp_date : 'Lifetime'}
+                li.exclusion-item 
+                strong Other Info: 
+                | #{exclusion.other_info}
+              
+              
+            
+              
+              
     //- Render links based on authorization:
     .left-btn-div
       if user.role === 'admin' || user.role === 'supervisor'
