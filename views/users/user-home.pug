@@ -19,13 +19,13 @@ block content
 
     ul.list 
       each exclusion in exclusions
-        div.excl-card
+        .excl-card
           a.link(href=`/home/${exclusion._id}`)
             div.right-div
               img.image.exclusion-image(src=`${exclusion.img_url}`) 
             div.exclusion-list-item
               li.exclusion-item
-                h3 Name: #{exclusion.last_name}, #{exclusion.first_name} 
+                h3.exclusion-name Name: #{exclusion.last_name}, #{exclusion.first_name} 
                   if exclusion.dob !== '' && exclusion.dob !== 'Invalid date'
                     | (DOB: #{exclusion.dob})
               li.exclusion-item

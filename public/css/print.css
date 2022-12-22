@@ -4,16 +4,65 @@
     font-size: 14pt;
   }
 
-  h1 {
+  .head-title {
     display: none;
+    height: 0;
+  }
+
+  .header {
+    display: hidden;
+    height: 0;
+    /* display: fixed; */
   }
 
   .fas-icon {
     display: none;
   }
 
+  .fas-icon-light {
+    display: none;
+  }
+
   footer {
     display: none;
+    position: fixed;
+    bottom: 0;
+  }
+
+  .excl-head {
+    
+  }
+
+  .excl-title {
+    /* text-align: center; */
+  }
+
+  .main-container {
+    display: block;
+    padding-top: 0;
+    width: 96%;
+    box-shadow: none;
+  }
+
+  .excl-container {
+    position: relative;
+    margin: auto;
+    padding: 7% 3% 0 3%;
+    width: 90%;
+    box-shadow: none;
+    display: block;
+  }
+
+  hr {
+    display: none;
+  }
+
+  /** Exclusin List: */
+  .content-title {
+    margin-top: 8%;
+    text-align: center;
+    box-shadow: none;
+    border: 1px solid black;
   }
 
   .excl-list-title {
@@ -22,23 +71,28 @@
     margin: 0;
   }
 
-  .excl-head {
-    display: block;
+   .excl-card {
+    /* display: block; */
+    display: table;
+    break-inside: avoid;
+    border-bottom: 1px solid gray;
   }
 
-  .main-container {
-    display: block;
-    padding-top: 0;
-    width: 96%;
+  div.exclusion-list-item {
+    display: table;
+    height: 260px;
+    break-inside: avoid;
+    box-shadow:none;
+  }
+  .exclusion-image {
+    border-radius: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    box-shadow: none;
   }
 
-  .excl-card {
-    display: block;
+  img {
+    page-break-inside: avoid;
   }
 
-  .exclusion-list-item {
-    height: 285px;
-    display: block;
-  }
-  
 }

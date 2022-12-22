@@ -2,9 +2,13 @@ extends ../layout.pug
 
 block content 
   div.main-container
-    h3.content-title Delete Exclusion
-    p Are you sure you would like to delete the exclusion for 
+    h2.content-title Delete exclusion - Are you sure?
+    p.centered Are you sure you would like to delete the exclusion for 
       strong #{exclusion.first_name} #{exclusion.last_name}
-      | ? This action cannot be undone.
-    button.btn(onclick=`window.location.href='/home/${exclusion._id}/delete'`) Yes, Delete
-    button.btn(onclick=`window.location.href='/home/${exclusion._id}'`) No, Go back
+      | ? 
+      p.centered 
+        strong Caution: 
+        | This action cannot be undone.
+    .btn-container
+      button.btn(onclick='window.location.href=/users/') No - Go back
+      button.btn.btn-red(onclick=`window.location.href='/users/${user}/delete_user'`) Yes - DELETE
