@@ -3,7 +3,7 @@ extends layout.pug
 block content
   script(src="https://www.google.com/recaptcha/api.js" async defer)
   div.main-container
-    h2 Login
+    h2.content-title Login
     form.login-form(role='form', action="/login",method="post")
       p!= recaptcha
       .form-element

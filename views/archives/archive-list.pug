@@ -1,11 +1,21 @@
 extends ../layout.pug 
-
+block header
+  div.header-right
+    if user.role === 'admin' || user.role === 'supervisor'
+      a(href='/add_new_exclusion')
+        i.fas-icon-light(class="fa-solid fa-plus")
+      a(href='/home')
+        i.fas-icon-light(class="fa-solid fa-house")
+    a(href=`/users/${user.loggedInUser}`)
+      i.fas-icon-light(class="fa-solid fa-user")
+    if user.role === 'admin'
+      a(href='/users')
+        i.fas-icon-light(class="fa-solid fa-users")
+    a(href=`/logout`)
+      i.fas-icon-light(class="fa-solid fa-right-from-bracket")
 block content 
   div.main-container
-    h2 Archived Exclusions
-
-    a(href="/logout") Logout |
-    a(href="/add_new_exclusion") New
+    h2.content-title Archived Exclusions List
     ul.list 
       each exclusion in exclusions
         div.excl-card
@@ -41,15 +51,3 @@ block content
                 | #{exclusion.other_info}
     //- Render links based on authorization:
     .left-btn-div
-      if user.role === 'admin' || user.role === 'supervisor'
-      a(href='/home')
-        i.fas-icon.fas-home(class="fa-solid fa-house")
-      if user.role === 'admin'
-       a(href='/users')
-          i.fas-icon.fas-accounts(class="fa-solid fa-users")
-      else
-        a(href=`/users/${user.loggedInUser}`)
-           i.fas-icon.fas-accounts(class="fa-solid fa-user")
-    .right-btn-div
-      a(href='/logout')
-        i.fas-icon.fas-logout(class="fa-solid fa-right-from-bracket")

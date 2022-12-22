@@ -1,0 +1,44 @@
+@media print {
+  body {
+    display: block;
+    font-size: 14pt;
+  }
+
+  h1 {
+    display: none;
+  }
+
+  .fas-icon {
+    display: none;
+  }
+
+  footer {
+    display: none;
+  }
+
+  .excl-list-title {
+    text-align: center;
+    display: none;
+    margin: 0;
+  }
+
+  .excl-head {
+    display: block;
+  }
+
+  .main-container {
+    display: block;
+    padding-top: 0;
+    width: 96%;
+  }
+
+  .excl-card {
+    display: block;
+  }
+
+  .exclusion-list-item {
+    height: 285px;
+    display: block;
+  }
+  
+}

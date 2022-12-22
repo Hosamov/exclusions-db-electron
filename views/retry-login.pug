@@ -3,7 +3,7 @@ extends layout.pug
 block content
   script(src="https://www.google.com/recaptcha/api.js" async defer)
   div.main-container
-    h2 Retry Login
+    h2.content-title Retry Login
     p Oops! Looks like those credentials didn't match a registered account. Would you like to Retry?
     form(role='form', action="/login",method="post")
       p!= recaptcha

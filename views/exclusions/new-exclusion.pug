@@ -1,5 +1,16 @@
 extends ../layout.pug 
-
+block header
+  div.header-right
+    if user.role === 'admin' || user.role === 'supervisor'
+      a(href='/home')
+        i.fas-icon-light(class="fa-solid fa-house")
+    a(href=`/users/${user.username}`)
+      i.fas-icon-light(class="fa-solid fa-user")
+    if user.role === 'admin'
+      a(href='/users')
+        i.fas-icon-light(class="fa-solid fa-users")
+    a(href=`/logout`)
+      i.fas-icon-light(class="fa-solid fa-right-from-bracket")
 block content 
   div.main-container
     h2 Add New Exclusion Order
@@ -66,7 +77,7 @@ block content
       .form-element
         label.form-control(for='signature') * Issuing Supervisor: 
         br
-        input.form-control(type='text' name="signature" id="signature" placeholder=`${currentUser.first_name} ${currentUser.last_name}` value=`${currentUser.first_name} ${currentUser.last_name}` required)  
+        input.form-control(type='text' name="signature" id="signature" placeholder=`${user.first_name} ${user.last_name}` value=`${user.first_name} ${user.last_name}` required)  
         br
       .form-element
         label.form-label(for='super_title') * Issuer Title

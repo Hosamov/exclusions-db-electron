@@ -270,6 +270,12 @@ module.exports = function (app) {
   app.get('/add_new_exclusion', (req, res, next) => {
     // Accessible by Admin and supervisors only
     if (req.isAuthenticated()) {
+      const thisUser = {
+        username: req.user.username,
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        role: req.user.role,
+      };
       if (
         req.user.role === 'admin' ||
         (req.user.role === 'supervisor' && req.user.active === true)
@@ -279,7 +285,7 @@ module.exports = function (app) {
             console.log(err);
             res.status(500).send('An error occurred', err);
           } else {
-            res.render('./exclusions/new-exclusion', { currentUser: req.user });
+            res.render('./exclusions/new-exclusion', { user: thisUser });
           }
         });
       } else {
@@ -579,11 +585,11 @@ module.exports = function (app) {
                       console.log('User Key Accepted!');
                       foundUser.role = 'admin';
                       foundUser.active = true;
-                    } else if(userKey === process.env.SUPV_KEY) {
+                    } else if (userKey === process.env.SUPV_KEY) {
                       console.log('User Key Accepted!');
                       foundUser.role = 'supervisor';
                       foundUser.active = true;
-                    } else if(userKey === process.env.USER_KEY) {
+                    } else if (userKey === process.env.USER_KEY) {
                       console.log('User Key Accepted!');
                       foundUser.role = 'user';
                       foundUser.active = true;

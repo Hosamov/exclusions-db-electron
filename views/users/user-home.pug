@@ -1,16 +1,21 @@
 extends ../layout.pug 
-
-block content 
-  div.main-container
-    h2 Exclusions List
-    
+block header 
+  div.header-right
     if user.role === 'admin' || user.role === 'supervisor'
       a(href='/add_new_exclusion')
-        i.fas-icon.fas-new(class="fa-solid fa-plus")
+        i.fas-icon-light(class="fa-solid fa-plus")
+      a(href='/archive')
+        i.fas-icon-light(class="fa-solid fa-box-archive")
     a(href=`/users/${user.loggedInUser}`)
-      i.fas-icon.fas-account(class="fa-solid fa-user")
+      i.fas-icon-light(class="fa-solid fa-user")
+    if user.role === 'admin'
+      a(href='/users')
+        i.fas-icon-light(class="fa-solid fa-users")  
     a(href=`/logout`)
-      i.fas-icon.fas-logout(class="fa-solid fa-right-from-bracket")
+      i.fas-icon-light(class="fa-solid fa-right-from-bracket")
+block content  
+  div.main-container
+    h2.content-title Exclusions List
 
     ul.list 
       each exclusion in exclusions
@@ -40,7 +45,7 @@ block content
                 | #{exclusion.ordinance}
               li.exclusion-item 
                 strong Description: 
-                | #{exclusion.description.split(' ').slice(0,32).join(' ')}...
+                | #{exclusion.description.split(' ').slice(0,26).join(' ')}...
               if exclusion.other_info !== ''
                 li.exclusion-item 
                 strong Other Info: 
@@ -48,17 +53,4 @@ block content
                       
     //- Render links based on authorization:
     .left-btn-div
-      if user.role === 'admin' || user.role === 'supervisor'
-        a(href='/add_new_exclusion')
-          i.fas-icon.fas-new(class="fa-solid fa-plus")
-        a(href='/archive')
-          i.fas-icon.fas-accounts(class="fa-solid fa-box-archive")
-      if user.role === 'admin'
-        a(href='/users')
-          i.fas-icon.fas-accounts(class="fa-solid fa-users")
-      else 
-        a(href=`/users/${user.loggedInUser}`)
-          i.fas-icon.fas-accounts(class="fa-solid fa-user")
-    .right-btn-div
-      a(href='/logout')
-        i.fas-icon.fas-logout(class="fa-solid fa-right-from-bracket")
+     
