@@ -104,4 +104,4 @@ An exclusions database that is web-based using Node, express and MongoDB/Mongoos
 - DONE » Display excerpt on /home and /archive routes for exclusion description
 - Complete styling for desktop and mobile
 
-### Created: 11/29/2022; Last edited 12/19/2022
+### Created: 11/29/2022; Last edited 12/21/2022

@@ -3,7 +3,7 @@
 body {
   font-family: calibri, ariel, sans-serif;
   font-size: 1.2rem;
-  background: #d5dcd1;
+  background: #c9c9c9;
 }
 
 footer {
@@ -41,10 +41,10 @@ a:active {
 .main-container {
   margin: auto;
   width: 65%;
-  border: 2px solid #4d7b31;
+  border: 2px solid #5e5e5e;
   border-radius: 5px;
   padding: 10px;
-  background: #eff2ee;
+  background: #f6f6f6;
 }
 
 input {
@@ -118,23 +118,15 @@ fieldset {
   display: inline;
 }
 
-.admin-form-element {
- 
-}
-
 .admin-form-label {
   margin-right: 3%;
-}
-
-.admin-form-control {
-
 }
 
 .btn{
   border-radius: 5px;
   border: none;
   padding: .5rem;
-  background-color: #4d7b31;
+  background-color: #0091f0;
   color: white;
   font-size: 1.2rem;
   margin: 2px .25rem;
@@ -150,7 +142,7 @@ fieldset {
 
 
 .btn:hover {
-  background-color: #2e3629;
+  background-color: #f05f00;
   cursor: pointer;
 }
 
@@ -177,7 +169,7 @@ fieldset {
 
 .excl-card:hover {
   cursor: pointer;
-  background-color: #d5dcd1;
+  background-color: #e3e3e3;
 }
 
 .exclusion-list-item {
@@ -225,7 +217,7 @@ fieldset {
 
 .users-list-item:hover {
   cursor: pointer;
-  background-color: #21a0e1;
+  background-color: #0091f0;
   color: #fff;
 }
 
@@ -237,11 +229,11 @@ fieldset {
 .excl-container {
   margin: auto;
   width: 65%;
-  border: 2px solid #4d7b31;
+  border: 2px solid #5e5e5e;
   border-radius: 5px;
   padding: 10px;
   position: relative;
-  background: #eff2ee;
+  background: #f6f6f6;
 }
 
 .excl-head {
@@ -306,8 +298,8 @@ fieldset {
   visibility: hidden;
   min-width: 150px;
   max-width: 290px;
-  background-color: #4d7b31;
-  border: 1px solid #2e3629;
+  background-color: #0091f0;
+  /* border: 1px solid #2e3629; */
   color: #fff;
   text-align: center;
   border-radius: 6px;
