@@ -6,7 +6,6 @@ block content
 
     a(href="/logout") Logout |
     a(href="/add_new_exclusion") New
-    //- TODO: Render the list by last name
     ul.list 
       each exclusion in exclusions
         div.excl-card
@@ -43,14 +42,14 @@ block content
     //- Render links based on authorization:
     .left-btn-div
       if user.role === 'admin' || user.role === 'supervisor'
-      a(href='/archives')
-        button.btn.btn-primary.list-btn(type="button") Home
+      a(href='/home')
+        i.fas-icon.fas-home(class="fa-solid fa-house")
       if user.role === 'admin'
-        a(href='/users')
-          button.btn.btn-primary.list-btn(type="button") Users
+       a(href='/users')
+          i.fas-icon.fas-accounts(class="fa-solid fa-users")
       else
         a(href=`/users/${user.loggedInUser}`)
-          button.btn.btn-primary.list-btn(type="button") Account
+           i.fas-icon.fas-accounts(class="fa-solid fa-user")
     .right-btn-div
       a(href='/logout')
-        button.btn.btn-primary.list-btn(type="button") Logout
+        i.fas-icon.fas-logout(class="fa-solid fa-right-from-bracket")

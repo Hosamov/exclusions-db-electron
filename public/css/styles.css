@@ -65,6 +65,31 @@ textarea {
   width: 100%;
 }
 
+.fas-printer {
+  position:absolute;
+  right: 8%;
+}
+
+.fas-logout {
+  position: absolute;
+  right: 20%;
+}
+
+.fas-account {
+  position: absolute;
+  right: 22%;
+}
+
+.fas-icon {
+  color: #0091f0;
+  margin: 0 5px;
+}
+
+.fas-icon:hover {
+  cursor: pointer;
+  color: #f05f00;
+}
+
 /* Home page */
 .home-container {
   text-align: center;
@@ -150,6 +175,21 @@ fieldset {
   width: 120px;
 }
 
+.list-btn-short {
+  width: 50px;
+  background: transparent;
+  border-radius: 5px;
+  border: none;
+  padding: .5rem;
+  color: #0091f0;
+  font-size: 1.2rem;
+  margin: 2px .25rem;
+}
+
+.list-btn-short:hover {
+  color: #f05f00;
+}
+
 .left-btn-div {
   display: inline;
 }
@@ -228,10 +268,10 @@ fieldset {
 
 .excl-container {
   margin: auto;
-  width: 65%;
+  width: 50%;
   border: 2px solid #5e5e5e;
   border-radius: 5px;
-  padding: 10px;
+  padding: 80px 100px;
   position: relative;
   background: #f6f6f6;
 }
@@ -243,8 +283,7 @@ fieldset {
 }
 
 .excl-title {
-  text-align: right;
-  margin-right: 10%;
+  text-align: center;
 }
 
 .logo {
@@ -261,7 +300,6 @@ fieldset {
 
 .excl-picture {
   text-align: right;
-  margin-right: 5%;
   margin-top: -5%;
   max-width: 250px;
   max-height: 280px;

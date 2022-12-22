@@ -9,8 +9,6 @@ const Exclusion = require('./models/exclusion');
 const email = require('./emailer');
 const emailBodies = require('./includes/email-bodies');
 const archiveHelper = require('./includes/archive-helper');
-const exclusion = require('./models/exclusion');
-const e = require('express');
 
 const recaptcha = new reCAPTCHA({
   siteKey: process.env.SITEKEY, // retrieved during setup
@@ -576,10 +574,18 @@ module.exports = function (app) {
                   } else {
                     foundUser.first_name = firstName;
                     foundUser.last_name = lastName;
-                    if (userKey === process.env.USER_KEY) {
+                    if (userKey === process.env.ADMIN_KEY) {
                       // Check if (admin) userkey has been inputted, and if it matches
                       console.log('User Key Accepted!');
                       foundUser.role = 'admin';
+                      foundUser.active = true;
+                    } else if(userKey === process.env.SUPV_KEY) {
+                      console.log('User Key Accepted!');
+                      foundUser.role = 'supervisor';
+                      foundUser.active = true;
+                    } else if(userKey === process.env.USER_KEY) {
+                      console.log('User Key Accepted!');
+                      foundUser.role = 'user';
                       foundUser.active = true;
                     } else {
                       console.log('Invalid user key/no key entered.');

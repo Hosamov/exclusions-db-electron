@@ -3,10 +3,14 @@ extends ../layout.pug
 block content 
   div.main-container
     h2 Exclusions List
-
+    
     if user.role === 'admin' || user.role === 'supervisor'
-        a(href='/add_new_exclusion')
-          button.btn.btn-primary.list-btn(type="button") New Excl.
+      a(href='/add_new_exclusion')
+        i.fas-icon.fas-new(class="fa-solid fa-plus")
+    a(href=`/users/${user.loggedInUser}`)
+      i.fas-icon.fas-account(class="fa-solid fa-user")
+    a(href=`/logout`)
+      i.fas-icon.fas-logout(class="fa-solid fa-right-from-bracket")
 
     ul.list 
       each exclusion in exclusions
@@ -46,15 +50,15 @@ block content
     .left-btn-div
       if user.role === 'admin' || user.role === 'supervisor'
         a(href='/add_new_exclusion')
-          button.btn.btn-primary.list-btn(type="button") New Excl.
+          i.fas-icon.fas-new(class="fa-solid fa-plus")
         a(href='/archive')
-          button.btn.btn-primary.list-btn(type="button") Archives
+          i.fas-icon.fas-accounts(class="fa-solid fa-box-archive")
       if user.role === 'admin'
         a(href='/users')
-          button.btn.btn-primary.list-btn(type="button") Users
+          i.fas-icon.fas-accounts(class="fa-solid fa-users")
       else 
         a(href=`/users/${user.loggedInUser}`)
-          button.btn.btn-primary.list-btn(type="button") Account
+          i.fas-icon.fas-accounts(class="fa-solid fa-user")
     .right-btn-div
       a(href='/logout')
-        button.btn.btn-primary.list-btn(type="button") Logout
+        i.fas-icon.fas-logout(class="fa-solid fa-right-from-bracket")

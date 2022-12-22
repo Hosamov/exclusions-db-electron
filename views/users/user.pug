@@ -11,12 +11,15 @@ block content
         li.exclusion-item Active User: #{item.active}
         li.exclusion-item Full Name: #{item.first_name} #{item.last_name}
         br
+
+        a(href=`/users/${item.username}/edit_user`)
+          i.fas-icon.fas-edit(class="fa-solid fa-pen-to-square")
         if currentUser.loggedInUserRole === 'admin'
-          button.btn.btn-list.list-btn(onclick=`window.location.href='/users/${item.username}/edit_user'`) Edit User
-        else 
-          button.btn.btn-list.list-btn(onclick=`window.location.href='/users/${item.username}/edit_user'`) Edit
-        if currentUser.loggedInUserRole === 'admin'
-          button.btn.list-btn(onclick=`window.location.href='/users/${item.username}/confirm_delete'`) Delete
+          a(href=`/users/${item.username}/confirm_delete`)
+            i.fas-icon.fas-delete(class="fa-solid fa-trash") 
+        a(href=`/logout`)
+          i.fas-icon.fas-logout(class="fa-solid fa-right-from-bracket")
       hr
       button.btn.list-btn(onclick=`history.back()`) Back
+      
     
