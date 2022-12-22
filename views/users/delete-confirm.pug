@@ -2,7 +2,11 @@ extends ../layout.pug
 
 block content 
   div.main-container
-    h3 Are you sure?
-    p Delete user #{user}?
-    button.btn(onclick=`window.location.href='/users/${user}/delete_user'`) Yes, Delete
-    button.btn(onclick='window.location.href=/users/') No, Go back
+    h2.content-title Delete user - Are you sure?
+    p.centered Are you sure you would like to delete user #{user}? 
+      strong Caution: 
+      em This action cannot be undone.
+    .btn-container
+      button.btn(onclick='window.location.href=/users/') No - Go back
+      button.btn.btn-red(onclick=`window.location.href='/users/${user}/delete_user'`) Yes - DELETE
+    

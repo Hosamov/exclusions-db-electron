@@ -78,13 +78,19 @@ module.exports = function (app) {
     // Accessible by Admin users only
     // Displays a list of all users, their roles and active status
     if (req.isAuthenticated()) {
+      const thisUser = {
+        loggedInUser: req.user.username,
+        loggedInUserRole: req.user.role,
+        active: req.user.active,
+        role: req.user.role,
+      };
       if (req.user.role === 'admin') {
         // Authorized user: Admin
         Account.find({}, (err, users) => {
           if (err) {
             console.log(err);
           } else {
-            res.render('./users/users', { users: users });
+            res.render('./users/users', { users: users, currentUser: thisUser, });
           }
         });
       } else {

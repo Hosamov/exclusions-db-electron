@@ -85,6 +85,10 @@ a:active {
   box-shadow: 1px 1px 2px 2px var(--gray4);
 }
 
+.centered {
+  text-align: center;
+}
+
 input {
   border-radius: 5px;
   padding: 12px 20px;
@@ -103,6 +107,7 @@ textarea {
   width: 100%;
 }
 
+/** Font Awsome Icons */
 .fas-printer {
   position:absolute;
   right: 8%;
@@ -144,8 +149,9 @@ textarea {
   color: var(--orange);
 }
 
-/* Home page */
+/** Home page */
 .home-container {
+
   text-align: center;
 }
 
@@ -219,10 +225,18 @@ fieldset {
   background-color: gray;
 }
 
-
 .btn:hover {
   background-color: var(--orange);
   cursor: pointer;
+}
+
+/* Houses delete_confirm div*/ 
+.btn-container {
+  text-align: center;
+}
+
+.btn-red:hover {
+  background-color: red;
 }
 
 .list-btn {
@@ -297,6 +311,17 @@ fieldset {
   margin: 10px 10px 5px 5px;
 }
 
+/** Users */
+
+.user-card {
+  position: relative;
+}
+
+.user-right {
+  position: absolute;
+  right: 5%;
+}
+
 .users-list-item {
   list-style-type: none;
   box-shadow: 1px 1px 2px 2px var(--gray4);
@@ -307,8 +332,7 @@ fieldset {
 
 .users-list-item:hover {
   cursor: pointer;
-  background-color: var(--blue);
-  color: var(--white);
+  background-color: var(--gray3);
 }
 
 .link:link {
