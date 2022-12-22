@@ -295,16 +295,15 @@ module.exports = function (app) {
   //* Single exclusion GET route - display only one (selected) exclusion order
   app.get('/home/:exclusion_id', (req, res, next) => {
     const exclusionId = req.params.exclusion_id; // Find user based on ID
-    const thisUser = {
-      user: req.user.username,
-      role: req.user.role,
-    };
     if (req.isAuthenticated()) {
+      const thisUser = {
+        user: req.user.username,
+        role: req.user.role,
+      };
       if (req.user.active === true) {
         Exclusion.findOne({ _id: { $eq: exclusionId } }, (err, exclusion) => {
           if (err) {
             console.log(err);
-            res.redirect('/error'); // Render /error route
           } else {
             res.render('./exclusions/exclusion', {
               exclusion: exclusion,
