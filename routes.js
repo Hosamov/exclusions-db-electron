@@ -80,7 +80,8 @@ module.exports = function (app) {
     // Accessible by Admin users only
     // Displays a list of all users, their roles and active status
     if (req.isAuthenticated()) {
-      if (req.user.role === 'admin') { // Authorized user: Admin
+      if (req.user.role === 'admin') {
+        // Authorized user: Admin
         Account.find({}, (err, users) => {
           if (err) {
             console.log(err);
@@ -170,7 +171,8 @@ module.exports = function (app) {
     // Edit user's auth level, add, delete users
     if (req.isAuthenticated()) {
       const user = req.params.user;
-      if (req.user.role === 'admin') { // Make accessible to admin user only
+      if (req.user.role === 'admin') {
+        // Make accessible to admin user only
         await Account.deleteOne({ username: user })
           .then(() => {
             res.redirect('/users');
@@ -191,7 +193,8 @@ module.exports = function (app) {
     // deletion of user
     if (req.isAuthenticated()) {
       const user = req.params.user;
-      if (req.user.role === 'admin') { // Make accessible to admin user only
+      if (req.user.role === 'admin') {
+        // Make accessible to admin user only
         res.render('./users/delete-confirm', { user: user });
       }
     } else {
@@ -212,7 +215,8 @@ module.exports = function (app) {
         active: req.user.active,
         role: req.user.role,
       };
-      if (req.user.active) { // First, ensure current user is active
+      if (req.user.active) {
+        // First, ensure current user is active
         Exclusion.find({}, async (err, foundExclusion) => {
           if (err) {
             console.log(err);
@@ -255,7 +259,7 @@ module.exports = function (app) {
               }
             );
           }
-        }).sort({last_name: 1}); // Sort list in ascending order
+        }).sort({ last_name: 1 }); // Sort list in ascending order
       } else {
         res.redirect('/unauthorized');
       }
@@ -450,7 +454,7 @@ module.exports = function (app) {
               }
             );
           }
-        }).sort({last_name: 1}); // Sort list in ascending order
+        }).sort({ last_name: 1 }); // Sort list in ascending order
       } else {
         res.redirect('/unauthorized');
       }
@@ -754,6 +758,7 @@ module.exports = function (app) {
       length: req.body.length,
       img_url: req.body.img_url,
       signature: req.body.signature,
+      super_title: req.body.super_title,
     };
 
     //* Calculations for adding exclusion length to served date:
@@ -793,6 +798,7 @@ module.exports = function (app) {
           foundExclusion.length = excl.length;
           foundExclusion.img_url = excl.img_url;
           foundExclusion.signature = excl.signature;
+          foundExclusion.super_title = excl.super_title;
 
           console.log(foundExclusion);
 

@@ -103,6 +103,12 @@ textarea {
   height: 50px;
 }
 
+.select-input-title {
+  margin-top: 8px;
+  width: 260px;
+  height: 50px;
+}
+
 fieldset {
   text-align: center;
   margin-top: 3px;
@@ -180,7 +186,7 @@ fieldset {
   padding: 0 5px 0 5px;
   margin-bottom: 2px;
   border-radius: 5px;
-  height: 280px;
+  height: 250px;
 }
 
 .exclusion-item {
@@ -194,19 +200,19 @@ fieldset {
 /** Exclusion image, displayed in /home route*/
 .image {
   max-width: 200px;
-  max-height: 280px;
+  max-height: 230px;
   border-radius: 5px;
   border-style: solid;
   border-width: 2px;
 }
 
 .image:hover {
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 
 .exclusion-image {
   float: right;
-  margin: 15px;
+  margin: 10px 10px 5px 5px;
 }
 
 .users-list-item {

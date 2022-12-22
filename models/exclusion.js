@@ -13,6 +13,7 @@ const ExclusionSchema = new Schema({
   length: String,
   img_url: String,
   signature: String,
+  super_title: String, // Title of supervisor in signature
   archived: Boolean,
 });
 

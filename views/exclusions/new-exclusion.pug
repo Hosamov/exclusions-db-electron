@@ -64,9 +64,17 @@ block content
         br 
         input.form-control(type='text' name="img_url" id="image_url" placeholder="Image URL")  
       .form-element
-        label.form-control(for='signature') Issuing Supervisor: 
+        label.form-control(for='signature') * Issuing Supervisor: 
         br
-        input.form-control(type='text' name="signature" id="signature" placeholder=`${currentUser.first_name} ${currentUser.last_name}` value=`${currentUser.first_name} ${currentUser.last_name}`)  
+        input.form-control(type='text' name="signature" id="signature" placeholder=`${currentUser.first_name} ${currentUser.last_name}` value=`${currentUser.first_name} ${currentUser.last_name}` required)  
+        br
+      .form-element
+        label.form-label(for='super_title') * Issuer Title
+        br
+        select.form-control.select-input-title(name="super_title" id="super_title" onChange='exclusionLengthChange()' required)  
+          option(value="Operations Supervisor" selected) Operations Supervisor
+          option(value="Operations Manager") Operations Manager
+          option(value="T-CC Manager") T-CC Manager
         br
         br
         small * required

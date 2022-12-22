@@ -100,8 +100,8 @@ An exclusions database that is web-based using Node, express and MongoDB/Mongoos
   by name
 - DONE » Setup '/archive/:exclusion_id' GET route - displays the archived exclusion
   order selected by the user. (only admins can delete these)
-- Sort both current and archived lists based on exclusion last name
-- Display excerpt on /home and /archive routes for exclusion description
+- DONE » Sort both current and archived lists based on exclusion last name
+- DONE » Display excerpt on /home and /archive routes for exclusion description
 - Complete styling for desktop and mobile
 
 ### Created: 11/29/2022; Last edited 12/19/2022

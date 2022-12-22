@@ -16,7 +16,7 @@ block content
               img.image.exclusion-image(src=`${exclusion.img_url}`) 
             div.exclusion-list-item
               li.exclusion-item
-                h4 Name: #{exclusion.last_name}, #{exclusion.first_name} 
+                h3 Name: #{exclusion.last_name}, #{exclusion.first_name} 
                   if exclusion.dob !== '' && exclusion.dob !== 'Invalid date'
                     | (DOB: #{exclusion.dob})
               li.exclusion-item
@@ -41,11 +41,7 @@ block content
                 li.exclusion-item 
                 strong Other Info: 
                 | #{exclusion.other_info}
-              
-              
-            
-              
-              
+                      
     //- Render links based on authorization:
     .left-btn-div
       if user.role === 'admin' || user.role === 'supervisor'
