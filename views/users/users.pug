@@ -28,7 +28,7 @@ block content
               a(href=`/users/${item.username}/confirm_delete`)
                 i.fas-icon.fas-delete(class="fa-solid fa-trash") 
           div.users-list-item#user-item(onclick=`window.location.href='/users/${item.username}'`)
-            li.exclusion-item #{item.first_name} #{item.last_name}
+            li.user-item #{item.first_name} #{item.last_name}
     button.btn.list-btn(onclick=`history.back()`) Back
     button.btn.list-btn(onclick="window.location.href=/home/") Home
 

@@ -11,8 +11,13 @@
   --charcoal_light: #47533f;  
 }
 
-@media only screen and (max-width: 1420px) {
+@media only screen and (max-width: 1700px) {
+  .header-right {
+    right: 5%;
+  }
+}
 
+@media only screen and (max-width: 1420px) {
   .header-right {
     position: relative;
     width: 72%;
@@ -22,12 +27,18 @@
   .main-container {
     width: 75%;
   }
+
+  /* Single exclusion page */
+  .excl-container {
+    width: 75%;
+  }
 }
 
 @media only screen and (max-width: 1000px) {
   body {
     font-size: 13pt;
   }
+
   .exclusion-list-item {
     padding: 0 5px 0 5px;
     margin-bottom: 2px;
@@ -46,6 +57,12 @@
   
   .exclusion-image {
     float: right;
+  }
+
+  /* Single exclusion page */
+  .excl-container {
+    position: relative;
+    width: 70%;
   }
 }
 
@@ -116,6 +133,42 @@
     font-size: 13pt;
     padding: 2px;
   }
+
+   /* Single exclusion page */
+   .excl-container {
+    position: relative;
+    width:90%;
+    padding: 15px;
+    padding-bottom: 30px;
+    margin-bottom: 0;
+  }
+
+  .excl-head {
+    text-align: center;
+  }
+
+  .logo {
+    padding: 0;
+    max-width: 150px;
+    max-height: 180px;
+  }
+
+  .excl-title {
+    font-size: 1.5rem;
+  }
+
+  .excl-body {
+    display: block;
+    text-align: center;
+    padding: 0;
+  }
+
+  .excl-picture {
+    max-width: 180px;
+    max-height: 210px;
+    float: left;
+    margin-top: 5px;
+  }
   
 }
 
@@ -137,6 +190,7 @@
   .header-right {
     width: 30px;
     height: 300px;
+    padding-top: 56px;
   }
 
   .fas-icon-light {
@@ -182,10 +236,64 @@
   .form-button {
     text-align: center;
   }
-  
+
   .btn {
     font-size: 12pt;
     padding: 6px;
   }
 
+  /* Users */
+  .user-right {
+    position: absolute;
+    right: 20%;
+  }
+
+  .user-edit-icons {
+    bottom: 15%;
+  }
+
+  li.user-item {
+    width: 60%;
+  }
+
+  .users-list-item {
+    width: 90%;
+  }
+
+  button.btn{
+    padding: 6px;
+    width: 70px;
+  }
+
+  .signature {
+    font-size: 1.2rem;
+  }
+
+  .right-btn-div {
+    position: absolute;
+    text-align: center;
+    bottom: 2px;
+    left: 35%;
+  }
+
+  .excl-container {
+    box-shadow: none;
+    width:85vw;
+    margin-right: 15px;
+  }
+
+  footer {
+    position: absolute;
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 300px) {
+  .signature {
+    font-size: 1rem;
+  }
+
+  footer {
+    top: 30px;
+  }
 }

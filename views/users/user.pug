@@ -18,7 +18,7 @@ block content
     ul.list 
       .user-card
         each item in user
-          .user-right
+          .user-right.user-edit-icons
             a(href=`/users/${item.username}/edit_user`)
               i.fas-icon.fas-edit(class="fa-solid fa-pen-to-square")
             if currentUser.loggedInUserRole === 'admin'
