@@ -1,17 +1,191 @@
-@media only screen and (max-width: 1420px) {
-  body {
-    background-color: yellow;
-  }
+:root {
+  --blue:#0091f0;
+  --blue2: #5cbeff; /* used in scrollbar*/
+  --orange: #f05f00;
+  --white: #f1f2f4; /* Text and icon color */
+  --gray1: #f5f2f0; /* Body background */
+  --gray2: #f6f6f6; /* Main container */
+  --gray3: #f0f3f5; /* Content title color */
+  --gray4: #e4e8eb; /* Box shadow color*/
+  --charcoal:#2e3629; 
+  --charcoal_light: #47533f;  
+}
 
-  .fas-icon-light {
-    padding: 0 10px 0 10px;
-    color: var(--white);
-    justify-content: right;
-  }
+@media only screen and (max-width: 1420px) {
 
   .header-right {
     position: relative;
     width: 72%;
     text-align: right;
   }
+
+  .main-container {
+    width: 75%;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  body {
+    font-size: 13pt;
+  }
+  .exclusion-list-item {
+    padding: 0 5px 0 5px;
+    margin-bottom: 2px;
+    border-radius: 5px;
+    height: 280px;
+  }
+
+  .exclusion-name {
+    font-size: 1.2rem;
+  }
+
+  .image {
+    max-width: 150px;
+    max-height: 180px;
+  }
+  
+  .exclusion-image {
+    float: right;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+
+  .header {
+    background-color: var(--gray1);
+  }
+  
+  .head-title {
+    text-align: left;
+    width: 150px;
+    color: var(--blue);
+  }
+
+  h1.head-title {
+    padding: 0;
+  }
+
+  .header-right {
+    position: absolute;
+    right: 5%;
+  }
+
+  .fas-icon-light {
+    color: var(--blue);
+    justify-content: right;
+  }
+
+  .content-title {
+    font-size: 1.5rem;
+  }
+
+  .main-container {
+    width: 94%;
+  }
+
+  .exclusion-list-item {
+    min-height: 285px;
+    margin-right: 20px;
+  }
+
+  .exclusion-name {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .image {
+    max-width: 150px;
+    max-height: 180px;
+  }
+
+  .right-div {
+    text-align: center;
+  }
+  
+  .exclusion-image {
+    float: none;
+    text-align: center;
+  }
+
+  /* Forms */
+  .form-label {
+    font-size: 14pt;
+  }
+
+  .form-control {
+    font-size: 13pt;
+    padding: 2px;
+  }
+  
+}
+
+@media only screen and (max-width: 396px) {
+  body {
+    font-size: 11pt;
+  }
+  .head-title {
+    width: 100vw;
+    text-align: center;
+    padding: 0;
+  }
+
+  h1.head-title {
+    font-size: 1.5rem;
+    padding: 0;
+  }
+
+  .header-right {
+    width: 30px;
+    height: 300px;
+  }
+
+  .fas-icon-light {
+    padding: 15px 15px 0 0;
+  }
+
+  .content-title {
+    font-size: 1.2rem;
+  }
+
+  .exclusion-name {
+    font-size: 1rem;
+  }
+
+  .exclusion-list-item {
+    min-height: 250px;
+    max-height: 360px;
+  }
+
+  .select-input {
+    padding: 0;
+    height: 2rem;
+  }
+
+  .form-label {
+    font-size: 12pt;
+  }
+
+  .form-control {
+    font-size: 12pt;
+    width: 94%;
+  }
+
+  .form-exclusion-section {
+    display: block;
+  }
+
+  .select-input-title {
+    padding: 0;
+    height: 2rem;
+  }
+
+  .form-button {
+    text-align: center;
+  }
+  
+  .btn {
+    font-size: 12pt;
+    padding: 6px;
+  }
+
 }

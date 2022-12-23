@@ -1,33 +1,44 @@
 extends ../layout.pug 
-
+block header
+  div.header-right
+    if currentUser.role === 'admin' || currentUser.role === 'supervisor'
+      a(href='/home')
+        i.fas-icon-light(class="fa-solid fa-house")
+    a(href=`/users/${currentUser.username}`)
+      i.fas-icon-light(class="fa-solid fa-user")
+    if currentUser.role === 'admin'
+      a(href='/users')
+        i.fas-icon-light(class="fa-solid fa-users")
+    a(href=`/logout`)
+      i.fas-icon-light(class="fa-solid fa-right-from-bracket")
 block content 
   div.main-container
-    h2 Edit existing Exclusion Order
-    
-    form(role='form', action="/edit_exclusion",method="post")
+    h2.content-title Edit existing Exclusion Order
+
+    form(role='form' action="/edit_exclusion" method="post")
       .form-exclusion-section
         .form-element
           label.form-label.name-label.tooltip(for='first_name') * First Name
             .tooltiptext Add middle initial, if known
-          input.form-control.name-input(type='text', name="first_name", placeholder='First Name' size='50' value=`${exclusion.first_name}` required)
+          input.form-control.name-input(type='text' name="first_name" placeholder='First Name' size='50' value=`${exclusion.first_name}` required)
           br
         .form-element
           label.form-label.name-label(for='last_name') * Last Name
-          input.form-control.name-input(type='text', name="last_name", placeholder='Last Name' size='50' value=`${exclusion.last_name}` required)
+          input.form-control.name-input(type='text' name="last_name" placeholder='Last Name' size='50' value=`${exclusion.last_name}` required)
           br
       .form-exclusion-section
         .form-element
           label.form-label(for='dob') DOB
-          input.form-control(type='date', name="dob", placeholder=`${exclusion.dob}` value=`${dates.dobDate}`)
+          input.form-control(type='date' name="dob", placeholder=`${exclusion.dob}` value=`${dates.dobDate}`)
           br
         .form-element
           label.form-label(for='other_info') Other Info (i.e. gender, height, weight, etc.)
-          input.form-control(type='text', name="other_info", placeholder='Other Information' value=`${exclusion.other_info}`)
+          input.form-control(type='text' name="other_info" placeholder='Other Information' value=`${exclusion.other_info}`)
           br
       .form-element
         label.form-label.tooltip(for='ordinance') * Ordinance/Policy (separated by ',')
           .tooltiptext Example: RCW 9.91.025(a), POL-310(13)
-        input.form-control(type='text', name="ordinance", placeholder='RCW/POL#, separated by comma' value=`${exclusion.ordinance}` required)  
+        input.form-control(type='text' name="ordinance" placeholder='RCW/POL#, separated by comma' value=`${exclusion.ordinance}` required)  
       .form-element
         label.form-label.tooltip(for='description') * Description of infraction
           small.number 

@@ -10,5 +10,5 @@ block content
         strong Caution: 
         | This action cannot be undone.
     .btn-container
-      button.btn(onclick='window.location.href=/users/') No - Go back
+      button.btn(onclick=`history.back()`) No - Go back
       button.btn.btn-red(onclick=`window.location.href='/users/${user}/delete_user'`) Yes - DELETE

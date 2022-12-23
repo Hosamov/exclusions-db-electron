@@ -13,7 +13,7 @@ block header
       i.fas-icon-light(class="fa-solid fa-right-from-bracket")
 block content 
   div.main-container
-    h2 Add New Exclusion Order
+    h2.content-title Add New Exclusion Order
     
     form(role='form', action="/add_exclusion",method="post")
       .form-exclusion-section
@@ -32,11 +32,12 @@ block content
           input.form-control(type='date', name="dob", placeholder='DOB')
           br
         .form-element
-          label.form-label(for='other_info') Other Info (i.e. gender, height, weight, etc.)
+          label.form-label.tooltip(for='other_info') Other Info
+            .tooltiptext i.e. Gender, height, weight...
           input.form-control(type='text', name="other_info", placeholder='Other Information')
           br
       .form-element
-        label.form-label.tooltip(for='ordinance') * Ordinance/Policy (separated by ',')
+        label.form-label.tooltip(for='ordinance') * Ordinance/Policy
           .tooltiptext Example: RCW 9.91.025(a), POL-310(13)
         input.form-control(type='text', name="ordinance", placeholder='RCW/POL#, separated by comma' required)  
       .form-element
