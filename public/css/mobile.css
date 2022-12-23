@@ -1,0 +1,17 @@
+@media only screen and (max-width: 1420px) {
+  body {
+    background-color: yellow;
+  }
+
+  .fas-icon-light {
+    padding: 0 10px 0 10px;
+    color: var(--white);
+    justify-content: right;
+  }
+
+  .header-right {
+    position: relative;
+    width: 72%;
+    text-align: right;
+  }
+}
