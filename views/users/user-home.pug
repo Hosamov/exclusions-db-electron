@@ -4,6 +4,8 @@ block header
     if user.role === 'admin' || user.role === 'supervisor'
       a(href='/add_new_exclusion')
         i.fas-icon-light(class="fa-solid fa-plus")
+      btn(onclick=`window.print()`)
+        i.fas-icon-light(class="fa-solid fa-print")
       a(href='/archive')
         i.fas-icon-light(class="fa-solid fa-box-archive")
     a(href=`/users/${user.loggedInUser}`)

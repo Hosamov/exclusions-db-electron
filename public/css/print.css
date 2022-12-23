@@ -15,6 +15,11 @@
     /* display: fixed; */
   }
 
+  .header-right {
+    display: hidden;
+    height: 0;
+  }
+
   .fas-icon {
     display: none;
   }
@@ -27,6 +32,10 @@
     display: none;
     position: fixed;
     bottom: 0;
+  }
+
+  .excl-foot {
+    break-after: always;
   }
 
   .excl-head {
@@ -47,10 +56,11 @@
   .excl-container {
     position: relative;
     margin: auto;
-    padding: 7% 3% 0 3%;
+    padding: 3% 3% 0 3%;
     width: 90%;
     box-shadow: none;
     display: block;
+    top: 0;
   }
 
   hr {

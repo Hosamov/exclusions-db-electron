@@ -29,8 +29,11 @@ block content
           .tooltiptext Example: RCW 9.91.025(a), POL-310(13)
         input.form-control(type='text', name="ordinance", placeholder='RCW/POL#, separated by comma' value=`${exclusion.ordinance}` required)  
       .form-element
-        label.form-label(for='description') * Description of infraction
-        textarea.form-control(id="description" name="description" rows='4' cols="50" required) #{exclusion.description}
+        label.form-label.tooltip(for='description') * Description of infraction
+          small.number 
+            em (520)
+          .tooltiptext Max characters: 520
+        textarea.form-control.description(id="description" name="description" rows='4' cols="20" maxlength="520" required) #{exclusion.description}
         br
       .form-exclusion-section
         .form-element
@@ -87,3 +90,4 @@ block content
           button.btn.btn-primary(type="button") Cancel
 
       script(src='/static/js/exclusion_form.js')
+      script(src='/static/js/character_counter.js')
