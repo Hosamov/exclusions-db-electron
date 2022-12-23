@@ -1,27 +1,40 @@
 # exclusions-db
 
-An exclusions database that is web-based using Node, express and MongoDB/Mongoose
+A exclusions database that is web-based using Node, express and
+MongoDB/Mongoose. Used for tracking individuals who are excluded from a service.
 
+## Technologies:
+- Node.js
+- Express.js
+- MongoDB/Mongoose
+- Pug.js
 
-# Site Members
-
-### Admin
-- Admins have complete access to the entire system, with full control in order to create, edit,
-  and delete exclusion orders, as well as authorize, edit, and delete all other individual
-  users.
-
-### Supervisor
-- Supervisors have the ability to create, read, edit, and delete exclusion
-  orders. Users may access their private account to change password.
-
-### User
-- User is the most basic class of site member, having the ability to view and
-  print exclusion orders. Users may access their private account to change password.
-
+## Features
+- User authentication:
+  - Google reCAPTCHA
+  - Password-based
+- User Authorization:
+  - User Roles:
+    - Admin
+      - Full: Create, Read, Update, Delete users and exclusions
+      - Can authorize other users.
+    - Supervisor
+      - Moderate: Create, Read, Update, Delete active exclusions.
+      - Can register and update own password.
+      - Can read archived exclusions list.
+    - User
+      - Minimal: Read access for existing exclusions
+      - Can register and update own password.
+- Exclusions:
+  - Authorized users may create exclusion orders via form data sent to mongoDB.
+  - Authorized users may edit any active exclusion order.
+- Rendering:
+  - Exclusions list and exclusion orders are rendered for desktop, mobile, and print.
+- Images are rendered remotely through Google Photos links. 
+  - Convert: https://www.labnol.org/embed/google/photos/
+  - 
 # Routes
-
 ## GET Routes:
-
 ### Routine GET Routes
 - / - root, redirects to /login or /home, depending on authentication status
 - /login - renders the login page
@@ -49,9 +62,11 @@ An exclusions database that is web-based using Node, express and MongoDB/Mongoos
   - Served Date
   - Expiration Date (optional)
   - Button to save the data
-- /home/:exclusion/edit - renders page to edit an exclusion
+- /home/:exclusion/edit - renders page to edit an exclusion. Accessible by Admin
+  or Supervisor users.
 - /home/:exclusion/delete - renders delete confirmation page for deleting an
-  exclusion order. Accessible by Admin user.
+  exclusion order. Accessible by Admin or Supervisor (except for Archived -
+  Admin only) user.
 - /home/:exclusion/archive - renders page with a text area for explaining why the
   active exclusion is being archived.
 - /home/archive - renders list of individuals who have previously been served an
@@ -64,13 +79,14 @@ An exclusions database that is web-based using Node, express and MongoDB/Mongoos
   in user to change own account's password/info. Also accessible by admin -
   editing roles, activating account, resetting password, etc...
 - /users/:user/delete_user - After confirmation in /users/:user/confirm_delete,
-  Redirects to /users route. 
+  Redirects to /users route. Accessible by Admin only. 
 - /users/:user/confirm_delete - Renders page to confirm deletion of selected
-  user. Redirects to /users/:user/delete_user route.
+  user. Redirects to /users/:user/delete_user route. Accessible by Admin only.
 
 ### Archive GET Routes
-- /archive - Renders list of all archived exclusions
-- /archive/:exclusion - Renders individual archived/past exclusion order
+- /archive - Renders list of all archived exclusions. Accessible by Admin or Supervisor.
+- /archive/:exclusion - Renders individual archived/past exclusion order.
+  Accessible by Admin or Supervisor.
 
 ## POST Routes:
 
@@ -81,27 +97,9 @@ An exclusions database that is web-based using Node, express and MongoDB/Mongoos
 - /edit_exclusion
 - /archive_exclusion
 
-## Technologies:
-- Node.js
-- Express.js
-- Pug.js
+## FUTURE FEATURES:
 
-## TODOS:
+- Admin authorization: Can lock exclusions
+- User logging
 
-- DONE » Setup CAPTCHA for /login and /register routes
-- DONE » Setup '/edit_user' GET and POST routes
-- DONE » Setup system for resetting user password
-- DONE » Setup email system for new logins and user edits
-- DONE » In /home route, render each exclusion with a hyperlink, linking to
-  /home/[exclusion _id], which will display the entire exclusion.
-- DONE » Setup '/home/:exclusion/edit' GET and POST routes
-- DONE » Setup '/home/:exclusion/delete' GET route
-- DONE » Setup '/archive' GET route - displays list of all past exclusion orders
-  by name
-- DONE » Setup '/archive/:exclusion_id' GET route - displays the archived exclusion
-  order selected by the user. (only admins can delete these)
-- DONE » Sort both current and archived lists based on exclusion last name
-- DONE » Display excerpt on /home and /archive routes for exclusion description
-- Complete styling for desktop and mobile
-
-### Created: 11/29/2022; Last edited 12/21/2022
+### Created: 11/29/2022; Last edited 12/22/2022
