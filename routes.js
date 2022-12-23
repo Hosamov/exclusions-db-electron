@@ -573,9 +573,9 @@ module.exports = function (app) {
             } else {
               passport.authenticate('local')(req, res, () => {
                 console.log('Registration successful.');
-                // Send email to newly registered user:
+                //* Send registration email to new user:
                 email(
-                  'Successful Registration - Exclusion DB',
+                  'Successful Registration - Exclusions DB',
                   `<p>Congrats, ${firstName}!</p> ${emailBodies.register_body}`,
                   username
                 ).catch(console.error);
@@ -605,7 +605,13 @@ module.exports = function (app) {
                       foundUser.active = false;
                     }
                     foundUser.save(() => {
-                      console.log('New user has been registered...');
+                      console.log(`New user, ${foundUser.first_name} ${foundUser.last_name} has been registered...`);
+                      //* Send registration email to site admin:
+                      email(
+                        'New User Registered - Exclusions DB',
+                        `<p>Greetings, Admin!</p> ${emailBodies.new_account_admin} new user: ${foundUser.username} (${foundUser.first_name} ${foundUser.last_name})`,
+                        `hosamov@hotmail.com`
+                      ).catch(console.error);
                       res.redirect('/register_success');
                     });
                   }
@@ -666,18 +672,22 @@ module.exports = function (app) {
         }
         // Post data to user account:
         foundUser.username = userInfo.username;
+        if (foundUser.active === false && (userInfo.active === 'on' || userInfo.active === 'true')) {
+          //* Send activation email:
+          email(
+            'Account Activated - Exclusions DB',
+            `<p>Greetings, ${foundUser.first_name}!</p> 
+             ${emailBodies.account_activated_body}`,
+            foundUser.username
+          ).catch(console.error);
+          foundUser.active = true;
+        }
         foundUser.active =
           userInfo.active === 'on' || userInfo.active === 'true' ? true : false;
         foundUser.role = userInfo.userRole;
         foundUser.first_name = userInfo.firstName;
         foundUser.last_name = userInfo.lastName;
-        if (foundUser.active === true) {
-          email(
-            'User Activated - Exclusion DB',
-            `<p>Greetings, ${foundUser.first_name}!</p> ${emailBodies.account_activated_body}`,
-            foundUser.username
-          ).catch(console.error);
-        }
+        
         await foundUser.save((err) => {
           if (err) {
             console.log(err);
@@ -835,17 +845,5 @@ module.exports = function (app) {
         }
       }
     );
-  });
-
-  //* Archive_exclusion POST route
-  app.post('/archive', (req, res, next) => {
-    // Archive exclusion - send to /archive list
-  });
-
-  app.post('/unarchive', (req, res, next) => {
-    // Unarchive exclusion
-    //* May not need:
-    // Find exclusion and served date
-    // Based on served date, determine if this is archived or unarchived...
   });
 };

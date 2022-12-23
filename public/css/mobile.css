@@ -282,8 +282,7 @@
   }
 
   footer {
-    position: absolute;
-    display: none;
+    margin-top: 60px;
   }
 }
 

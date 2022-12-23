@@ -5,6 +5,7 @@ const emailBodies = {
     <p>For security reasons, before you can begin using the app, an administrator must first 
     activate your account. If you are still unable to login after 24 hours, please contact 
     an administrator at the following email: exclusions@backyarddev.io</p>
+    <p>Please note: <em>your login username is the email address you signed up with.</em>
     <p>Thank you for signing up!</p>
     <br>
     <p>Backyard Dev</p>`,
@@ -13,6 +14,13 @@ const emailBodies = {
     <p> Your account for the Exclusions DB has been successfully activated/reactivated. You may now 
     login and use the application.</p>
     <p>Please click on the following link to access the application: <a href="https://www.mta-exclusions.net">https://www.mta-exclusions.net</a>. You may also copy & paste this link into your browser.</p>
+    <p>Please note: <em>your login username is the email address you signed up with.</em>
+    <p>Thank you!</p>
+    <br>
+    <p>Backyard Dev</p>`,
+  new_account_admin: `
+    <p> A new account has been created for the MTA Exclusions DB.</p>
+    <p>Please click on the following link to view and activate the user: <a href="https://www.mta-exclusions.net">https://www.mta-exclusions.net</a>.</p>
     <p>Thank you!</p>
     <br>
     <p>Backyard Dev</p>`,
