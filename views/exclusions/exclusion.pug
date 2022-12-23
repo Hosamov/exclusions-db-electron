@@ -1,11 +1,11 @@
 extends ../layout.pug 
 block header 
   div.header-right
-    if user.role === 'admin' || user.role === 'supervisor'
-      btn(onclick=`window.print()`)
+    btn(onclick=`window.print()`)
         i.fas-icon-light(class="fa-solid fa-print")
-      a(href='/home')
+    a(href='/home')
         i.fas-icon-light(class="fa-solid fa-house")
+    if user.role === 'admin' || user.role === 'supervisor'
       a(href='/archive')
         i.fas-icon-light(class="fa-solid fa-box-archive")
     a(href=`/users/${user.user}`)

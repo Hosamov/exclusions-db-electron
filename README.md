@@ -32,7 +32,7 @@ MongoDB/Mongoose. Used for tracking individuals who are excluded from a service.
   - Exclusions list and exclusion orders are rendered for desktop, mobile, and print.
 - Images are rendered remotely through Google Photos links. 
   - Convert: https://www.labnol.org/embed/google/photos/
-  - 
+  
 # Routes
 ## GET Routes:
 ### Routine GET Routes
