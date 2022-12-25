@@ -101,5 +101,6 @@ MongoDB/Mongoose. Used for tracking individuals who are excluded from a service.
 
 - Admin authorization: Can lock exclusions
 - User logging
+- * Add Register Success route
 
 ### Created: 11/29/2022; Last edited 12/22/2022

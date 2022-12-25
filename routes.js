@@ -569,7 +569,7 @@ module.exports = function (app) {
           Account.register({ username: username }, password, (err, account) => {
             if (err) {
               console.log(err);
-              res.redirect('/register');
+              res.render('register', {err});
             } else {
               passport.authenticate('local')(req, res, () => {
                 console.log('Registration successful.');
@@ -579,8 +579,7 @@ module.exports = function (app) {
                   `<p>Congrats, ${firstName}!</p> ${emailBodies.register_body}`,
                   username
                 ).catch(console.error);
-
-                Account.findOne({ username: username }, (err, foundUser) => {
+                Account.findOne({ username: username }, async (err, foundUser) => {
                   if (err) {
                     console.log(err);
                   } else {
@@ -604,14 +603,14 @@ module.exports = function (app) {
                       foundUser.role = null;
                       foundUser.active = false;
                     }
-                    foundUser.save(() => {
-                      console.log(`New user, ${foundUser.first_name} ${foundUser.last_name} has been registered...`);
+                    await foundUser.save(() => {
                       //* Send registration email to site admin:
                       email(
                         'New User Registered - Exclusions DB',
                         `<p>Greetings, Admin!</p> ${emailBodies.new_account_admin} new user: ${foundUser.username} (${foundUser.first_name} ${foundUser.last_name})`,
                         `hosamov@hotmail.com`
                       ).catch(console.error);
+                      console.log(`New user, ${foundUser.first_name} ${foundUser.last_name} has been registered...`);
                       res.redirect('/register_success');
                     });
                   }

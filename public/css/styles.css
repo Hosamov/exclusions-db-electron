@@ -176,6 +176,10 @@ textarea {
 
 /* User Home*/
 
+.error {
+  color: red;
+}
+
 .form-label {
   font-size: 1.3rem;
 }
