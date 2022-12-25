@@ -5,6 +5,10 @@ block content
   .main-container
     h2.content-title Register
     form(role='form', action="/register",method="post")
+      
+      h4.error Uh-oh! It looks like a user with the email address you selected is already registered. If you know your username and password, please 
+        a(href="/login") login
+        | . Otherwise, please choose a unique username.
       .form-element
         label.form-label(for='first_name') * First Name
         br

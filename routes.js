@@ -63,6 +63,13 @@ module.exports = function (app) {
     });
   });
 
+   //* Retry_login GET route
+   app.get('/retry_register', (req, res, next) => {
+    res.render('retry-register', {
+      recaptcha: recaptcha.formElement(),
+    });
+  });
+
   app.get('/register_success', (req, res, next) => {
     if (req.isAuthenticated()) {
       res.render('register-success');
@@ -90,7 +97,10 @@ module.exports = function (app) {
           if (err) {
             console.log(err);
           } else {
-            res.render('./users/users', { users: users, currentUser: thisUser, });
+            res.render('./users/users', {
+              users: users,
+              currentUser: thisUser,
+            });
           }
         });
       } else {
@@ -569,52 +579,62 @@ module.exports = function (app) {
           Account.register({ username: username }, password, (err, account) => {
             if (err) {
               console.log(err);
-              res.render('register', {err});
+              res.redirect('/retry_register');
             } else {
               passport.authenticate('local')(req, res, () => {
                 console.log('Registration successful.');
-                //* Send registration email to new user:
-                email(
-                  'Successful Registration - Exclusions DB',
-                  `<p>Congrats, ${firstName}!</p> ${emailBodies.register_body}`,
-                  username
-                ).catch(console.error);
-                Account.findOne({ username: username }, async (err, foundUser) => {
-                  if (err) {
-                    console.log(err);
-                  } else {
-                    foundUser.first_name = firstName;
-                    foundUser.last_name = lastName;
-                    if (userKey === process.env.ADMIN_KEY) {
-                      // Check if (admin) userkey has been inputted, and if it matches
-                      console.log('User Key Accepted!');
-                      foundUser.role = 'admin';
-                      foundUser.active = true;
-                    } else if (userKey === process.env.SUPV_KEY) {
-                      console.log('User Key Accepted!');
-                      foundUser.role = 'supervisor';
-                      foundUser.active = true;
-                    } else if (userKey === process.env.USER_KEY) {
-                      console.log('User Key Accepted!');
-                      foundUser.role = 'user';
-                      foundUser.active = true;
+                Account.findOne(
+                  { username: username },
+                  async (err, foundUser) => {
+                    if (err) {
+                      console.log(err);
                     } else {
-                      console.log('Invalid user key/no key entered.');
-                      foundUser.role = null;
-                      foundUser.active = false;
+                      foundUser.first_name = firstName;
+                      foundUser.last_name = lastName;
+                      if (userKey === process.env.ADMIN_KEY) {
+                        // Check if (admin) userkey has been inputted, and if it matches
+                        console.log('User Key Accepted!');
+                        foundUser.role = 'admin';
+                        foundUser.active = true;
+                      } else if (userKey === process.env.SUPV_KEY) {
+                        console.log('User Key Accepted!');
+                        foundUser.role = 'supervisor';
+                        foundUser.active = true;
+                      } else if (userKey === process.env.USER_KEY) {
+                        console.log('User Key Accepted!');
+                        foundUser.role = 'user';
+                        foundUser.active = true;
+                      } else {
+                        console.log('Invalid user key/no key entered.');
+                        foundUser.role = null;
+                        foundUser.active = false;
+                      }
+                      await foundUser.save((err) => {
+                        if (err) {
+                          console.log(err);
+                          res.next(err); // err route
+                        } else {
+                          //* Send registration email to new user:
+                          email(
+                            'Successful Registration - Exclusions DB',
+                            `<p>Congrats, ${firstName}!</p> ${emailBodies.register_body}`,
+                            username
+                          ).catch(console.error);
+                          //* Send registration email to site admin:
+                          email(
+                            'New User Registered - Exclusions DB',
+                            `<p>Greetings, Admin!</p> ${emailBodies.new_account_admin} new user: ${foundUser.username} (${foundUser.first_name} ${foundUser.last_name})`,
+                            `hosamov@hotmail.com`
+                          ).catch(console.error);
+                          console.log(
+                            `New user, ${foundUser.first_name} ${foundUser.last_name} has been registered...`
+                          );
+                          res.redirect('/register_success');
+                        }
+                      });
                     }
-                    await foundUser.save(() => {
-                      //* Send registration email to site admin:
-                      email(
-                        'New User Registered - Exclusions DB',
-                        `<p>Greetings, Admin!</p> ${emailBodies.new_account_admin} new user: ${foundUser.username} (${foundUser.first_name} ${foundUser.last_name})`,
-                        `hosamov@hotmail.com`
-                      ).catch(console.error);
-                      console.log(`New user, ${foundUser.first_name} ${foundUser.last_name} has been registered...`);
-                      res.redirect('/register_success');
-                    });
                   }
-                });
+                );
               });
             }
           });
@@ -671,7 +691,10 @@ module.exports = function (app) {
         }
         // Post data to user account:
         foundUser.username = userInfo.username;
-        if (foundUser.active === false && (userInfo.active === 'on' || userInfo.active === 'true')) {
+        if (
+          foundUser.active === false &&
+          (userInfo.active === 'on' || userInfo.active === 'true')
+        ) {
           //* Send activation email:
           email(
             'Account Activated - Exclusions DB',
@@ -686,7 +709,7 @@ module.exports = function (app) {
         foundUser.role = userInfo.userRole;
         foundUser.first_name = userInfo.firstName;
         foundUser.last_name = userInfo.lastName;
-        
+
         await foundUser.save((err) => {
           if (err) {
             console.log(err);
