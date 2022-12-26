@@ -1,4 +1,19 @@
+/** Microsoft Edge */
+@supports (-ms-ime-align: auto) {
+  div {
+    display: block;
+  }
+}
+
 @media print {
+  ul li {
+    page-break-after: avoid;
+  }
+
+  ul li:first-child {
+    page-break-after: auto;
+  }
+
   body {
     display: block;
     font-size: 14pt;
@@ -12,7 +27,7 @@
   .header {
     display: hidden;
     height: 0;
-    /* display: fixed; */
+    position: static; /* Thank you, https://makandracards.com/makandra/47966-how-to-fix-html-elements-being-cut-off-when-printing*/
   }
 
   .header-right {
@@ -36,14 +51,6 @@
 
   .excl-foot {
     break-after: always;
-  }
-
-  .excl-head {
-    
-  }
-
-  .excl-title {
-    /* text-align: center; */
   }
 
   .main-container {
@@ -81,20 +88,31 @@
     margin: 0;
   }
 
-   .excl-card {
+  .excl-card {
     /* display: block; */
     display: table;
     break-inside: avoid;
     border-bottom: 1px solid gray;
   }
 
-  div.exclusion-list-item {
+  .exclusion-list-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    margin-top: 15px;
     display: table;
     height: 260px;
-    break-inside: avoid;
-    box-shadow:none;
+    box-shadow: none;
   }
+
+  .exclusion-name {
+    margin-top: 15px;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
   .exclusion-image {
+    page-break-inside: avoid;
+    break-inside: avoid;
     border-radius: 0;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -103,6 +121,6 @@
 
   img {
     page-break-inside: avoid;
+    break-inside: avoid;
   }
-
 }
