@@ -312,6 +312,10 @@ module.exports = function (app) {
     }
   });
 
+  app.get('/home/img_embed_howto', (req, res, next) => {
+    res.render('./exclusions/image-howto');
+  });
+
   //* Single exclusion GET route - display only one (selected) exclusion order
   app.get('/home/:exclusion_id', (req, res, next) => {
     const exclusionId = req.params.exclusion_id; // Find user based on ID
