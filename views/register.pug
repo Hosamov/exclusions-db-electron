@@ -4,36 +4,40 @@ block content
   script(src="https://www.google.com/recaptcha/api.js" async defer)
   .main-container
     h2.content-title Register
-    form(role='form', action="/register",method="post")
+    form(role='form' action="/register" method="post")
       .form-element
         label.form-label(for='first_name') * First Name
         br
-        input.form-control(type='text', name="first_name", placeholder='Enter First Name' size='50' required)
+        input.form-control(type='text' name="first_name" placeholder='Enter First Name' size='50' required)
         br
       .form-element
         label.form-label(for='last_name') * Last Name
         br
-        input.form-control(type='text', name="last_name", placeholder='Enter Last Name' size='50' required)
+        input.form-control(type='text' name="last_name" placeholder='Enter Last Name' size='50' required)
         br
       .form-element
         label.form-label(for='username') * Email
         br
-        input.form-control(type='email', name="username", placeholder='Enter Email' size='50' required)
+        input.form-control(type='email' autocomplete="username" name="username" placeholder='Enter Email' size='50' required)
         br
       .form-element
         label.form-label(for='password') * Password
+          i.fas-icon.fa-x-pass(class="fa-solid fa-x" style="color: red;")
+          i.fas-icon.fa-check-pass(class="fa-solid fa-check" style="color: green;") 
         br
-        input.form-control(type='password', name="password", placeholder='Password' required)
+        input.form-control(id="password" autocomplete="new-password" type='password' name="password" placeholder='Password' pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters. Passwords must match." required)
         br
       .form-element
-        label.form-label(for='verify_password') * Verify Password
+        label.form-label(for='verify_password') * Verify Password 
+          i.fas-icon.fa-x-verify(class="fa-solid fa-x" style="color: red;")
+          i.fas-icon.fa-check-verify(class="fa-solid fa-check" style="color: green;") 
         br 
-        input.form-control(type='password', name="verify_password", placeholder='Verify Password' required)  
+        input.form-control(id="verify_password" autocomplete="confirm-password" type='password' name="verify_password" placeholder='Verify Password' required)  
         br
       .form-element
         label.form-label(for='user_key') User Key (optional)
         br
-        input.form-control(type='password', name="user_key", placeholder='Key')  
+        input.form-control(type='password' autocomplete="user-key" name="user_key" placeholder='Key')  
         br
         small * required
         br 
@@ -43,3 +47,5 @@ block content
         button.btn.btn-default(type='submit') Submit
         a(href='/')
           button.btn.btn-primary(type="button") Cancel
+      
+        script(src="./static/js/validator.js")

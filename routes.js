@@ -312,8 +312,13 @@ module.exports = function (app) {
     }
   });
 
+  //* Image embed Howto GET route - displays how to embed Google Photos for linking
   app.get('/home/img_embed_howto', (req, res, next) => {
-    res.render('./exclusions/image-howto');
+    if(req.isAuthenticated()) {
+      res.render('./exclusions/image-howto');
+    } else {
+      res.redirect('/unauthorized');
+    }
   });
 
   //* Single exclusion GET route - display only one (selected) exclusion order
