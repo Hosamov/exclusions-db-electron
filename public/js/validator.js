@@ -32,7 +32,7 @@ verifyPassword.addEventListener('keyup' || 'change', (event) => {
   } else {
     checkmarkVerify.style.visibility = 'hidden';
     exVerify.style.visibility = 'visible';
-    console.log(password.value, event.target.value);
+
   }
 });
 

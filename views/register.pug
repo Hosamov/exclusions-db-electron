@@ -21,11 +21,13 @@ block content
         input.form-control(type='email' autocomplete="username" name="username" placeholder='Enter Email' size='50' required)
         br
       .form-element
-        label.form-label(for='password') * Password
+        label.form-label.tooltip(for='password') * Password
+          .tooltiptext Password must contain at least one uppercase letter, one lowercase letter, one number, and be at least 8 characters long.
           i.fas-icon.fa-x-pass(class="fa-solid fa-x" style="color: red;")
           i.fas-icon.fa-check-pass(class="fa-solid fa-check" style="color: green;") 
         br
-        input.form-control(id="password" autocomplete="new-password" type='password' name="password" placeholder='Password' pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters. Passwords must match." required)
+        //- input.form-control(id="password" autocomplete="password" type='password' name="password" placeholder='Password' pattern="/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/i" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters. Passwords must match." required)
+        input.form-control(id="password" autocomplete="password" type='password' name="password" placeholder='Password' required)
         br
       .form-element
         label.form-label(for='verify_password') * Verify Password 
