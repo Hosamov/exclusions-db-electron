@@ -11,6 +11,8 @@
   --gray4: #e4e8eb; /* Box shadow color*/
   --charcoal:#2e3629; 
   --charcoal_light: #47533f;  
+  --error: #e1341e;
+  --success: #19bf2c;
 }
 
 body {
@@ -111,6 +113,8 @@ input {
   display: inline-block;
   box-sizing: border-box;
   width: 100%;
+  border: 2px solid var(--charcoal);
+  box-shadow: none;
 }
 
 textarea {
@@ -176,16 +180,12 @@ textarea {
 
 /* User Home*/
 
-.error {
-  color: red;
-}
-
 .form-label {
   font-size: 1.3rem;
 }
 
 .form-control {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
 }
 
 .form-exclusion-section {
@@ -415,6 +415,18 @@ fieldset {
   font-family: 'Great Vibes', cursive;
   font-size: 2rem;
   padding-left: 10px;
+}
+
+.error {
+  color: var(--error);
+}
+
+.form-element input:focus {
+  outline: none;
+}
+
+.form-element.error input {
+  border-color: var(--error);
 }
 
 

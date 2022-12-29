@@ -3,39 +3,38 @@ extends layout.pug
 block content  
   script(src="https://www.google.com/recaptcha/api.js" async defer)
   .main-container
-    h2.content-title Register
-    form(role='form' action="/register" method="post")
+    form(role='form' id='signup' name='register_form' action="/register" method="post")
+      h2.content-title Sign Up
       .form-element
         label.form-label(for='first_name') * First Name
         br
-        input.form-control(type='text' name="first_name" placeholder='Enter First Name' size='50' required)
+        input.form-control(type='text' id="first_name" name="first_name" placeholder='Enter First Name' size='50' required)
         br
+        small
       .form-element
         label.form-label(for='last_name') * Last Name
         br
-        input.form-control(type='text' name="last_name" placeholder='Enter Last Name' size='50' required)
+        input.form-control(type='text' id="last_name" name="last_name" placeholder='Enter Last Name' size='50' required)
         br
+        small
       .form-element
         label.form-label(for='username') * Email
         br
-        input.form-control(type='email' autocomplete="username" name="username" placeholder='Enter Email' size='50' required)
+        input.form-control(type='email' id="email" autocomplete="username" name="username" placeholder='Enter Email' size='50' required)
         br
+        small
       .form-element
-        label.form-label.tooltip(for='password') * Password
-          .tooltiptext Password must contain at least one uppercase letter, one lowercase letter, one number, and be at least 8 characters long.
-          i.fas-icon.fa-x-pass(class="fa-solid fa-x" style="color: red;")
-          i.fas-icon.fa-check-pass(class="fa-solid fa-check" style="color: green;") 
+        label.form-label(for='password') * Password
         br
-        //- input.form-control(id="password" autocomplete="password" type='password' name="password" placeholder='Password' pattern="/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/i" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters. Passwords must match." required)
-        input.form-control(id="password" autocomplete="password" type='password' name="password" placeholder='Password' required)
+        input.form-control(id="password" autocomplete="off" type='password' name="password" placeholder='Password' required)
         br
+        small
       .form-element
-        label.form-label(for='verify_password') * Verify Password 
-          i.fas-icon.fa-x-verify(class="fa-solid fa-x" style="color: red;")
-          i.fas-icon.fa-check-verify(class="fa-solid fa-check" style="color: green;") 
+        label.form-label(for='verify_password') * Confirm Password 
         br 
-        input.form-control(id="verify_password" autocomplete="confirm-password" type='password' name="verify_password" placeholder='Verify Password' required)  
+        input.form-control(id="confirm_password" autocomplete="off" type='password' name="verify_password" placeholder='Verify Password' required)  
         br
+        small
       .form-element
         label.form-label(for='user_key') User Key (optional)
         br
@@ -46,7 +45,7 @@ block content
         br
       p!= recaptcha
       .form-button
-        button.btn.btn-default(type='submit') Submit
+        button.btn.btn-default(type='submit') Sign Up
         a(href='/')
           button.btn.btn-primary(type="button") Cancel
       
