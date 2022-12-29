@@ -320,7 +320,7 @@ module.exports = function (app) {
       res.redirect('/unauthorized');
     }
   });
-
+  
   //* Single exclusion GET route - display only one (selected) exclusion order
   app.get('/home/:exclusion_id', (req, res, next) => {
     const exclusionId = req.params.exclusion_id; // Find user based on ID

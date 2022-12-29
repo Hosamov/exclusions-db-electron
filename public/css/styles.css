@@ -168,9 +168,12 @@ textarea {
   color: var(--orange);
 }
 
+.fas-icon-back {
+  position: relative;
+}
+
 /** Home page */
 .home-container {
-
   text-align: center;
 }
 

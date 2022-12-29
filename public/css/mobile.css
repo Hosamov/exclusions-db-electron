@@ -175,6 +175,7 @@
   body {
     font-size: 11pt;
   }
+
   .head-title {
     width: 100vw;
     text-align: center;
@@ -188,8 +189,8 @@
 
   .header-right {
     width: 30px;
-    height: 300px;
-    padding-top: 56px;
+    height: 100vh;
+    padding-top: 33.3vh;
   }
 
   .fas-icon-light {
@@ -268,12 +269,16 @@
     font-size: 1.2rem;
   }
 
-  .right-btn-div {
+  .left-btn-div {
+    /* display: none; */
+  }
+
+  /* .right-btn-div {
     position: absolute;
     text-align: center;
     bottom: 2px;
     left: 35%;
-  }
+  } */
 
   .excl-container {
     box-shadow: none;
