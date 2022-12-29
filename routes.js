@@ -46,14 +46,31 @@ module.exports = function (app) {
   //* Logout GET route
   app.get('/logout', (req, res, next) => {
     //Note: Passport 0.6.0^ requires promise cb for req.logout()
-    req.logout((err) => {
-      if (err) {
-        return next(err);
-      } else {
-        console.log('successfully logged out.');
-      }
-    });
-    res.redirect('/');
+    if(req.isAuthenticated()) {
+      const loggedInUser = {
+        username: req.user.username,
+      };
+      Account.findOne({username: {$eq: loggedInUser.username}}, async (err, foundUser) => {
+        foundUser.loggedIn = false;
+        await foundUser.save((err) => {
+          if (err) {
+            console.log(err);
+            res.next(err); // err route
+          } else {
+            req.logout((err) => {
+              if (err) {
+                return next(err);
+              } else {
+                console.log(`User, ${loggedInUser.username} has logged out.`);
+                res.redirect('/');
+              }
+            });
+          }
+        });
+      })
+    } else {
+      res.redirect('/'); // No need to logout - already logged out...
+    }
   });
 
   //* Register GET route
@@ -63,8 +80,8 @@ module.exports = function (app) {
     });
   });
 
-   //* Retry_login GET route
-   app.get('/retry_register', (req, res, next) => {
+  //* Retry_login GET route
+  app.get('/retry_register', (req, res, next) => {
     res.render('retry-register', {
       recaptcha: recaptcha.formElement(),
     });
@@ -314,13 +331,13 @@ module.exports = function (app) {
 
   //* Image embed Howto GET route - displays how to embed Google Photos for linking
   app.get('/home/img_embed_howto', (req, res, next) => {
-    if(req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
       res.render('./exclusions/image-howto');
     } else {
       res.redirect('/unauthorized');
     }
   });
-  
+
   //* Single exclusion GET route - display only one (selected) exclusion order
   app.get('/home/:exclusion_id', (req, res, next) => {
     const exclusionId = req.params.exclusion_id; // Find user based on ID
@@ -547,15 +564,23 @@ module.exports = function (app) {
               () => {
                 Account.findOne(
                   { username: account.username },
-                  (err, foundUser) => {
+                  async (err, foundUser) => {
                     if (err) {
                       console.log(err);
                     } else {
                       if (foundUser.active) {
-                        console.log('User is active!');
-                        res.redirect('/home');
+                        foundUser.loggedIn = true;
+                        await foundUser.save((err) => {
+                          if (err) {
+                            console.log(err);
+                            res.next(err); // err route
+                          } else {
+                            console.log(`User, ${foundUser.username} has logged in.`);
+                            res.redirect('/home');
+                          }
+                        });
                       } else {
-                        console.log('User is not active!');
+                        console.log(`User ${foundUser.username} is not active and cannot login.`);
                         res.redirect('/unauthorized');
                       }
                     }
@@ -600,6 +625,7 @@ module.exports = function (app) {
                     } else {
                       foundUser.first_name = firstName;
                       foundUser.last_name = lastName;
+                      foundUser.loggedIn = false;
                       if (userKey === process.env.ADMIN_KEY) {
                         // Check if (admin) userkey has been inputted, and if it matches
                         console.log('User Key Accepted!');
