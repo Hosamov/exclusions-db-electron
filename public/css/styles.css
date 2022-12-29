@@ -158,6 +158,14 @@ textarea {
   color: var(--orange);
 }
 
+.fas-icon-loggedin {
+  color: var(--success);
+}
+
+.fas-icon-loggedout {
+  color: var(--error);
+}
+
 .fas-icon {
   padding: 0 10px 0 10px;
   color: var(--blue);
