@@ -6,8 +6,9 @@ block header
     if user.role === 'admin'
       a(href='/users')
         i.fas-icon-light(class="fa-solid fa-users")  
-    a(href=`/logout`)
-      i.fas-icon-light(class="fa-solid fa-right-from-bracket")
+    i.fas-icon-light(id="logout-icon" class="fa-solid fa-right-from-bracket")
+      form(id='logout' action="/logout" method="post")
+        btn( type="submit") 
 block content  
   div.main-container
     h2.content-title Exclusions List
@@ -65,3 +66,4 @@ block content
     .right-btn-div
       btn(onclick=`window.print()`)
         .fas-icon(class="fa-solid fa-print")
+  script(src='/static/js/logout.js')

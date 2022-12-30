@@ -43,36 +43,6 @@ module.exports = function (app) {
     res.render('unauthorized');
   });
 
-  //* Logout GET route
-  app.get('/logout', (req, res, next) => {
-    //Note: Passport 0.6.0^ requires promise cb for req.logout()
-    if(req.isAuthenticated()) {
-      const loggedInUser = {
-        username: req.user.username,
-      };
-      Account.findOne({username: {$eq: loggedInUser.username}}, async (err, foundUser) => {
-        foundUser.loggedIn = false;
-        await foundUser.save((err) => {
-          if (err) {
-            console.log(err);
-            res.next(err); // err route
-          } else {
-            req.logout((err) => {
-              if (err) {
-                return next(err);
-              } else {
-                console.log(`User, ${loggedInUser.username} has logged out.`);
-                res.redirect('/');
-              }
-            });
-          }
-        });
-      })
-    } else {
-      res.redirect('/'); // No need to logout - already logged out...
-    }
-  });
-
   //* Register GET route
   app.get('/register', (req, res, next) => {
     res.render('register', {
@@ -575,12 +545,16 @@ module.exports = function (app) {
                             console.log(err);
                             res.next(err); // err route
                           } else {
-                            console.log(`User, ${foundUser.username} has logged in.`);
+                            console.log(
+                              `User, ${foundUser.username} has logged in.`
+                            );
                             res.redirect('/home');
                           }
                         });
                       } else {
-                        console.log(`User ${foundUser.username} is not active and cannot login.`);
+                        console.log(
+                          `User ${foundUser.username} is not active and cannot login.`
+                        );
                         res.redirect('/unauthorized');
                       }
                     }
@@ -597,6 +571,39 @@ module.exports = function (app) {
       }
     });
   });
+
+  //* Logout POST route https://www.passportjs.org/concepts/authentication/logout/
+  app.post('/logout', (req, res, next) => {
+    //Note: Passport 0.6.0^ requires promise cb for req.logout()
+    if (req.isAuthenticated()) {
+      const loggedInUser = {
+        username: req.user.username,
+      };
+      Account.findOne(
+        { username: { $eq: loggedInUser.username } },
+        async (err, foundUser) => {
+          foundUser.loggedIn = false;
+          await foundUser.save((err) => {
+            if (err) {
+              console.log(err);
+              res.next(err); // err route
+            } else {
+              req.logout((err) => {
+                if (err) {
+                  return next(err);
+                } else {
+                  console.log(`User, ${loggedInUser.username} has logged out.`);
+                  res.redirect('/');
+                }
+              });
+            }
+          });
+        }
+      );
+    } else {
+      res.redirect('/'); // No need to logout - already logged out...
+    }
+  }); 
 
   //* Register POST route
   app.post('/register', (req, res, next) => {

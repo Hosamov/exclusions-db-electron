@@ -1,6 +1,6 @@
 extends ../layout.pug 
 block header 
-  div.header-right
+  .header-right 
     if currentUser.role === 'admin' || currentUser.role === 'supervisor'
       a(href='/home')
         i.fas-icon-light(class="fa-solid fa-house")
@@ -8,9 +8,11 @@ block header
         i.fas-icon-light(class="fa-solid fa-box-archive")
     if currentUser.role === 'admin'
       a(href=`/users/${currentUser.loggedInUser}`)
-        i.fas-icon-light(class="fa-solid fa-user")
-    a(href=`/logout`)
-      i.fas-icon-light(class="fa-solid fa-right-from-bracket")
+        i.fas-icon-light(class="fa-solid fa-user")   
+    i.fas-icon-light(id="logout-icon" class="fa-solid fa-right-from-bracket")
+      form(id='logout' action="/logout" method="post")
+        btn( type="submit") 
+      
 //- Renders users page
 block content
   div.main-container
@@ -34,4 +36,4 @@ block content
                 i.fas-icon-loggedout(class="fa-solid fa-circle fa-xs") 
     button.btn.list-btn(onclick=`history.back()`) Back
     button.btn.list-btn(onclick="window.location.href=/home/") Home
-
+  script(src='/static/js/logout.js')

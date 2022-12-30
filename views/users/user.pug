@@ -9,8 +9,9 @@ block header
     if currentUser.role === 'admin'
       a(href='/users')
         i.fas-icon-light(class="fa-solid fa-users")
-    a(href=`/logout`)
-      i.fas-icon-light(class="fa-solid fa-right-from-bracket")
+    i.fas-icon-light(id="logout-icon" class="fa-solid fa-right-from-bracket")
+      form(id='logout' action="/logout" method="post")
+        btn( type="submit") 
 //- Renders individual user
 block content
   div.main-container
@@ -30,4 +31,4 @@ block content
           li.exclusion-item Full Name: #{item.first_name} #{item.last_name}
         hr
         button.btn.list-btn(onclick=`history.back()`) Back
-
+  script(src='/static/js/logout.js')

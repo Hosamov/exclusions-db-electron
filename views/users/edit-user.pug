@@ -1,5 +1,15 @@
 extends ../layout.pug 
-
+block header
+  div.header-right
+    if currentUser.role === 'admin' || currentUser.role === 'supervisor'
+      a(href='/home')
+        i.fas-icon-light(class="fa-solid fa-house")
+    if currentUser.role === 'admin'
+      a(href='/users')
+        i.fas-icon-light(class="fa-solid fa-users")
+    i.fas-icon-light(id="logout-icon" class="fa-solid fa-right-from-bracket")
+      form(id='logout' action="/logout" method="post")
+        btn( type="submit") 
 block content 
   div.main-container
     each item in user
@@ -9,49 +19,49 @@ block content
           if currentUser.loggedInUserRole === 'admin'
             label.form-label(name='email') Email
             br
-            input.form-control(type='text', name="email", placeholder=`${item.username}` value=`${item.username}`)
+            input.form-control(type='text' name="email", placeholder=`${item.username}` value=`${item.username}`)
             br
             hr
           else 
-            input.form-control(type='hidden', name="email", placeholder=`${item.username}` value=`${item.username}`)
+            input.form-control(type='hidden' name="email", placeholder=`${item.username}` value=`${item.username}`)
             br  
         if currentUser.loggedInUserRole === 'admin'
           .form-element
             label.form-label(name='first_name') First Name
             br
-            input.form-control(type='text', name="first_name", placeholder=`${item.first_name}` value=`${item.first_name}`)
+            input.form-control(type='text' name="first_name", placeholder=`${item.first_name}` value=`${item.first_name}`)
             br
           .form-element
             label.form-label(name='last_name') Last Name
             br
-            input.form-control(type='text', name="last_name", placeholder=`${item.last_name}` value=`${item.last_name}`)
+            input.form-control(type='text' name="last_name", placeholder=`${item.last_name}` value=`${item.last_name}`)
             br
             hr
         else 
           .form-element
-            input.form-control(type='hidden', name="first_name", placeholder=`${item.first_name}` value=`${item.first_name}`)
+            input.form-control(type='hidden' name="first_name", placeholder=`${item.first_name}` value=`${item.first_name}`)
             br
           .form-element
-            input.form-control(type='hidden', name="last_name", placeholder=`${item.last_name}` value=`${item.last_name}`)
+            input.form-control(type='hidden' name="last_name", placeholder=`${item.last_name}` value=`${item.last_name}`)
           .form-element
-            input.form-control(type='hidden', name="is_active", value=`${item.active}`)
+            input.form-control(type='hidden' name="is_active", value=`${item.active}`)
           .form-element
-            input.form-control(type='hidden', name="user_role", value=`${item.role}`)
+            input.form-control(type='hidden' name="user_role", value=`${item.role}`)
 
         .form-element
           label.form-label(name='current_password') Current Password
           br
-          input.form-control(type='password', name="current_password", placeholder='Current Password')
+          input.form-control(type='password' name="current_password" placeholder='Current Password')
           br
         .form-element
           label.form-label(name='new_password') Change Password
           br
-          input.form-control(type='password', name="new_password", placeholder='New Password')
+          input.form-control(type='password' name="new_password" placeholder='New Password')
           br
         .form-element
           label.form-label(name='confirm_password') Confirm New Password
           br
-          input.form-control(type='password', name="confirm_password", placeholder='Confirm New Password')
+          input.form-control(type='password' name="confirm_password" placeholder='Confirm New Password')
           br 
         if currentUser.loggedInUserRole === 'admin'
           hr
@@ -104,7 +114,7 @@ block content
                     input.admin-form-control(type='radio' name='user_role' value='inactive' checked)
                   br
           br
- 
+
         .form-button
           button.btn.btn-default.list-btn(type='submit') Submit
       hr
