@@ -574,7 +574,6 @@ module.exports = function (app) {
 
   //* Logout POST route https://www.passportjs.org/concepts/authentication/logout/
   app.post('/logout', (req, res, next) => {
-    //Note: Passport 0.6.0^ requires promise cb for req.logout()
     if (req.isAuthenticated()) {
       const loggedInUser = {
         username: req.user.username,
@@ -588,6 +587,7 @@ module.exports = function (app) {
               console.log(err);
               res.next(err); // err route
             } else {
+              //Note: Passport 0.6.0^ requires promise cb for req.logout()
               req.logout((err) => {
                 if (err) {
                   return next(err);

@@ -43,6 +43,15 @@
     display: none;
   }
 
+  /*Select input - found on user-home, select inputs*/
+  .select-label-home {
+    display: none;
+  }
+  
+  .select-input-home {
+    display: none;
+  }
+
   footer {
     display: none;
     position: fixed;
