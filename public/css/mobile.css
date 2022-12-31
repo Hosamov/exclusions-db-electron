@@ -171,6 +171,21 @@
   }
 }
 
+@media only screen and (max-width: 436px) {
+  .bottom-left-div {
+    float: none;
+    max-width: 300px;
+    padding: 5px;
+  }
+  
+  .bottom-right-div {
+    float: none;
+    text-align: left;
+    max-width: 300px;
+    padding: 0 5px 5px 5px;
+  }
+}
+
 @media only screen and (max-width: 396px) {
   body {
     font-size: 11pt;

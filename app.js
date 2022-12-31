@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const session = require('express-session');
-const memoryStore = require('memorystore')(session);
+const memoryStore = require('memorystore')(session); // used with express-session(?)
 
 require('dotenv/config');
 
@@ -18,6 +18,8 @@ passport.deserializeUser(Account.deserializeUser());
 require('./initDB')();
 
 const app = express();
+
+const homeRoute = require('./routes/home.js');
 
 app.set('view engine', 'pug');
 
@@ -36,6 +38,9 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
+//* Filter routes path:
+app.use('/', homeRoute);
 
 //* Routes
 require('./routes')(app);

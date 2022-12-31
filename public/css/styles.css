@@ -290,12 +290,30 @@ fieldset {
 
 .left-btn-div {
   display: inline;
+  /* float: left; */
 }
 
 .right-btn-div {
   position: relative;
   float: right;
   text-align: right;
+}
+
+.bottom-div {
+  display: inline-block;
+}
+.bottom-left-div {
+  display: inline-block;
+  padding: 0 5px 0 0;
+}
+
+.bottom-right-div {
+  display: inline-block;
+  padding: 0 0 0 5px;
+}
+
+.invisible {
+  display: none;
 }
 
 .list {
