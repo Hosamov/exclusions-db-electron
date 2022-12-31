@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/static', express.static('public'));
 app.use(
   session({
-    cookie: { maxAge: 86400000 },
+    cookie: {expires: 10800000},//{ maxAge: 86400000 }, // Expire at 3 hours
     store: new MemoryStore({
       checkPeriod: 86400000 // prune expired entries every 24h
     }),
@@ -44,7 +44,6 @@ app.use('/', homeRoute);
 
 //* Routes
 require('./routes')(app);
-
 
 //******* ERROR HANDLERS *******//
 

@@ -73,4 +73,8 @@ router.get('/home', async (req, res, next) => {
   }
 });
 
+// router.get('/home/filter/:filter/:sort', (req, res, next) => {
+//   res.send('/home/filter/:filter/:sort');
+// });
+
 module.exports = router;

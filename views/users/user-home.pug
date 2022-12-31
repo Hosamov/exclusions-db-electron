@@ -29,7 +29,7 @@ block content
             form(id='form-filter' action="/filter" method="post")
               label.select-label-home(for='filter') 
                 small Filter: 
-              select.select-input-home(name="filter" id="filter")
+              select.select-input-home(name="filter" id="filter" disabled)
                 option(value="all") All
                 option(value="limited") Limited
                 option(value="lifetime") Lifetime
@@ -38,7 +38,7 @@ block content
           form(id='form-sort' action="/sort" method="post")  
             label.select-label-home(for='sort') 
               small Sort by: 
-            select.select-input-home(name="sort" id="sort")
+            select.select-input-home(name="sort" id="sort" disabled)
               option(value="last_name") Last Name
               option(value="first_name") First Name
               option(value="length") Exclusion Length
