@@ -30,19 +30,44 @@ block content
             label.select-label-home(for='filter') 
               small Filter: 
             select.select-input-home(name="filter" id="filter")
-              option(value="all" #{filter}) All
-              option(value="limited") Limited
-              option(value="lifetime") Lifetime
+              if filter === 'all'
+                option(value="all" selected) All
+                option(value="limited") Limited
+                option(value="lifetime") Lifetime
+              else if filter === 'limited'
+                option(value="all") All
+                option(value="limited" selected) Limited
+                option(value="lifetime") Lifetime
+              else if filter === 'lifetime'
+                option(value="all") All
+                option(value="limited") Limited
+                option(value="lifetime" selected) Lifetime
+              else 
+                option(value="all") All
+                option(value="limited") Limited
+                option(value="lifetime") Lifetime
             .bottom-right-div
             //-* Sort dropdown:
             label.select-label-home(for='srt') 
               small Sort by: 
             select.select-input-home(name="srt" id="srt")
-              option(value="last_name") Last Name
-              option(value="first_name") First Name
-              option(value="length") Exclusion Length
-              option(value="exp_date") Expiration Date
-            button(onclick='filterSort()') hey
+              if sort === 'last_name'
+                option(value="last_name" selected) Last Name
+                option(value="first_name") First Name
+                option(value="exp_date") Expiration Date
+              else if sort === 'first_name'
+                option(value="last_name") Last Name
+                option(value="first_name" selected) First Name
+                option(value="exp_date") Expiration Date
+              else if sort === 'exp_date'
+                option(value="last_name") Last Name
+                option(value="first_name") First Name
+                option(value="exp_date" selected) Expiration Date
+              else 
+                option(value="last_name") Last Name
+                option(value="first_name") First Name
+                option(value="exp_date") Expiration Date
+            button.filter-srt-btn(onclick='filterSort()') Submit
       hr
       each exclusion in exclusions
         .excl-card

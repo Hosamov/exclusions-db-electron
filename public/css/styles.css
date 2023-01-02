@@ -269,6 +269,10 @@ fieldset {
   background-color: red;
 }
 
+.filter-srt-btn {
+  margin-left: 5px;
+}
+
 .list-btn {
   width: 120px;
 }
