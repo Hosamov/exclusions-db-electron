@@ -529,3 +529,57 @@ fieldset {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--charcoal_light);
 }
+
+/** Modal Window */
+
+.modal-container {
+  position: fixed;
+  padding-top: 10%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.modal {
+  position: relative;
+  width: 95%;
+  max-width: 420px;
+  max-height: 415px;
+  margin: 10px auto auto;
+  padding: 1%;
+  background: #fff;
+  border-radius: 0.25em;
+  border: 1px solid rgba(100, 100, 100, 0.3);
+  transition: .4s ease-out;
+}
+
+.modal h2 {
+  text-align: center;
+}
+
+.modal-submit-btn {
+  position: absolute;
+  cursor: pointer;
+  outline: none;
+  border-radius: 0.25em;
+  bottom: 20px;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  color: var(--white); /* Updated */
+  background: var(--blue); /* Updated */
+  outline: none;
+  border-radius: 0.25em;
+  border: none; /* Update */
+}
+
+.modal-close-btn:hover {
+  cursor: pointer;
+  background: var(--orange) /* Updated */
+}

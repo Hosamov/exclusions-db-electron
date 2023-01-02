@@ -4,7 +4,6 @@ const router = express.Router();
 // Models:
 const Account = require('../models/account');
 
-
 //* Users GET route
 //* Renders selectable list of all registered users
 router.get('/users', (req, res, next) => {
@@ -16,7 +15,8 @@ router.get('/users', (req, res, next) => {
       active: req.user.active,
       role: req.user.role,
     };
-    if (thisUser.role === 'admin') { // Authorized user: Admin
+    if (thisUser.role === 'admin') {
+      // Authorized user: Admin
       Account.find({}, (err, users) => {
         if (err) {
           console.log(err);
@@ -118,7 +118,7 @@ router.get('/users/:user/delete_user', async (req, res, next) => {
     if (req.user.role === 'admin') {
       await Account.deleteOne({ username: user })
         .then(() => {
-          res.redirect('/users');
+          res.redirect(`/users/${user}/delete_success`);
           console.log(`Account for ${user} successfully deleted.`);
         })
         .catch((err) => {
@@ -130,6 +130,20 @@ router.get('/users/:user/delete_user', async (req, res, next) => {
     }
   } else {
     res.redirect('/login');
+  }
+});
+
+//* /user/:users/delete_success GET route
+//* Renders users/delete-success template
+router.get('/users/:user/delete_success', (req, res, next) => {
+  if (req.isAuthenticated()) {
+    const user = req.params.user;
+    // Make accessible to admin user only
+    if (req.user.role === 'admin') {
+      res.render('./users/delete-success', { user: user });
+    }
+  } else {
+    res.redirect('/unauthorized');
   }
 });
 

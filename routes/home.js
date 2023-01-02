@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const moment = require('moment');
 
 // Models:
 const Exclusion = require('../models/exclusion');
@@ -228,7 +229,7 @@ router.get('/home/:exclusion/delete', async (req, res, next) => {
     ) {
       await Exclusion.deleteOne({ _id: { $eq: exclusion_id } }) // locate by id
         .then(() => {
-          res.redirect('/home');
+          res.redirect(`/home/${exclusion_id}/delete_success`);
           console.log(`Exclusion for ${exclusion_id} successfully deleted.`);
         })
         .catch((err) => {
@@ -240,6 +241,20 @@ router.get('/home/:exclusion/delete', async (req, res, next) => {
     }
   } else {
     res.redirect('/');
+  }
+});
+
+//* /user/:users/delete_success GET route
+//* Render exclusions/delete-success template
+router.get('/home/:id/delete_success', (req, res, next) => {
+  if (req.isAuthenticated()) {
+    const exclusionId = req.params.id;
+    // Make accessible to admin user only
+    if (req.user.role === 'admin') {
+      res.render('./exclusions/delete-success', { id: exclusionId });
+    }
+  } else {
+    res.redirect('/unauthorized');
   }
 });
 

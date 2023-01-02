@@ -14,25 +14,6 @@ const recaptcha = new reCAPTCHA({
 });
 
 module.exports = function (app) {
-  //TODO: Change this to a modal window
-  //* /user/:users/confirm_delete GET route
-  app.get('/users/:user/confirm_delete', (req, res, next) => {
-    // Renders delete-confirm template, presents confirmation page prior to
-    // deletion of user
-    if (req.isAuthenticated()) {
-      const user = req.params.user;
-      if (req.user.role === 'admin') {
-        // Make accessible to admin user only
-        res.render('./users/delete-confirm', { user: user });
-      }
-    } else {
-      res.redirect('/unauthorized');
-    }
-  });
-
-  ////* END USER Routes ////
-
-  ////* BEGIN EXCLUSIONS Routes ////
 
   //* Image embed Howto GET route - displays how to embed Google Photos for linking
   app.get('/home/img_embed_howto', (req, res, next) => {
@@ -42,38 +23,6 @@ module.exports = function (app) {
       res.redirect('/unauthorized');
     }
   });
-
-  // TODO: Render in modal window:
-  //* /home/:exclusion/confirm_delete GET route
-  app.get('/home/:exclusion/confirm_delete', (req, res, next) => {
-    // Accessible by Admin or Supervisor users only
-    if (req.isAuthenticated()) {
-      const exclusion_id = req.params.exclusion;
-      if (req.user.role === 'admin' || req.user.role === 'supervisor') {
-        Exclusion.findOne(
-          { _id: { $eq: exclusion_id } },
-          (err, foundExclusion) => {
-            if (err) {
-              console.log(err);
-            } else {
-              if (req.user.role === 'admin' || req.user.role === 'supervisor') {
-                res.render('./exclusions/delete-confirm', {
-                  // Render delete-confirm template
-                  exclusion: foundExclusion,
-                });
-              }
-            }
-          }
-        );
-      } else {
-        res.redirect('/unauthorized');
-      }
-    } else {
-      res.redirect('/unauthorized');
-    }
-  });
-
-  ////* END EXCLUSIONS Routes ////
 
   //*********** POST ROUTES ************/
   //* Login POST route

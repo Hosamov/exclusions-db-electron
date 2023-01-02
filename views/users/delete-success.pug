@@ -1,0 +1,9 @@
+extends ../layout.pug 
+
+block content 
+  div.main-container
+    h2.content-title Success!
+    p.centered User, #{user} has been successfully deleted from the database. 
+    .btn-container
+      button.btn(onclick='window.location.href=/users/') Great, thanks!
+    

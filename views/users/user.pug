@@ -2,7 +2,7 @@ extends ../layout.pug
 block header 
   div.header-right
     a(href='/home')
-        i.fas-icon-light(class="fa-solid fa-house")
+      i.fas-icon-light(class="fa-solid fa-house")
     if currentUser.role === 'admin' || currentUser.role === 'supervisor'
       a(href='/archive')
         i.fas-icon-light(class="fa-solid fa-box-archive")
@@ -23,12 +23,18 @@ block content
             a(href=`/users/${item.username}/edit_user`)
               i.fas-icon.fas-edit(class="fa-solid fa-pen-to-square")
             if currentUser.loggedInUserRole === 'admin'
-              a(href=`/users/${item.username}/confirm_delete`)
+              btn(onclick=`displayModalwindow('Delete user?', 'Are you sure you want to delete this user from the database? <strong>Caution:</strong> This action cannot be undone.', '/users/${item.username}/delete_user', 'Delete')`)
                 i.fas-icon.fas-delete(class="fa-solid fa-trash") 
+                
           li.exclusion-item Username/Email: #{item.username}
           li.exclusion-item User Role: #{item.role}
           li.exclusion-item Active User: #{item.active}
           li.exclusion-item Full Name: #{item.first_name} #{item.last_name}
         hr
         button.btn.list-btn(onclick=`history.back()`) Back
+
+  #modal
+  script(src='/static/js/display_modal.js')  
   script(src='/static/js/logout.js')
+
+    
