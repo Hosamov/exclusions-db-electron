@@ -20,6 +20,7 @@ router.get('/users', (req, res, next) => {
       Account.find({}, (err, users) => {
         if (err) {
           console.log(err);
+          next(err);
         } else {
           res.render('./users/users', {
             users: users,
@@ -55,6 +56,7 @@ router.get('/users/:user', (req, res, next) => {
       Account.find({ username: { $eq: user } }, (err, foundUser) => {
         if (err) {
           console.log(err);
+          next(err);
         } else {
           res.render('./users/user', {
             user: foundUser,
@@ -90,6 +92,7 @@ router.get('/users/:user/edit_user', (req, res, next) => {
       Account.find({ username: { $eq: user } }, (err, foundUser) => {
         if (err) {
           console.log(err);
+          next(err);
         } else {
           console.log(foundUser);
           res.render(`./users/edit-user`, {
@@ -120,6 +123,7 @@ router.get('/users/:user/delete_user', async (req, res, next) => {
         })
         .catch((err) => {
           console.log(err);
+          next(err);
         });
     } else {
       res.redirect('/unauthorized');

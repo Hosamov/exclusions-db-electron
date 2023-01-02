@@ -21,6 +21,7 @@ const app = express();
 
 const homeRoute = require('./routes/home.js');
 const usersRoute = require('./routes/users.js');
+const archivesRoute = require('./routes/archive.js');
 
 app.set('view engine', 'pug');
 
@@ -41,8 +42,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //* Filter routes path:
-app.use('/', homeRoute); //* /home GET route
-app.use('/', usersRoute); //* /users GET route
+app.use('/', homeRoute); //* /home GET routes
+app.use('/', usersRoute); //* /users GET routes
+app.use('/', archivesRoute); //* /archives GET routes
 
 //* Routes
 require('./routes')(app);
