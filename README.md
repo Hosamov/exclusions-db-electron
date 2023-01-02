@@ -4,12 +4,14 @@ A exclusions database that is web-based using Node, express and
 MongoDB/Mongoose. Used for tracking individuals who are excluded from a service.
 
 ## Technologies:
+
 - Node.js
 - Express.js
 - MongoDB/Mongoose
 - Pug.js
 
 ## Features
+
 - User authentication:
   - Google reCAPTCHA
   - Password-based
@@ -30,12 +32,15 @@ MongoDB/Mongoose. Used for tracking individuals who are excluded from a service.
   - Authorized users may edit any active exclusion order.
 - Rendering:
   - Exclusions list and exclusion orders are rendered for desktop, mobile, and print.
-- Images are rendered remotely through Google Photos links. 
+- Images are rendered remotely through Google Photos links.
   - Convert: https://www.labnol.org/embed/google/photos/
-  
+
 # Routes
+
 ## GET Routes:
+
 ### Routine GET Routes
+
 - / - root, redirects to /login or /home, depending on authentication status
 - /login - renders the login page
 - /retry_login - A redirect page for unsuccessful login attempts.
@@ -43,6 +48,7 @@ MongoDB/Mongoose. Used for tracking individuals who are excluded from a service.
 - /unauthorized - basic 'unauthorized' template, contains link to go back to / route.
 
 ### Exclusions GET Routes
+
 - /home - renders the exclusions page, displaying all ACTIVE exclusion orders
   - Displays all exclusions, which will be clickable to expand basic data.
     Further clickable to display the whole exclusion order (for print)
@@ -73,17 +79,19 @@ MongoDB/Mongoose. Used for tracking individuals who are excluded from a service.
   exclusion order, with the violations.
 
 ### Users GET Routes
+
 - /users - Renders a list of all active users. Accessible by admin
 - /users/:user - Renders individual user page for selected user.
 - /users/:user/edit_user - Renders edit page for individual/selected user. Accessible by individual/logged
   in user to change own account's password/info. Also accessible by admin -
   editing roles, activating account, resetting password, etc...
 - /users/:user/delete_user - After confirmation in /users/:user/confirm_delete,
-  Redirects to /users route. Accessible by Admin only. 
+  Redirects to /users route. Accessible by Admin only.
 - /users/:user/confirm_delete - Renders page to confirm deletion of selected
   user. Redirects to /users/:user/delete_user route. Accessible by Admin only.
 
 ### Archive GET Routes
+
 - /archive - Renders list of all archived exclusions. Accessible by Admin or Supervisor.
 - /archive/:exclusion - Renders individual archived/past exclusion order.
   Accessible by Admin or Supervisor.
@@ -101,6 +109,6 @@ MongoDB/Mongoose. Used for tracking individuals who are excluded from a service.
 
 - Admin authorization: Can lock exclusions
 - User logging
-- * Add Register Success route
+- - Add Register Success route
 
-### Created: 11/29/2022; Last edited 12/22/2022
+### Created: 11/29/2022; Last edited 1/1/2023
