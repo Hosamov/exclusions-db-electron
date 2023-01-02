@@ -26,8 +26,8 @@ app.set('view engine', 'pug');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/static', express.static('public'));
 app.use(
-  session({
-    cookie: {expires: 10800000},//{ maxAge: 86400000 }, // Expire at 3 hours
+  session({          
+    cookie: {maxAge: 3600000}, // Expire after 1 hours
     store: new MemoryStore({
       checkPeriod: 86400000 // prune expired entries every 24h
     }),
@@ -40,7 +40,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //* Filter routes path:
-app.use('/', homeRoute);
+app.use('/', homeRoute); //* /home GET route
 
 //* Routes
 require('./routes')(app);

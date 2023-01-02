@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-// const passport = require('passport');
 
 // Models:
 const Account = require('../models/account');
@@ -22,7 +21,8 @@ router.get('/home', async (req, res, next) => {
     let filter = req.query.filter;
     let srt = req.query.srt;
 
-    let query;
+    let query; // Initializer for filter query string
+    // Check values to filter properly:
     switch (filter) {
       case 'all':
         console.log('view all.');
@@ -50,14 +50,12 @@ router.get('/home', async (req, res, next) => {
 
     sortArr = ['last_name', 'first_name', 'length', 'exp_date'];
 
-    let sortItem;
+    let sortItem; // Initializer for sort query string
     sortArr.forEach((item) => {
       if (srt === item) sortItem = item;
     });
 
-    if (req.user.active) {
-      // First, ensure current user is active
-      // TODO: Working here now - Filter based on choice in /home route
+    if (req.user.active) { // First, ensure current user is active
       Exclusion.find(query, async (err, foundExclusion) => {
         if (err) {
           console.log(err);
@@ -80,6 +78,8 @@ router.get('/home', async (req, res, next) => {
               }
             }
           });
+          // TODO: verify if most of this part is necessary:
+          //* See above "if (req.user.active)..."
           // Find the current user, check if user's account is activated:
           Account.findOne(
             { username: { $eq: req.user.username } },
