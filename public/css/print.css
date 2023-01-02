@@ -35,6 +35,10 @@
     height: 0;
   }
 
+  .bottom-div {
+    display: none;
+  }
+
   .fas-icon {
     display: none;
   }
