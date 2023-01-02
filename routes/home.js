@@ -18,10 +18,47 @@ router.get('/home', async (req, res, next) => {
       active: req.user.active,
       role: req.user.role,
     };
+
+    let filter = req.query.filter;
+    let srt = req.query.srt;
+
+    let query;
+    switch (filter) {
+      case 'all':
+        console.log('view all.');
+        query = {};
+        break;
+      case 'limited':
+        // filter query string for NOT 'infinity' or 'lifetime'
+        query = {
+          $and: [
+            { length: { $ne: 'Infinity' } },
+            { length: { $ne: 'Lifetime' } },
+          ],
+        };
+        break;
+      case 'lifetime':
+        // filter query string for 'infinity' or 'lifetime'
+        query = {
+          $or: [
+            { length: { $eq: 'Infinity' } },
+            { length: { $eq: 'Lifetime' } },
+          ],
+        };
+        break;
+    }
+
+    sortArr = ['last_name', 'first_name', 'length', 'exp_date'];
+
+    let sortItem;
+    sortArr.forEach((item) => {
+      if (srt === item) sortItem = item;
+    });
+
     if (req.user.active) {
       // First, ensure current user is active
       // TODO: Working here now - Filter based on choice in /home route
-      Exclusion.find({}, async (err, foundExclusion) => {
+      Exclusion.find(query, async (err, foundExclusion) => {
         if (err) {
           console.log(err);
         } else {
@@ -54,6 +91,8 @@ router.get('/home', async (req, res, next) => {
                   res.render('./users/user-home', {
                     exclusions: currentExclusionsArr, // Display current exclusions only
                     user: thisUser,
+                    filter: filter,
+                    sort: srt,
                   });
                 } else {
                   console.log('inactive');
@@ -63,8 +102,7 @@ router.get('/home', async (req, res, next) => {
             }
           );
         }
-        // TODO: Sort based on choice from /home route
-      }).sort({ last_name: 1 }); // Sort list in ascending order
+      }).sort(sortItem); // Sort list in ascending order
     } else {
       res.redirect('/unauthorized');
     }
@@ -72,9 +110,5 @@ router.get('/home', async (req, res, next) => {
     res.redirect('/unauthorized');
   }
 });
-
-// router.get('/home/filter/:filter/:sort', (req, res, next) => {
-//   res.send('/home/filter/:filter/:sort');
-// });
 
 module.exports = router;

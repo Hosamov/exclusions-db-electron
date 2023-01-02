@@ -25,24 +25,24 @@ block content
               .fas-icon(class="fa-solid fa-print")
       .bottom-div
         .bottom-left-div
-            //-* Filter dropdown:
-            form(id='form-filter' action="/filter" method="post")
-              label.select-label-home(for='filter') 
-                small Filter: 
-              select.select-input-home(name="filter" id="filter" disabled)
-                option(value="all") All
-                option(value="limited") Limited
-                option(value="lifetime") Lifetime
-        .bottom-right-div
-          //-* Sort dropdown:
-          form(id='form-sort' action="/sort" method="post")  
-            label.select-label-home(for='sort') 
+          //-* Filter dropdown:
+          form(id='form-filter-sort' method="get")
+            label.select-label-home(for='filter') 
+              small Filter: 
+            select.select-input-home(name="filter" id="filter")
+              option(value="all" #{filter}) All
+              option(value="limited") Limited
+              option(value="lifetime") Lifetime
+            .bottom-right-div
+            //-* Sort dropdown:
+            label.select-label-home(for='srt') 
               small Sort by: 
-            select.select-input-home(name="sort" id="sort" disabled)
+            select.select-input-home(name="srt" id="srt")
               option(value="last_name") Last Name
               option(value="first_name") First Name
               option(value="length") Exclusion Length
               option(value="exp_date") Expiration Date
+            button(onclick='filterSort()') hey
       hr
       each exclusion in exclusions
         .excl-card
