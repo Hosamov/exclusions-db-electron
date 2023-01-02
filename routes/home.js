@@ -85,7 +85,7 @@ router.get('/home', async (req, res, next) => {
               }
             }
           });
-
+          // Render the correct template:
           if (foundExclusion) {
             res.render('./users/user-home', {
               exclusions: currentExclusionsArr, // Display current exclusions only

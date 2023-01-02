@@ -4,10 +4,11 @@ const router = express.Router();
 // Models:
 const Account = require('../models/account');
 
+
 //* Users GET route
+//* Renders selectable list of all registered users
 router.get('/users', (req, res, next) => {
   // Accessible by Admin users only
-  // Displays a list of all users, their roles and active status
   if (req.isAuthenticated()) {
     const thisUser = {
       loggedInUser: req.user.username,
@@ -15,7 +16,7 @@ router.get('/users', (req, res, next) => {
       active: req.user.active,
       role: req.user.role,
     };
-    if (thisUser.loggedInUser === 'admin') { // Authorized user: Admin
+    if (thisUser.role === 'admin') { // Authorized user: Admin
       Account.find({}, (err, users) => {
         if (err) {
           console.log(err);
@@ -35,11 +36,10 @@ router.get('/users', (req, res, next) => {
 });
 
 //* /users/:users GET route
+//* Renders stats of individual user selected
 router.get('/users/:user', (req, res, next) => {
   const user = req.params.user;
-  // Accessible by Admin and all individual users
-  // Admin allowances: Edit/set user's auth level, add, delete users
-  // User allowance: Reset password
+
   if (req.isAuthenticated()) {
     const thisUser = {
       loggedInUser: req.user.username,
@@ -49,7 +49,7 @@ router.get('/users/:user', (req, res, next) => {
     };
     // Authorized: Admin or logged in user, if active:
     if (
-      thisUser.loggedInUser === 'admin' ||
+      thisUser.role === 'admin' ||
       (thisUser.loggedInUser === user && thisUser.active)
     ) {
       Account.find({ username: { $eq: user } }, (err, foundUser) => {
@@ -71,11 +71,10 @@ router.get('/users/:user', (req, res, next) => {
 });
 
 //* /user/:users/edit_user GET route
+//* Renders a form for editing the selected user
 router.get('/users/:user/edit_user', (req, res, next) => {
   const user = req.params.user;
-  // Full control accessible by Admin only:
-  // edit user's auth level, add, delete users
-  // Individuals users may edit their own passwords
+
   if (req.isAuthenticated()) {
     const thisUser = {
       loggedInUser: req.user.username,
@@ -85,7 +84,7 @@ router.get('/users/:user/edit_user', (req, res, next) => {
     };
     // Authorized: Admin or logged in user, if active:
     if (
-      thisUser.loggedInUser === 'admin' ||
+      thisUser.role === 'admin' ||
       (thisUser.loggedInUser === user && thisUser.active)
     ) {
       Account.find({ username: { $eq: user } }, (err, foundUser) => {
@@ -96,7 +95,7 @@ router.get('/users/:user/edit_user', (req, res, next) => {
           res.render(`./users/edit-user`, {
             user: foundUser,
             currentUser: thisUser,
-          });
+          }); // Note: logged in user (unless an admin) can edit password only
         }
       });
     } else {
@@ -108,8 +107,8 @@ router.get('/users/:user/edit_user', (req, res, next) => {
 });
 
 //* /user/:users/DELETE_user GET route
+//* After deleting user, redirects to /users GET route
 router.get('/users/:user/delete_user', async (req, res, next) => {
-  //* Delete registered user from DB
   if (req.isAuthenticated()) {
     const user = req.params.user;
     // Authorized: Admin only
