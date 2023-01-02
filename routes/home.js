@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 
 // Models:
-const Account = require('../models/account');
 const Exclusion = require('../models/exclusion');
 
 // Helpers:

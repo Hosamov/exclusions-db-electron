@@ -7,7 +7,6 @@ const Exclusion = require('./models/exclusion');
 
 const email = require('./emailer');
 const emailBodies = require('./includes/email-bodies');
-const archiveHelper = require('./includes/archive-helper');
 
 const recaptcha = new reCAPTCHA({
   siteKey: process.env.SITEKEY, // retrieved during setup
@@ -15,58 +14,6 @@ const recaptcha = new reCAPTCHA({
 });
 
 module.exports = function (app) {
-  //*********** GET ROUTES ************/
-
-  //* Root(/) GET route
-  app.get('/', (req, res, next) => {
-    res.render('home');
-  });
-
-  //* Login GET route
-  app.get('/login', (req, res, next) => {
-    res.render('login', {
-      recaptcha: recaptcha.formElement(),
-    });
-  });
-
-  //* Retry_login GET route
-  app.get('/retry_login', (req, res, next) => {
-    res.render('retry-login', {
-      recaptcha: recaptcha.formElement(),
-    });
-  });
-
-  //* Unauthorized GET route
-  app.get('/unauthorized', (req, res, next) => {
-    // Most popular GET route XD
-    res.render('unauthorized');
-  });
-
-  //* Register GET route
-  app.get('/register', (req, res, next) => {
-    res.render('register', {
-      recaptcha: recaptcha.formElement('g-recaptcha'),
-    });
-  });
-
-  //* Retry_login GET route
-  app.get('/retry_register', (req, res, next) => {
-    res.render('retry-register', {
-      recaptcha: recaptcha.formElement(),
-    });
-  });
-
-  app.get('/register_success', (req, res, next) => {
-    if (req.isAuthenticated()) {
-      res.render('register-success');
-    } else {
-      res.render('unauthorized');
-    }
-  });
-
-  ////* BEGIN USERS Routes //// 
-  //* Note: See routes/users.js
-
   //TODO: Change this to a modal window
   //* /user/:users/confirm_delete GET route
   app.get('/users/:user/confirm_delete', (req, res, next) => {

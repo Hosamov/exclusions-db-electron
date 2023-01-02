@@ -19,6 +19,9 @@ require('./initDB')();
 
 const app = express();
 
+const loginRoute = require('./routes/auth/login.js');
+const registerRoute = require('./routes/auth/register.js');
+const unauthorizedRoute = require('./routes/auth/unauthorized.js');
 const homeRoute = require('./routes/home.js');
 const usersRoute = require('./routes/users.js');
 const archivesRoute = require('./routes/archive.js');
@@ -42,12 +45,20 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //* Filter routes path:
+app.use('/', loginRoute); //* /login GET routes
+app.use('/', registerRoute); //* /register GET routes
+app.use('/', unauthorizedRoute) //* /unauthorized GET route
 app.use('/', homeRoute); //* /home GET routes
 app.use('/', usersRoute); //* /users GET routes
 app.use('/', archivesRoute); //* /archives GET routes
 
 //* Routes
 require('./routes')(app);
+
+//* Root(/) GET route
+app.get('/', (req, res, next) => {
+  res.render('home');
+});
 
 //******* ERROR HANDLERS *******//
 
