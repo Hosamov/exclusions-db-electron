@@ -15,8 +15,7 @@ router.get('/users', (req, res, next) => {
       active: req.user.active,
       role: req.user.role,
     };
-    if (req.user.role === 'admin') {
-      // Authorized user: Admin
+    if (thisUser.loggedInUser === 'admin') { // Authorized user: Admin
       Account.find({}, (err, users) => {
         if (err) {
           console.log(err);
@@ -31,11 +30,11 @@ router.get('/users', (req, res, next) => {
       res.redirect('/unauthorized');
     }
   } else {
-    res.redirect('/');
+    res.redirect('/login');
   }
 });
 
-//* /user/:users GET route
+//* /users/:users GET route
 router.get('/users/:user', (req, res, next) => {
   const user = req.params.user;
   // Accessible by Admin and all individual users
@@ -48,7 +47,11 @@ router.get('/users/:user', (req, res, next) => {
       active: req.user.active,
       role: req.user.role,
     };
-    if (req.user.role === 'admin' || req.user.username === user) {
+    // Authorized: Admin or logged in user, if active:
+    if (
+      thisUser.loggedInUser === 'admin' ||
+      (thisUser.loggedInUser === user && thisUser.active)
+    ) {
       Account.find({ username: { $eq: user } }, (err, foundUser) => {
         if (err) {
           console.log(err);
@@ -63,7 +66,7 @@ router.get('/users/:user', (req, res, next) => {
       res.redirect('/unauthorized');
     }
   } else {
-    res.redirect('/');
+    res.redirect('/login');
   }
 });
 
@@ -80,10 +83,10 @@ router.get('/users/:user/edit_user', (req, res, next) => {
       active: req.user.active,
       role: req.user.role,
     };
-    // Make accessible to admin or current user only
+    // Authorized: Admin or logged in user, if active:
     if (
-      thisUser.loggedInUserRole === 'admin' ||
-      thisUser.loggedInUser === user
+      thisUser.loggedInUser === 'admin' ||
+      (thisUser.loggedInUser === user && thisUser.active)
     ) {
       Account.find({ username: { $eq: user } }, (err, foundUser) => {
         if (err) {
@@ -100,17 +103,17 @@ router.get('/users/:user/edit_user', (req, res, next) => {
       res.redirect('/unauthorized');
     }
   } else {
-    res.redirect('/');
+    res.redirect('/login');
   }
 });
 
 //* /user/:users/DELETE_user GET route
 router.get('/users/:user/delete_user', async (req, res, next) => {
-  // Edit user's auth level, add, delete users
+  //* Delete registered user from DB
   if (req.isAuthenticated()) {
     const user = req.params.user;
+    // Authorized: Admin only
     if (req.user.role === 'admin') {
-      // Make accessible to admin user only
       await Account.deleteOne({ username: user })
         .then(() => {
           res.redirect('/users');
@@ -119,9 +122,11 @@ router.get('/users/:user/delete_user', async (req, res, next) => {
         .catch((err) => {
           console.log(err);
         });
+    } else {
+      res.redirect('/unauthorized');
     }
   } else {
-    res.redirect('/unauthorized');
+    res.redirect('/login');
   }
 });
 

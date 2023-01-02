@@ -1,9 +1,9 @@
 extends ../layout.pug 
 block header 
   div.header-right
-    if currentUser.role === 'admin' || currentUser.role === 'supervisor'
-      a(href='/home')
+    a(href='/home')
         i.fas-icon-light(class="fa-solid fa-house")
+    if currentUser.role === 'admin' || currentUser.role === 'supervisor'
       a(href='/archive')
         i.fas-icon-light(class="fa-solid fa-box-archive")
     if currentUser.role === 'admin'

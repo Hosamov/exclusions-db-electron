@@ -48,14 +48,21 @@ router.get('/home', async (req, res, next) => {
         break;
     }
 
+    // Array of omparison values for sorting:
     sortArr = ['last_name', 'first_name', 'length', 'exp_date'];
 
-    let sortItem; // Initializer for sort query string
+    let sortItem = sortArr[0]; // Initialize to 'last_name'
+
     sortArr.forEach((item) => {
       if (srt === item) sortItem = item;
     });
 
-    if (req.user.active) { // First, ensure current user is active
+    if (
+      req.user.active &&
+      req.user.role !== null &&
+      req.user.role !== 'inactive'
+    ) {
+      // First, ensure current user is active
       Exclusion.find(query, async (err, foundExclusion) => {
         if (err) {
           console.log(err);
@@ -78,36 +85,24 @@ router.get('/home', async (req, res, next) => {
               }
             }
           });
-          // TODO: verify if most of this part is necessary:
-          //* See above "if (req.user.active)..."
-          // Find the current user, check if user's account is activated:
-          Account.findOne(
-            { username: { $eq: req.user.username } },
-            (err, foundUser) => {
-              if (err) {
-                console.log(err);
-              } else {
-                if (foundUser.active) {
-                  res.render('./users/user-home', {
-                    exclusions: currentExclusionsArr, // Display current exclusions only
-                    user: thisUser,
-                    filter: filter,
-                    sort: srt,
-                  });
-                } else {
-                  console.log('inactive');
-                  res.render('unauthorized');
-                }
-              }
-            }
-          );
+
+          if (foundExclusion) {
+            res.render('./users/user-home', {
+              exclusions: currentExclusionsArr, // Display current exclusions only
+              user: thisUser,
+              filter: filter,
+              sort: srt,
+            });
+          } else {
+            res.redirect('/error');
+          }
         }
       }).sort(sortItem); // Sort list in ascending order
     } else {
       res.redirect('/unauthorized');
     }
   } else {
-    res.redirect('/unauthorized');
+    res.redirect('/login');
   }
 });
 
