@@ -9,22 +9,55 @@ const Account = require('../models/account');
 router.get('/users', (req, res, next) => {
   // Accessible by Admin users only
   if (req.isAuthenticated()) {
+    const store = req.sessionStore; // Look in Account.find:
+
     const thisUser = {
       loggedInUser: req.user.username,
       loggedInUserRole: req.user.role,
       active: req.user.active,
       role: req.user.role,
     };
+
+    // Authorized user: Admin
     if (thisUser.role === 'admin') {
-      // Authorized user: Admin
-      Account.find({}, (err, users) => {
+      Account.find({}, async (err, users) => {
         if (err) {
           console.log(err);
           next(err);
         } else {
-          res.render('./users/users', {
-            users: users,
-            currentUser: thisUser,
+          //* Check sessions:
+          // Initialize arrays for checking sessions:
+          const usernameArr = [];
+          const sessionsArr = [];
+
+          // Get and store each registered username (email)
+          users.forEach((user) => {
+            usernameArr.push(user.username);
+          });
+
+          // https://stackoverflow.com/questions/14018761/view-all-currently-active-sessions-in-express-js
+          await store.all((err, sessions) => {
+            if (err) {
+              console.log(err);
+            } else {
+              if (sessions !== null) {
+                for (let sid in sessions) {
+                  let ses = JSON.parse(store.sessions[sid]);
+                  let sesUser = ses.passport.user;
+                  if (usernameArr.includes(sesUser)) {
+                    sessionsArr.push(sesUser.toString());
+                  }
+                }
+                //* Render the /users/users template:
+                res.render('./users/users', {
+                  users: users,
+                  currentUser: thisUser,
+                  sesUsers: sessionsArr, // For displaying who's logged in currently
+                });
+              } else {
+                console.log('No user sessions...');
+              }
+            }
           });
         }
       });

@@ -100,10 +100,10 @@ module.exports = function (app) {
               console.log(err);
               res.next(err); // err route
             } else {
-              //Note: Passport 0.6.0^ requires promise cb for req.logout()
-              req.logout((err) => {
-                if (err) {
-                  return next(err);
+              //Note (not used): Passport 0.6.0^ requires promise cb for req.logout(): req.logout((err) => {...});
+              req.session.destroy((err) => { // Destroy the session (logout)
+                if(err) {
+                  console.log(err);
                 } else {
                   console.log(`User, ${loggedInUser.username} has logged out.`);
                   res.redirect('/');
