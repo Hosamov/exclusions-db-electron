@@ -75,7 +75,7 @@ router.get('/home', async (req, res, next) => {
               if (
                 item.exp_date !== 'Invalid date' &&
                 item.exp_date !== 'Infinity' &&
-                item.exp_date !== 'Lifetime' && 
+                item.exp_date !== 'Lifetime' &&
                 item.length !== 'Lifetime'
               ) {
                 item.archived = archiveHelper(item.exp_date); // Returns Boolean
@@ -271,19 +271,22 @@ router.get('/home/:id/delete_success', (req, res, next) => {
 //* Moves exclusion from main list to archived list
 router.get('/home/:exclusion_id/archive', (req, res, next) => {
   const exclId = req.params.exclusion_id;
-  if(isAuthenticated()) {
-    if(req.user.role === 'admin') {
-      Exclusion.findOne({_id: {$eq: exclId}}, (err, foundExclusion) => {
-        foundExclusion.exp_date = new Date();
-        foundExclusion.save((err) => {
-          if(err) {
-            console.log(err);
-          } else {
-            console.log('Exclusion ' + exclId + " successfully archived.");
-            res.redirect('/archive');
-          }
-        })
-      })
+  if (req.isAuthenticated()) {
+    if (req.user.role === 'admin') {
+      Exclusion.findOne({ _id: { $eq: exclId } }, (err, foundExclusion) => {
+        if (!foundExclusion.archived) {
+          foundExclusion.archived = true;
+          // Save the archived exclusion
+          foundExclusion.save((err) => {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log('Exclusion for ' + exclId + " successfully archived.");
+              res.redirect('/archive');
+            }
+          });
+        }
+      });
     } else {
       res.redirect('/unauthorized');
     }

@@ -219,14 +219,11 @@ module.exports = function (app) {
       lastName: req.body.last_name,
     };
 
-    console.log(userInfo);
-    // First, check if the user has updated their password:
-
     Account.findOne({ username: userInfo.username }, async (err, foundUser) => {
       if (err) {
         console.log(err);
       } else {
-        // console.log(foundUser);
+        // First, check if the user has updated their password:
         if (
           foundUser.newPassword === foundUser.confirmedPassword &&
           foundUser.newPassword !== ''
@@ -317,8 +314,6 @@ module.exports = function (app) {
       excl.exp_date = dateServed.addDays(parseInt(excl.length));
     }
 
-    console.log(excl);
-
     //* Insert data into DB:
     await Exclusion.create(
       [
@@ -404,8 +399,6 @@ module.exports = function (app) {
           foundExclusion.img_url = excl.img_url;
           foundExclusion.signature = excl.signature;
           foundExclusion.super_title = excl.super_title;
-
-          console.log(foundExclusion);
 
           await foundExclusion.save((err) => {
             if (err) {

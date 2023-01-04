@@ -30,6 +30,9 @@ block content
         if exclusion.archived
           btn(onclick=`displayModalwindow('Unarchive exclusion?', 'Are you sure you want to unarchive this exclusion?', '/archive/${id}/unarchive', 'Reinstate')`)
             i.fas-icon.fas-edit(class="fa-solid fa-circle-up")
+        else
+          btn(onclick=`displayModalwindow('Archive exclusion?', 'Are you sure you want to archive this exclusion?', '/home/${id}/archive', 'Archive')`)
+            i.fas-icon.fas-edit(class="fa-solid fa-circle-down")
         btn(onclick=`displayModalwindow('Delete exclusion?', 'Are you sure you want to delete this exclusion? <strong>Caution:</strong> This action cannot be undone.', '/home/${exclusion._id}/delete', 'Delete')`)
           i.fas-icon.fas-delete(class="fa-solid fa-trash") 
     hr
