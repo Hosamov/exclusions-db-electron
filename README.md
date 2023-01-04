@@ -9,12 +9,13 @@ MongoDB/Mongoose. Used for tracking individuals who are excluded from a service.
 - Express.js
 - MongoDB/Mongoose
 - Pug.js
+- Passport.js
 
 ## Features
 
 - User authentication:
   - Google reCAPTCHA
-  - Password-based
+  - Username and password (single-factor)
 - User Authorization:
   - User Roles:
     - Admin
@@ -106,9 +107,6 @@ MongoDB/Mongoose. Used for tracking individuals who are excluded from a service.
 - /archive_exclusion
 
 ## FUTURE FEATURES:
+- Ability to add notes on exclusions (not visible to users)
 
-- Admin authorization: Can lock exclusions
-- User logging
-- - Add Register Success route
-
-### Created: 11/29/2022; Last edited 1/1/2023
+### Created: 11/29/2022; Last edited 1/4/2023
