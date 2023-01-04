@@ -71,7 +71,16 @@ router.get('/home', async (req, res, next) => {
           await foundExclusion.forEach((item) => {
             // Check all unarchived exclusions
             if (!item.archived) {
-              item.archived = archiveHelper(item.exp_date); // Returns Boolean
+              //* Verify active or past exclusion using archiveHelper:
+              if (
+                item.exp_date !== 'Invalid date' &&
+                item.exp_date !== 'Infinity' &&
+                item.exp_date !== 'Lifetime' && 
+                item.length !== 'Lifetime'
+              ) {
+                item.archived = archiveHelper(item.exp_date); // Returns Boolean
+              }
+
               currentExclusionsArr.push(item);
               if (item.archived) {
                 // Archive all exclusions due/past due for archive
@@ -255,6 +264,31 @@ router.get('/home/:id/delete_success', (req, res, next) => {
     }
   } else {
     res.redirect('/unauthorized');
+  }
+});
+
+//* Home/ExclusionId/Archive GET route
+//* Moves exclusion from main list to archived list
+router.get('/home/:exclusion_id/archive', (req, res, next) => {
+  const exclId = req.params.exclusion_id;
+  if(isAuthenticated()) {
+    if(req.user.role === 'admin') {
+      Exclusion.findOne({_id: {$eq: exclId}}, (err, foundExclusion) => {
+        foundExclusion.exp_date = new Date();
+        foundExclusion.save((err) => {
+          if(err) {
+            console.log(err);
+          } else {
+            console.log('Exclusion ' + exclId + " successfully archived.");
+            res.redirect('/archive');
+          }
+        })
+      })
+    } else {
+      res.redirect('/unauthorized');
+    }
+  } else {
+    res.redirect('/');
   }
 });
 

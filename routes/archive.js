@@ -57,4 +57,30 @@ router.get('/archive', (req, res, next) => {
   }
 });
 
+//* Archive/ExclusionId/Unarchive GET route
+//* Pushes the exclusion back into the main list from the archives
+router.get('/archive/:exclusion_id/unarchive/', (req, res, next) => {
+  const exclId = req.params.exclusion_id;
+  if(req.isAuthenticated()) {
+    if(req.user.role === 'admin') {
+      Exclusion.findOne({_id: {$eq: exclId}}, (err, foundExclusion) => {
+        foundExclusion.archived = false;
+        foundExclusion.exp_date = 'Lifetime';
+        foundExclusion.save((err) => {
+          if(err) {
+            console.log(err);
+          } else {
+            console.log('Exclusion for ' + exclId + " successfully reinstated.");
+            res.redirect('/home');
+          }
+        })
+      })
+    } else {
+      res.redirect('/unauthorized');
+    }
+  } else {
+    res.redirect('/');
+  }
+});
+
 module.exports = router;

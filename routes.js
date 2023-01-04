@@ -14,7 +14,6 @@ const recaptcha = new reCAPTCHA({
 });
 
 module.exports = function (app) {
-
   //* Image embed Howto GET route - displays how to embed Google Photos for linking
   app.get('/home/img_embed_howto', (req, res, next) => {
     if (req.isAuthenticated()) {
@@ -101,8 +100,9 @@ module.exports = function (app) {
               res.next(err); // err route
             } else {
               //Note (not used): Passport 0.6.0^ requires promise cb for req.logout(): req.logout((err) => {...});
-              req.session.destroy((err) => { // Destroy the session (logout)
-                if(err) {
+              req.session.destroy((err) => {
+                // Destroy the session (logout)
+                if (err) {
                   console.log(err);
                 } else {
                   console.log(`User, ${loggedInUser.username} has logged out.`);
@@ -289,7 +289,7 @@ module.exports = function (app) {
       description: req.body.description,
       date_served: moment(req.body.date_served).format('YYYY-MM-DD'),
       exp_date: req.body.exp_date,
-      length: req.body.length,
+      length: req.body.length, //Note: is converted to a string for 'Lifetime'
       other_length: req.body.other_length,
       img_url: req.body.img_url,
       signature: req.body.signature,
@@ -330,10 +330,11 @@ module.exports = function (app) {
           ordinance: excl.ordinance,
           description: excl.description,
           date_served: moment(excl.date_served.toString()).format('MM/DD/YYYY'),
-          exp_date: moment(excl.exp_date.toString()).format('MM/DD/YYYY'),
+          exp_date: moment(excl.exp_date.toString()).format('MM/DD/YYYY'), // convert to string due to "Lifetime"
           length: excl.length === 'Lifetime' ? Infinity : excl.length,
           img_url: excl.img_url,
           signature: excl.signature,
+          archived: false,
         },
       ],
       (err) => {
