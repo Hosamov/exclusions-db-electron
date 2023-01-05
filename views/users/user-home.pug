@@ -1,14 +1,27 @@
 extends ../layout.pug 
-block header 
-  div.header-right
-    a(href=`/users/${user.loggedInUser}`)
-      i.fas-icon-light(class="fa-solid fa-user")
+block header
+  ul.menu
     if user.role === 'admin'
-      a(href='/users')
-        i.fas-icon-light(class="fa-solid fa-users")  
-    i.fas-icon-light(id="logout-icon" class="fa-solid fa-right-from-bracket")
-      form(id='logout' action="/logout" method="post")
-        btn( type="submit") 
+      li.menu-item 
+        a(href='/users')
+          i.fas-icon-light(class="fa-solid fa-users") 
+    li.menu-item 
+      i.fas-icon-light(id="logout-icon" class="fa-solid fa-right-from-bracket")
+        form(id='logout' action="/logout" method="post")
+          btn( type="submit") 
+    li.menu-item 
+      a(href=`/users/${user.loggedInUser}`)
+        i.fas-icon-light(class="fa-solid fa-gear") 
+          
+  //- div.header-right
+  //-   a(href=`/users/${user.loggedInUser}`)
+  //-     i.fas-icon-light(class="fa-solid fa-user")
+  //-   if user.role === 'admin'
+  //-     a(href='/users')
+  //-       i.fas-icon-light(class="fa-solid fa-users")  
+  //-   i.fas-icon-light(id="logout-icon" class="fa-solid fa-right-from-bracket")
+  //-     form(id='logout' action="/logout" method="post")
+  //-       btn( type="submit") 
 block content  
   div.main-container
     h2.content-title Exclusions List
@@ -23,6 +36,7 @@ block content
           .right-btn-div
             btn(onclick=`window.print()`)
               .fas-icon(class="fa-solid fa-print")
+
       .bottom-div
         .bottom-left-div
           //-* Filter dropdown:
@@ -115,5 +129,7 @@ block content
     .right-btn-div
       btn(onclick=`window.print()`)
         .fas-icon(class="fa-solid fa-print")
+    #modal
+    
   script(src='/static/js/logout.js')
   script(src='/static/js/filter_sort.js')

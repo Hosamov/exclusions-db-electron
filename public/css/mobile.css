@@ -1,28 +1,31 @@
 :root {
   --blue:#0091f0;
   --blue2: #5cbeff; /* used in scrollbar*/
+  --blue3: #0070ba;
   --orange: #f05f00;
   --white: #f1f2f4; /* Text and icon color */
   --gray1: #f5f2f0; /* Body background */
   --gray2: #f6f6f6; /* Main container */
   --gray3: #f0f3f5; /* Content title color */
   --gray4: #e4e8eb; /* Box shadow color*/
-  --charcoal:#2e3629; 
+  --charcoal:#002238; 
   --charcoal_light: #47533f;  
+  --error: #e1341e;
+  --success: #19bf2c;
 }
 
-@media only screen and (max-width: 1700px) {
-  .header-right {
+/* @media only screen and (max-width: 1700px) {
+   .header-right {
     right: 5%;
-  }
-}
+  } 
+} */
 
 @media only screen and (max-width: 1420px) {
-  .header-right {
+  /* .header-right {
     position: relative;
     width: 72%;
     text-align: right;
-  }
+  } */
 
   .main-container {
     width: 75%;
@@ -54,7 +57,7 @@
     max-width: 150px;
     max-height: 180px;
   }
-  
+
   .exclusion-image {
     float: right;
   }
@@ -67,11 +70,10 @@
 }
 
 @media only screen and (max-width: 700px) {
-
-  .header {
+  /* .header {
     background-color: var(--gray1);
   }
-  
+
   .head-title {
     text-align: left;
     width: 150px;
@@ -80,16 +82,21 @@
 
   h1.head-title {
     padding: 0;
-  }
+  } */
 
-  .header-right {
+  /* .header-right {
     position: absolute;
     right: 5%;
-  }
+  } */
 
   .fas-icon-light {
     color: var(--blue);
     justify-content: right;
+  }
+
+  .fas-icon-light-header {
+    color: var(--white);
+    /* justify-content: right; */
   }
 
   .content-title {
@@ -118,7 +125,7 @@
   .right-div {
     text-align: center;
   }
-  
+
   .exclusion-image {
     float: none;
     text-align: center;
@@ -134,10 +141,10 @@
     padding: 2px;
   }
 
-   /* Single exclusion page */
-   .excl-container {
+  /* Single exclusion page */
+  .excl-container {
     position: relative;
-    width:90%;
+    width: 90%;
     padding: 15px;
     padding-bottom: 30px;
     margin-bottom: 0;
@@ -169,15 +176,72 @@
     float: left;
     margin-top: 5px;
   }
+
+  /**Mobile nav for mobile menu*/
+  .menu-button-container {
+    display: flex;
+  }
+  .menu {
+    position: absolute;
+    top: 0;
+    margin-top: 50px;
+    left: 0;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #menu-toggle ~ .menu li {
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  #menu-toggle:checked ~ .menu li {
+    border: 1px solid #333;
+    height: 2.5em;
+    padding: 0.5em;
+    transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .menu > li {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0.5em 0;
+    width: 100%;
+    color: white;
+    background-color: var(--charcoal);
+  }
+  .menu > li:not(:last-child) {
+    border-bottom: 1px solid var(--charcoal);
+  }
+
+  .menu-button {
+    display: block;
+    /* flex: right; */
+    position: absolute;
+    /* right: 10px; */
+    flex: right;
+  }
+  
+  
 }
 
 @media only screen and (max-width: 436px) {
+  /* .header-right {
+    position: fixed;
+    width: 72%;
+    text-align: right;
+  } */
+
   .bottom-left-div {
     float: none;
     max-width: 300px;
     padding: 5px;
   }
-  
+
   .bottom-right-div {
     float: none;
     text-align: left;
@@ -206,6 +270,7 @@
     width: 30px;
     height: 100vh;
     padding-top: 33.3vh;
+    padding-right: 5px;
   }
 
   .fas-icon-light {
@@ -275,7 +340,7 @@
     width: 90%;
   }
 
-  button.btn{
+  button.btn {
     padding: 6px;
     width: 70px;
   }
@@ -297,7 +362,7 @@
 
   .excl-container {
     box-shadow: none;
-    width:85vw;
+    width: 85vw;
     margin-right: 15px;
   }
 

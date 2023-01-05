@@ -2,23 +2,29 @@
 html(lang="en" dir="ltr")
   head
     meta(charset='utf-8')
-    meta(http-equiv='x-ua-compatible', content='ie=edge')
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='x-ua-compatible' content='ie=edge')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
     title Exclusions Database
-    link(rel="icon", type="image/x-icon" href="static/images/favicon.ico")
+    link(rel="icon" type="image/x-icon" href="static/images/favicon.ico")
     link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer")
-    link(rel='stylesheet', href='/static/css/styles.css')
-    link(rel='stylesheet', href='/static/css/mobile.css')
-    link(rel='stylesheet', href='/static/css/print.css')
+    link(rel='stylesheet' href='/static/css/styles.css')
+    link(rel='stylesheet' href='/static/css/mobile.css')
+    link(rel='stylesheet' href='/static/css/print.css')
+    //- link(rel='stylesheet' href='/static/css/hamburger.css')
 
   body
-    div.header
+    section.top-nav
       a.header-link(href="/home")
         h1.head-title Exclusions DB
-        block header
-    block content
+      input(id="menu-toggle" type="checkbox")
+      label(class='menu-button-container' for="menu-toggle")
+      div.menu-button
+        i.fas-icon-light-header(id="hamburger-menu" class="fa-solid fa-bars")
+      block header
     
+    block content
+
   footer
     h4.copyright © Copyright 2022, 
     script(src='/static/js/script.js')
-  
+
