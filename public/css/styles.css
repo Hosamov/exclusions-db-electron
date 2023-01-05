@@ -34,6 +34,12 @@ footer {
   width: 50%;
   text-align: center;
   color: var(--charcoal);
+  font-size: .9rem;
+  padding-bottom: 10px;
+}
+
+ul {
+  padding: 0;
 }
 
 li {
@@ -64,6 +70,7 @@ a:active {
   position: fixed;
   display: flex;
   margin: 0;
+  z-index: 1;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -82,6 +89,7 @@ a:active {
   list-style-type: none;
   margin: 0;
   padding: 0;
+  z-index: 1;
 }
 
 .menu > li {
@@ -130,6 +138,19 @@ li.menu-item:hover {
 
 #menu-toggle {
   display: none;
+}
+
+.menu-icon {
+  /* font-size: 0; */
+  display: block;
+  /* visibility: hidden; */
+}
+
+.menu-text {
+  padding: 0;
+  margin: 0;
+  display: none;
+  /* font-size: 0; */
 }
 
 /* .menu-button::before {
@@ -191,9 +212,7 @@ li.menu-item:hover {
   padding: 0 0 0 20px;
 } */
 
-a.header-link {
-  color: var(--white);
-}
+
 
 /* .header-right {
   position: relative;
@@ -206,6 +225,9 @@ a.header-link {
   margin-right: 10px;
   text-align: right;
 } */
+a.header-link {
+  color: var(--white);
+}
 
 .head-title {
   margin: 0;
@@ -266,6 +288,10 @@ textarea {
   right: 20%;
 }
 
+.fas-logout:hover {
+  cursor: pointer;
+}
+
 .fas-account {
   position: absolute;
   right: 22%;
@@ -283,6 +309,17 @@ textarea {
 }
 
 .fas-icon-light:hover {
+  cursor: pointer;
+  color: var(--blue2);
+}
+
+.fas-icon-light-menu {
+  padding: 0 10px 0 10px;
+  color: var(--white);
+  justify-content: right;
+}
+
+.fas-icon-light-menu:hover {
   cursor: pointer;
   color: var(--blue2);
 }
@@ -315,7 +352,8 @@ textarea {
 }
 
 .home-btn {
-  width: 300px;
+  width: 200px;
+  max-height: 40px;
 }
 
 /* User Home*/
@@ -369,7 +407,7 @@ fieldset {
 .btn{
   border-radius: 5px;
   border: none;
-  padding: .5rem;
+  padding: .2rem;
   background-color: var(--blue);
   color: var(--white);
   font-size: 1.2rem;
@@ -403,7 +441,8 @@ fieldset {
 }
 
 .list-btn {
-  width: 120px;
+  min-width: 70px;
+  max-width: 200px;
 }
 
 .list-btn-short {
@@ -595,14 +634,14 @@ fieldset {
 
 
 /* Tooltip */
-.tooltip-head {
+.tooltip {
   display:inline-block;
   position:relative;
   border-bottom:1px dotted #666;
   text-align:left;
 }
 
-.tooltip-head .bottom {
+.tooltip .bottom {
   min-width:50px; 
   max-width:200px;
   top:40px;
@@ -621,11 +660,11 @@ fieldset {
   visibility:hidden; opacity:0; transition:opacity 0.8s;
 }
 
-.tooltip-head:hover .bottom {
+.tooltip:hover .bottom {
   visibility:visible; opacity:1;
 }
 
-.tooltip-head .bottom i {
+.tooltip .bottom i {
   position:absolute;
   bottom:100%;
   left:;
@@ -635,7 +674,7 @@ fieldset {
   overflow:hidden;
 }
 
-.tooltip-head .bottom i::after {
+.tooltip .bottom i::after {
   content:'';
   position:absolute;
   width:12px;
@@ -648,42 +687,44 @@ fieldset {
 
 
 /* https://www.w3schools.com/css/css_tooltip.asp */
-.tooltip-head {
+.tooltip {
   position: relative;
   display: inline-block;
   /* border-bottom: 1px dotted var(--charcoal); */
 }
 
-.tooltip-head .tooltiptext {
+.tooltip .tooltiptext {
   visibility: hidden;
-  width: 120px;
-  background-color: black;
+  min-width: 200px;
+  max-width: 300px;
+  background-color: var(--blue);
   color: #fff;
   text-align: center;
   border-radius: 6px;
-  padding: 5px 0;
+  padding: 8px 8px;
+  font-size: 1rem;
   
   /* Position the tooltip */
   position: absolute;
-  z-index: 3;
+  width: 120px;
   top: 100%;
   left: 50%;
-  margin-left: -60px;
+  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
 }
 
-.tooltip-head:hover .tooltiptext {
+.tooltip:hover .tooltiptext {
   visibility: visible;
 }
 
-.tooltip-head .tooltiptext::after {
+.tooltip .tooltiptext::after {
   content: " ";
   position: absolute;
-  top: 100%; /* At the bottom of the tooltip */
+  bottom: 100%;  /* At the top of the tooltip */
   left: 50%;
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: var(--charcoal) transparent transparent transparent;
+  border-color: transparent transparent var(--blue) transparent;
 }
 
 /** Scrollbar */
@@ -719,6 +760,7 @@ fieldset {
   bottom: 0;
   left: 0;
   background: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
 }
 
 .modal {

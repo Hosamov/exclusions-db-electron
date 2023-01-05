@@ -24,7 +24,7 @@ block content
         if !exclusion.archived
           btn(onclick=`window.print()`)
             i.fas-icon(class="fa-solid fa-print")
-      if user.role === 'admin'
+      if user.role === 'admin' || user.role === 'supervisor'
         a(href=`/home/${id}/edit`)
           i.fas-icon.fas-edit(class="fa-solid fa-pen-to-square")
         if exclusion.archived

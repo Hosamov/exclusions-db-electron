@@ -1,27 +1,26 @@
 extends ../layout.pug 
 block header
   ul.menu
+    if user.role === 'admin' || user.role === 'supervisor'
+      li.menu-item 
+        a(href='/archive')
+          i.fas-icon-light.menu-icon(class="fa-solid fa-box-archive") 
+          h4.menu-text Archives
     if user.role === 'admin'
       li.menu-item 
         a(href='/users')
-          i.fas-icon-light(class="fa-solid fa-users") 
-    li.menu-item 
-      i.fas-icon-light(id="logout-icon" class="fa-solid fa-right-from-bracket")
-        form(id='logout' action="/logout" method="post")
-          btn( type="submit") 
+          i.fas-icon-light.menu-icon(class="fa-solid fa-users") 
+          h4.menu-text Users
+
     li.menu-item 
       a(href=`/users/${user.loggedInUser}`)
-        i.fas-icon-light(class="fa-solid fa-gear") 
-          
-  //- div.header-right
-  //-   a(href=`/users/${user.loggedInUser}`)
-  //-     i.fas-icon-light(class="fa-solid fa-user")
-  //-   if user.role === 'admin'
-  //-     a(href='/users')
-  //-       i.fas-icon-light(class="fa-solid fa-users")  
-  //-   i.fas-icon-light(id="logout-icon" class="fa-solid fa-right-from-bracket")
-  //-     form(id='logout' action="/logout" method="post")
-  //-       btn( type="submit") 
+        i.fas-icon-light.menu-icon(class="fa-solid fa-gear")
+        h4.menu-text Account
+    li.menu-item
+      form(id='logout' action="/logout" method="post")
+        btn(type="submit") 
+          i.fas-icon-light-menu.menu-icon-logout(id="logout-icon" class="fa-solid fa-right-from-bracket")
+
 block content  
   div.main-container
     h2.content-title Exclusions List
@@ -31,8 +30,6 @@ block content
         .left-btn-div
           a(href='/add_new_exclusion')
             i.fas-icon(class="fa-solid fa-plus")
-          a(href='/archive')
-            i.fas-icon(class="fa-solid fa-box-archive")
           .right-btn-div
             btn(onclick=`window.print()`)
               .fas-icon(class="fa-solid fa-print")
@@ -122,14 +119,7 @@ block content
 
     //- Render links based on authorization:
     .left-btn-div
-      a(href='/add_new_exclusion')
-        i.fas-icon(class="fa-solid fa-plus")
-      a(href='/archive')
-        i.fas-icon(class="fa-solid fa-box-archive")
-    .right-btn-div
-      btn(onclick=`window.print()`)
-        .fas-icon(class="fa-solid fa-print")
     #modal
-    
+
   script(src='/static/js/logout.js')
   script(src='/static/js/filter_sort.js')

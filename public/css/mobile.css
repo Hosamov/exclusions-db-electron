@@ -99,6 +99,11 @@
     /* justify-content: right; */
   }
 
+  .fas-icon-light-menu {
+    color: var(--white);
+    /* justify-content: right; */
+  }
+
   .content-title {
     font-size: 1.5rem;
   }
@@ -220,13 +225,19 @@
 
   .menu-button {
     display: block;
-    /* flex: right; */
     position: absolute;
-    /* right: 10px; */
     flex: right;
   }
   
+  .menu-icon {
+    display: none;
+  }
   
+  .menu-text {
+    padding: 0;
+    margin: 0;
+    display: block;
+  }
 }
 
 @media only screen and (max-width: 436px) {
@@ -265,17 +276,17 @@
     font-size: 1.5rem;
     padding: 0;
   }
-
+/* 
   .header-right {
     width: 30px;
     height: 100vh;
     padding-top: 33.3vh;
     padding-right: 5px;
-  }
+  } */
 
-  .fas-icon-light {
+  /* .fas-icon-light {
     padding: 15px 15px 0 0;
-  }
+  } */
 
   .content-title {
     font-size: 1.2rem;
