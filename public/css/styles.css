@@ -113,7 +113,7 @@ li.menu-item:hover {
 
 .menu-item a:hover {
   cursor: pointer;
-  color: var(--charcoal_light);
+  color: var(--blue2);
 }
 
 .menu-button-container {

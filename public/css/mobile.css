@@ -2,6 +2,7 @@
   --blue:#0091f0;
   --blue2: #5cbeff; /* used in scrollbar*/
   --blue3: #0070ba;
+  --blue4: #0062a3;
   --orange: #f05f00;
   --white: #f1f2f4; /* Text and icon color */
   --gray1: #f5f2f0; /* Body background */
@@ -9,7 +10,7 @@
   --gray3: #f0f3f5; /* Content title color */
   --gray4: #e4e8eb; /* Box shadow color*/
   --charcoal:#002238; 
-  --charcoal_light: #47533f;  
+  --charcoal_light: #00385d;  
   --error: #e1341e;
   --success: #19bf2c;
 }
@@ -214,13 +215,13 @@
     display: flex;
     justify-content: center;
     margin: 0;
-    padding: 0.5em 0;
+    padding: 0.25em 0;
     width: 100%;
     color: white;
-    background-color: var(--charcoal);
+    background-color: var(--blue3);
   }
   .menu > li:not(:last-child) {
-    border-bottom: 1px solid var(--charcoal);
+    border-bottom: 1px solid var(--blue);
   }
 
   .menu-button {
