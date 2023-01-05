@@ -1,17 +1,24 @@
 extends ../layout.pug 
 block header
-  div.header-right
+  ul.menu
     if user.role === 'admin' || user.role === 'supervisor'
-      a(href='/home')
-        i.fas-icon-light(class="fa-solid fa-house")
-    a(href=`/users/${user.username}`)
-      i.fas-icon-light(class="fa-solid fa-user")
+      li.menu-item 
+        a(href='/archive')
+          i.fas-icon-light.menu-icon(class="fa-solid fa-box-archive") 
+          h4.menu-text Archives
     if user.role === 'admin'
-      a(href='/users')
-        i.fas-icon-light(class="fa-solid fa-users")
-    i.fas-icon-light(id="logout-icon" class="fa-solid fa-right-from-bracket")
+      li.menu-item 
+        a(href='/users')
+          i.fas-icon-light.menu-icon(class="fa-solid fa-users") 
+          h4.menu-text Users
+    li.menu-item 
+      a(href=`/users/${user.loggedInUser}`)
+        i.fas-icon-light.menu-icon(class="fa-solid fa-gear")
+        h4.menu-text Account
+    li.menu-item
       form(id='logout' action="/logout" method="post")
-        btn( type="submit") 
+        i.fas-icon-light-menu.menu-icon-logout(id="logout-icon" class="fa-solid fa-right-from-bracket")
+          btn(type="submit") 
 block content 
   div.main-container
     h2.content-title Add New Exclusion Order

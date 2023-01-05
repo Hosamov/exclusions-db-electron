@@ -1,18 +1,24 @@
 extends ../layout.pug 
 block header 
-  .header-right 
+  ul.menu
     if currentUser.role === 'admin' || currentUser.role === 'supervisor'
-      a(href='/home')
-        i.fas-icon-light(class="fa-solid fa-house")
-      a(href='/archive')
-        i.fas-icon-light(class="fa-solid fa-box-archive")
+      li.menu-item
+        a(href='/home')
+          i.fas-icon-light.menu-icon(class="fa-solid fa-house-user") 
+          h4.menu-text Home/Active List
     if currentUser.role === 'admin'
-      a(href=`/users/${currentUser.loggedInUser}`)
-        i.fas-icon-light(class="fa-solid fa-user")   
-    i.fas-icon-light(id="logout-icon" class="fa-solid fa-right-from-bracket")
-      form(id='logout' action="/logout" method="post")
-        btn( type="submit") 
-      
+      li.menu-item 
+        a(href='/users')
+          i.fas-icon-light.menu-icon(class="fa-solid fa-users") 
+          h4.menu-text Users
+      li.menu-item 
+        a(href=`/users/${currentUser.loggedInUser}`)
+          i.fas-icon-light.menu-icon(class="fa-solid fa-gear")
+          h4.menu-text Account
+      li.menu-item
+        form(id='logout' action="/logout" method="post")
+          i.fas-icon-light-menu.menu-icon-logout(id="logout-icon" class="fa-solid fa-right-from-bracket")
+            btn(type="submit") 
 //- Renders users page
 block content
   div.main-container

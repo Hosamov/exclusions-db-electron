@@ -1,19 +1,29 @@
 extends ../layout.pug 
-block header 
-  div.header-right
-    a(href='/home')
-      i.fas-icon-light(class="fa-solid fa-house")
+block header
+  ul.menu
     if user.role === 'admin' || user.role === 'supervisor'
-      a(href='/archive')
-        i.fas-icon-light(class="fa-solid fa-box-archive")
-    a(href=`/users/${user.user}`)
-      i.fas-icon-light(class="fa-solid fa-user")
+      li.menu-item
+        if !exclusion.archived 
+          a(href='/archive')
+            i.fas-icon-light.menu-icon(class="fa-solid fa-box-archive") 
+            h4.menu-text Archives
+        else 
+          a(href='/home')
+            i.fas-icon-light.menu-icon(class="fa-solid fa-house-user") 
+            h4.menu-text Home/Active List
     if user.role === 'admin'
-      a(href='/users')
-        i.fas-icon-light(class="fa-solid fa-users")  
-    i.fas-icon-light(id="logout-icon" class="fa-solid fa-right-from-bracket")
+      li.menu-item 
+        a(href='/users')
+          i.fas-icon-light.menu-icon(class="fa-solid fa-users") 
+          h4.menu-text Users
+    li.menu-item 
+      a(href=`/users/${user.loggedInUser}`)
+        i.fas-icon-light.menu-icon(class="fa-solid fa-gear")
+        h4.menu-text Account
+    li.menu-item
       form(id='logout' action="/logout" method="post")
-        btn( type="submit") 
+        i.fas-icon-light-menu.menu-icon-logout(id="logout-icon" class="fa-solid fa-right-from-bracket")
+          btn(type="submit") 
 block content 
   div.excl-container
     .left-btn-div

@@ -11,16 +11,15 @@ block header
         a(href='/users')
           i.fas-icon-light.menu-icon(class="fa-solid fa-users") 
           h4.menu-text Users
-
     li.menu-item 
       a(href=`/users/${user.loggedInUser}`)
         i.fas-icon-light.menu-icon(class="fa-solid fa-gear")
         h4.menu-text Account
     li.menu-item
       form(id='logout' action="/logout" method="post")
-        btn(type="submit") 
-          i.fas-icon-light-menu.menu-icon-logout(id="logout-icon" class="fa-solid fa-right-from-bracket")
-
+        i.fas-icon-light-menu.menu-icon-logout(id="logout-icon" class="fa-solid fa-right-from-bracket")
+          btn(type="submit") 
+          
 block content  
   div.main-container
     h2.content-title Exclusions List

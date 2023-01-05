@@ -3,13 +3,13 @@ extends ../layout.pug
 
 block content
   div.error-container
-    h1= 'Error'
-    p.not-found-p= `Error:`
-
-    a.home(href='/') Return to Homepage
-
+    h1.error= 'Error!'
+    p Uh oh! 😮 That's no good. It looks like we encountered an error. 
     if err
+      p Error Status: #{err.status || 500}
+      p.not-found-p Error: #{err}
+    hr
 
-      div.page-not-found-stack
+    button.btn(onclick="location.href='/'") Return to homepage
 
-        pre #{err.stack}
+    div.page-not-found-stack

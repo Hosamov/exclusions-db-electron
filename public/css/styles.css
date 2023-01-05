@@ -30,8 +30,9 @@ html, body {
 }
 
 footer {
+  position: relative;
   margin: auto;
-  width: 50%;
+  width: 80%;
   text-align: center;
   color: var(--charcoal);
   font-size: .9rem;
@@ -256,6 +257,7 @@ a.header-link {
 .centered {
   text-align: center;
 }
+
 
 input {
   border-radius: 5px;
@@ -564,7 +566,7 @@ fieldset {
 
 .excl-container {
   margin: auto;
-  top: 50px;
+  top: 52px;
   width: 50%;
   box-shadow: 1px 1px 2px 2px var(--charcoal);
   border-radius: 5px;
@@ -623,6 +625,17 @@ fieldset {
 .error {
   color: var(--error);
 }
+
+.error-container {
+  margin: auto;
+  padding: 5px 10px 10px 10px;
+  width: 65%;
+  border-radius: 5px;
+  background: var(--gray2);
+  box-shadow: 1px 1px 2px 2px var(--gray4);
+  margin-top: 52px;
+}
+
 
 .form-element input:focus {
   outline: none;
