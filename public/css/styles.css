@@ -154,78 +154,6 @@ li.menu-item:hover {
   /* font-size: 0; */
 }
 
-/* .menu-button::before {
-  content: '';
-  margin-top: -8px;
-}
-
-.menu-button::after {
-  content: '';
-  margin-top: 8px;
-} */
-
-
-
-/* .menu-button,
-.menu-button::before,
-.menu-button::after {
-  display: block;
-  background-color: #fff;
-  position: absolute;
-  height: 4px;
-  width: 30px;
-  transition: transform 400ms cubic-bezier(0.23, 1, 0.32, 1);
-  border-radius: 2px;
-} */
-
-/* #menu-toggle:checked + .menu-button-container .menu-button::before {
-  margin-top: 0px;
-  transform: rotate(405deg);
-}
-
-#menu-toggle:checked + .menu-button-container .menu-button {
-  background: rgba(255, 255, 255, 0);
-}
-
-#menu-toggle:checked + .menu-button-container .menu-button::after {
-  margin-top: 0px;
-  transform: rotate(-405deg);
-} */
-
-/* .header {
-  z-index: 1000;
-  display: flex;
-  flex-wrap: nowrap;
-  padding: 10px 16px;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  margin: auto;
-  text-align: left;
-  background: var(--blue);
-  color: var(--white);
-  height: 25px;
-}
-
-.header h1 {
-  font-size: 1.2rem;
-  margin: 0;
-  padding: 0 0 0 20px;
-} */
-
-
-
-/* .header-right {
-  position: relative;
-  width: 78%;
-  text-align: right;
-} */
-
-/* .header-right {
-  width: 75%;
-  margin-right: 10px;
-  text-align: right;
-} */
 a.header-link {
   color: var(--white);
 }
@@ -659,7 +587,7 @@ fieldset {
   max-width:200px;
   top:40px;
   left:50%;
-  transform:translate(-, 0);
+  transform:translate(-1, 0);
   padding:10px 20px;
   color:#444444;
   background-color:#EEEEEE;
@@ -667,7 +595,7 @@ fieldset {
   font-size:13px;
   border-radius:8px;
   position:absolute;
-  z-index:99999999;
+  z-index:999999;
   box-sizing:border-box;
   box-shadow:0 1px 8px rgba(0,0,0,0.5);
   visibility:hidden; opacity:0; transition:opacity 0.8s;
@@ -680,7 +608,7 @@ fieldset {
 .tooltip .bottom i {
   position:absolute;
   bottom:100%;
-  left:;
+  left: 10px;
   margin-left:-12px;
   width:24px;
   height:12px;
@@ -738,29 +666,6 @@ fieldset {
   border-width: 5px;
   border-style: solid;
   border-color: transparent transparent var(--blue) transparent;
-}
-
-/** Scrollbar */
-
-/* width */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: var(--gray1);
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: var(--blue3);
-  /* border-radius: 5px; */
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: var(--blue2);
 }
 
 /** Modal Window */
