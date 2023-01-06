@@ -1,9 +1,34 @@
 extends ../layout.pug 
+block header
+  input(id="menu-toggle" type="checkbox")
+  label(class='menu-button-container' for="menu-toggle")
+  div.menu-button
+    i.fas-icon-light-header(id="hamburger-menu" class="fa-solid fa-bars")
+  ul.menu
+    li.menu-item
+      a(href='/home')
+        i.fas-icon-light.menu-icon(class="fa-solid fa-house-user") 
+        h4.menu-text Home/Active List
+    if user.role === 'admin'
+      li.menu-item 
+        a(href='/users')
+          i.fas-icon-light.menu-icon(class="fa-solid fa-users") 
+          h4.menu-text Users
+    li.menu-item 
+      a(href=`/users/${user.username}`)
+        i.fas-icon-light.menu-icon(class="fa-solid fa-gear")
+        h4.menu-text Account
+    li.menu-item
+      form(id='logout' action="/logout" method="post")
+        i.fas-icon-light-menu.menu-icon-logout(id="logout-icon" class="fa-solid fa-right-from-bracket")
+          btn(type="submit")
 
 block content 
   div.main-container
     h2.content-title Success!
-    p.centered User, #{user} has been successfully deleted from the database. 
+    p.centered User, #{thisUser} has been successfully deleted from the database. 
     .btn-container
       button.btn(onclick='window.location.href=/users/') Great, thanks!
-    
+  
+  #modal 
+  script(src='/static/js/logout.js')

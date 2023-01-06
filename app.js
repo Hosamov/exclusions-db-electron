@@ -87,7 +87,7 @@ app.use((err, req, res, next) => {
       err.message = err.message; //|| "Oops, it looks like something went wrong on the server...";
       res.status(err.status || 500).render('./errors/error', { err }); //display the error status and render the error template w/ error message/object
       console.log('Error status code: ' + err.status);
-  console.log(err.stack);
+      console.log(err.stack);
     }
   }
 });

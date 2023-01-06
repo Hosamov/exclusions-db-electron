@@ -1,5 +1,9 @@
 extends ../layout.pug 
 block header
+  input(id="menu-toggle" type="checkbox")
+  label(class='menu-button-container' for="menu-toggle")
+  div.menu-button
+    i.fas-icon-light-header(id="hamburger-menu" class="fa-solid fa-bars")
   ul.menu
     if user.role === 'admin' || user.role === 'supervisor'
       li.menu-item 
@@ -12,7 +16,7 @@ block header
           i.fas-icon-light.menu-icon(class="fa-solid fa-users") 
           h4.menu-text Users
     li.menu-item 
-      a(href=`/users/${user.loggedInUser}`)
+      a(href=`/users/${user.username}`)
         i.fas-icon-light.menu-icon(class="fa-solid fa-gear")
         h4.menu-text Account
     li.menu-item

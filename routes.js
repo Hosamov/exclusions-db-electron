@@ -214,7 +214,7 @@ module.exports = function (app) {
       newPassword: req.body.new_password,
       confirmedPassword: req.body.confirm_password,
       active: req.body.is_active,
-      userRole: req.body.user_role,
+      role: req.body.user_role,
       firstName: req.body.first_name,
       lastName: req.body.last_name,
     };
@@ -258,7 +258,7 @@ module.exports = function (app) {
         }
         foundUser.active =
           userInfo.active === 'on' || userInfo.active === 'true' ? true : false;
-        foundUser.role = userInfo.userRole;
+        foundUser.role = userInfo.role;
         foundUser.first_name = userInfo.firstName;
         foundUser.last_name = userInfo.lastName;
 

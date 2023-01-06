@@ -1,31 +1,34 @@
 extends ../layout.pug 
 block header
+  input(id="menu-toggle" type="checkbox")
+  label(class='menu-button-container' for="menu-toggle")
+  div.menu-button
+    i.fas-icon-light-header(id="hamburger-menu" class="fa-solid fa-bars")
   ul.menu
-    if currentUser.role === 'admin' || currentUser.role === 'supervisor'
-      li.menu-item
-        a(href='/home')
-          i.fas-icon-light.menu-icon(class="fa-solid fa-house-user") 
-          h4.menu-text Home/Active List
-    if currentUser.role === 'admin'
+    li.menu-item
+      a(href='/home')
+        i.fas-icon-light.menu-icon(class="fa-solid fa-house-user") 
+        h4.menu-text Home/Active List
+    if user.role === 'admin'
       li.menu-item 
         a(href='/users')
           i.fas-icon-light.menu-icon(class="fa-solid fa-users") 
           h4.menu-text Users
-      li.menu-item 
-        a(href=`/users/${currentUser.loggedInUser}`)
-          i.fas-icon-light.menu-icon(class="fa-solid fa-gear")
-          h4.menu-text Account
-      li.menu-item
-        form(id='logout' action="/logout" method="post")
-          i.fas-icon-light-menu.menu-icon-logout(id="logout-icon" class="fa-solid fa-right-from-bracket")
-            btn(type="submit") 
+    li.menu-item 
+      a(href=`/users/${user.username}`)
+        i.fas-icon-light.menu-icon(class="fa-solid fa-gear")
+        h4.menu-text Account
+    li.menu-item
+      form(id='logout' action="/logout" method="post")
+        i.fas-icon-light-menu.menu-icon-logout(id="logout-icon" class="fa-solid fa-right-from-bracket")
+          btn(type="submit")
 block content 
   div.main-container
-    each item in user
+    each item in foundUser
       form(role='form' action="/edit_user" method="post")
         h2 Update Account
         .form-element
-          if currentUser.loggedInUserRole === 'admin'
+          if user.role === 'admin'
             label.form-label(name='email') Email
             br
             input.form-control(type='text' name="email", placeholder=`${item.username}` value=`${item.username}`)
@@ -34,7 +37,7 @@ block content
           else 
             input.form-control(type='hidden' name="email", placeholder=`${item.username}` value=`${item.username}`)
             br  
-        if currentUser.loggedInUserRole === 'admin'
+        if user.role === 'admin'
           .form-element
             label.form-label(name='first_name') First Name
             br
@@ -72,7 +75,7 @@ block content
           br
           input.form-control(type='password' name="confirm_password" placeholder='Confirm New Password')
           br 
-        if currentUser.loggedInUserRole === 'admin'
+        if user.role === 'admin'
           hr
           h4 Admin Only
           .admin-section
@@ -112,7 +115,7 @@ block content
                   label.admin-form-label(for='inactive') No Access
                     input.admin-form-control(type='radio' name='user_role' value='inactive')
                   br
-                else if user.role === '' || user.role === undefined || !user.active
+                else if item.role === '' || item.role === undefined || !item.active
                   label.admin-form-label(for='user') User (read access)
                     input.admin-form-control(type='radio' name='user_role' value='user')
                   label.admin-form-label(for='supervisor') Supervisor (read/write access)
@@ -130,4 +133,5 @@ block content
       button.btn.btn-default.list-btn(onclick="history.back()") Cancel
 
       #modal
-      script(src='/static/js/display_modal.js')  
+      script(src='/static/js/display_modal.js')
+      script(src='/static/js/logout.js')  

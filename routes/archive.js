@@ -10,8 +10,7 @@ const Exclusion = require('../models/exclusion');
 router.get('/archive', (req, res, next) => {
   if (req.isAuthenticated()) {
     const thisUser = {
-      loggedInUser: req.user.username,
-      loggedInUserRole: req.user.role,
+      username: req.user.username,
       active: req.user.active,
       role: req.user.role,
     };

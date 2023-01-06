@@ -12,8 +12,7 @@ router.get("/users", (req, res, next) => {
     const store = req.sessionStore; // Look in Account.find:
 
     const thisUser = {
-      loggedInUser: req.user.username,
-      loggedInUserRole: req.user.role,
+      username: req.user.username,
       active: req.user.active,
       role: req.user.role,
     };
@@ -52,7 +51,7 @@ router.get("/users", (req, res, next) => {
                 //* Render the /users/users template:
                 res.render("./users/users", {
                   users: users,
-                  currentUser: thisUser,
+                  user: thisUser,
                   sesUsers: sessionsArr, // For displaying who's logged in currently
                 });
               } else {
@@ -77,8 +76,7 @@ router.get("/users/:user", (req, res, next) => {
 
   if (req.isAuthenticated()) {
     const thisUser = {
-      loggedInUser: req.user.username,
-      loggedInUserRole: req.user.role,
+      username: req.user.username,
       active: req.user.active,
       role: req.user.role,
     };
@@ -93,8 +91,8 @@ router.get("/users/:user", (req, res, next) => {
           next(err);
         } else {
           res.render("./users/user", {
-            user: foundUser,
-            currentUser: thisUser,
+            foundUser: foundUser,
+            user: thisUser,
           });
         }
       });
@@ -113,8 +111,7 @@ router.get("/users/:user/edit_user", (req, res, next) => {
 
   if (req.isAuthenticated()) {
     const thisUser = {
-      loggedInUser: req.user.username,
-      loggedInUserRole: req.user.role,
+      username: req.user.username,
       active: req.user.active,
       role: req.user.role,
     };
@@ -128,10 +125,9 @@ router.get("/users/:user/edit_user", (req, res, next) => {
           console.log(err);
           next(err);
         } else {
-          console.log(foundUser);
           res.render(`./users/edit-user`, {
-            user: foundUser,
-            currentUser: thisUser,
+            foundUser: foundUser,
+            user: thisUser,
           }); // Note: logged in user (unless an admin) can edit password only
         }
       });
@@ -174,7 +170,7 @@ router.get("/users/:user/delete_success", (req, res, next) => {
     const user = req.params.user;
     // Make accessible to admin user only
     if (req.user.role === "admin") {
-      res.render("./users/delete-success", { user: user });
+      res.render("./users/delete-success", { user: req.user, thisUser: user });
     }
   } else {
     res.redirect("/unauthorized");

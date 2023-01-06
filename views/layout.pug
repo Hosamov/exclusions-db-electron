@@ -10,16 +10,11 @@ html(lang="en" dir="ltr")
     link(rel='stylesheet' href='/static/css/styles.css')
     link(rel='stylesheet' href='/static/css/mobile.css')
     link(rel='stylesheet' href='/static/css/print.css')
-    //- link(rel='stylesheet' href='/static/css/hamburger.css')
 
   body
     section.top-nav
       a.header-link(href="/home")
         h1.head-title Exclusions DB
-      input(id="menu-toggle" type="checkbox")
-      label(class='menu-button-container' for="menu-toggle")
-      div.menu-button
-        i.fas-icon-light-header(id="hamburger-menu" class="fa-solid fa-bars")
       block header
     
     block content

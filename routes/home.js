@@ -12,7 +12,7 @@ const archiveHelper = require('../includes/archive-helper');
 router.get('/home', async (req, res, next) => {
   if (req.isAuthenticated()) {
     const thisUser = {
-      loggedInUser: req.user.username,
+      username: req.user.username,
       active: req.user.active,
       role: req.user.role,
     };
@@ -154,7 +154,7 @@ router.get('/home/:exclusion_id', (req, res, next) => {
   const exclusionId = req.params.exclusion_id; // Find user based on ID
   if (req.isAuthenticated()) {
     const thisUser = {
-      user: req.user.username,
+      username: req.user.username,
       role: req.user.role,
       active: req.user.active,
     };
@@ -211,7 +211,7 @@ router.get('/home/:exclusion/edit', (req, res, next) => {
             };
             res.render('./exclusions/edit-exclusion', {
               exclusion: foundExclusion,
-              currentUser: req.user,
+              user: req.user,
               dates: exclDates,
               id: exclusion_id,
             });
@@ -260,7 +260,7 @@ router.get('/home/:id/delete_success', (req, res, next) => {
     const exclusionId = req.params.id;
     // Make accessible to admin user only
     if (req.user.role === 'admin') {
-      res.render('./exclusions/delete-success', { id: exclusionId });
+      res.render('./exclusions/delete-success', { id: exclusionId, user: req.user });
     }
   } else {
     res.redirect('/unauthorized');
