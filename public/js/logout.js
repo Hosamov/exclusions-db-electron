@@ -10,8 +10,10 @@ logoutIcon.addEventListener('click', (e) => {
             <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
             <h2 class="modal-title">Logout</h2>
             <p id="modal-instructions">Are you sure you wish to logout?</p>
-            <button class="btn btn-red" id="action-btn" type="button">Logout</button>
-            <button class="btn" type="button" id="modal-back-btn">Cancel</button>
+            <div class="modal-btn-container">
+              <button class="btn btn-red" id="action-btn" type="button">Logout</button>
+              <button class="btn" type="button" id="modal-back-btn">Cancel</button>
+            </div>
           </div>
         </div>`
   );

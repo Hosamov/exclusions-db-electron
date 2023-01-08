@@ -71,24 +71,16 @@
 }
 
 @media only screen and (max-width: 700px) {
-  /* .header {
-    background-color: var(--gray1);
-  }
 
-  .head-title {
-    text-align: left;
-    width: 150px;
-    color: var(--blue);
-  }
-
-  h1.head-title {
-    padding: 0;
-  } */
-
-  /* .header-right {
+   /* Users */
+   .user-right {
     position: absolute;
-    right: 5%;
-  } */
+    right: 20%;
+  }
+
+  .user-edit-icons {
+    bottom: 15%;
+  }
 
   .fas-icon-light {
     color: var(--blue);
@@ -239,15 +231,15 @@
     margin: 0;
     display: block;
   }
+
+     /* Users */
+     .user-right {
+      position: absolute;
+      right: 5%;
+    }
 }
 
 @media only screen and (max-width: 436px) {
-  /* .header-right {
-    position: fixed;
-    width: 72%;
-    text-align: right;
-  } */
-
   .bottom-left-div {
     float: none;
     max-width: 300px;
@@ -259,6 +251,10 @@
     text-align: left;
     max-width: 300px;
     padding: 0 5px 5px 5px;
+  }
+
+  li.user-item {
+    width: 80%;
   }
 }
 
@@ -277,17 +273,6 @@
     font-size: 1.5rem;
     padding: 0;
   }
-/* 
-  .header-right {
-    width: 30px;
-    height: 100vh;
-    padding-top: 33.3vh;
-    padding-right: 5px;
-  } */
-
-  /* .fas-icon-light {
-    padding: 15px 15px 0 0;
-  } */
 
   .content-title {
     font-size: 1.2rem;
@@ -334,23 +319,13 @@
     padding: 6px;
   }
 
-  /* Users */
-  .user-right {
-    position: absolute;
-    right: 20%;
-  }
-
-  .user-edit-icons {
-    bottom: 15%;
-  }
-
-  li.user-item {
+  /* li.user-item {
     width: 60%;
-  }
+  } */
 
-  .users-list-item {
+  /* .users-list-item {
     width: 90%;
-  }
+  } */
 
   button.btn {
     padding: 6px;
@@ -360,17 +335,6 @@
   .signature {
     font-size: 1.2rem;
   }
-
-  .left-btn-div {
-    /* display: none; */
-  }
-
-  /* .right-btn-div {
-    position: absolute;
-    text-align: center;
-    bottom: 2px;
-    left: 35%;
-  } */
 
   .excl-container {
     box-shadow: none;

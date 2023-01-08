@@ -32,7 +32,7 @@ block content
           .user-right.user-edit-icons
             a(href=`/users/${item.username}/edit_user`)
               i.fas-icon.fas-edit(class="fa-solid fa-pen-to-square")
-            if user.role === 'admin'
+            if user.role === 'admin' && item.username !== user.username
               btn(onclick=`displayModalwindow('Delete user?', 'Are you sure you want to delete this user from the database? <strong>Caution:</strong> This action cannot be undone.', '/users/${item.username}/delete_user', 'Delete')`)
                 i.fas-icon.fas-delete(class="fa-solid fa-trash") 
                 

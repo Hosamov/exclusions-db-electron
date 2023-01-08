@@ -699,12 +699,20 @@ fieldset {
   text-align: center;
 }
 
+.modal-btn-container {
+  text-align: center;
+}
+
 .modal-submit-btn {
   position: absolute;
   cursor: pointer;
   outline: none;
   border-radius: 0.25em;
   bottom: 20px;
+}
+
+#action-btn:hover {
+  border: 2px solid yellow;
 }
 
 .modal-close-btn {
