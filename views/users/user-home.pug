@@ -104,7 +104,7 @@ block content
                 | #{exclusion.date_served}
               li.exclusion-item 
                 strong Expires on: 
-                | #{exclusion.exp_date !== 'Invalid date' ? exclusion.exp_date : 'N/A'}
+                | #{exclusion.exp_date !== 'Invalid date' && exclusion.exp_date !== 'Lifetime' ? exclusion.exp_date : 'N/A'}
               li.exclusion-item 
                 strong Violation(s): 
                 | #{exclusion.ordinance}
