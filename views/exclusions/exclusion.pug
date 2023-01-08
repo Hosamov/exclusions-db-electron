@@ -54,8 +54,8 @@ block content
         strong #{exclusion.first_name} #{exclusion.last_name} 
       p This exclusion is effective:  
         strong #{exclusion.date_served}
-      p This exclusion expires after: 
-        strong #{exclusion.exp_date !== 'Invalid date' ? exclusion.exp_date : 'Lifetime'}
+      p This exclusion expires on: 
+        strong #{exclusion.exp_date !== 'Invalid date' && exclusion.exp_date !== 'Lifetime' ? exclusion.exp_date : 'N/A'}
       p Exclusion Length: 
         strong #{exclusion.length === 'Infinity' || exclusion.length === 'Lifetime' ? 'Lifetime' : exclusion.length + ' days'} 
       p Throughout this period you are barred from entering in or onto 

@@ -292,6 +292,8 @@ module.exports = function (app) {
       signature: req.body.signature,
     };
 
+    console.log(excl); //TODO: remove when done.
+
     // If other_length has a value, push that value to length instead.
     if (excl.other_length) {
       excl.length = excl.other_length;
@@ -306,13 +308,18 @@ module.exports = function (app) {
     };
 
     const dateServed = new Date(excl.date_served);
+    const dateServedPlus = dateServed.addDays(1);
+    console.log(dateServed, dateServedPlus);
 
     // Checks for which 'length' form field used:
     if (excl.other_length !== null && excl.other_length !== '') {
-      excl.exp_date = dateServed.addDays(parseInt(excl.other_length));
+      excl.exp_date = dateServedPlus.addDays(parseInt(excl.other_length));
     } else {
-      excl.exp_date = dateServed.addDays(parseInt(excl.length));
+      excl.exp_date = dateServedPlus.addDays(parseInt(excl.length)); // Add days excl.date_served
     }
+
+    //TODO: Working here now.
+    // if(excl.exp_date !== 'Lifetime')
 
     //* Insert data into DB:
     await Exclusion.create(
@@ -370,10 +377,12 @@ module.exports = function (app) {
     };
 
     const dateServed = new Date(excl.date_served);
+    const dateServedPlus = dateServed.addDays(1);
+    console.log(dateServed, dateServedPlus);
 
     // Checks for which 'length' form field used:
     if (excl.length !== Infinity && excl.length !== null) {
-      excl.exp_date = dateServed.addDays(parseInt(excl.length));
+      excl.exp_date = dateServedPlus.addDays(parseInt(excl.length));
     }
 
     Exclusion.findOne(

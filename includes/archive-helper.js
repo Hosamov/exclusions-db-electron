@@ -14,6 +14,7 @@ function archiveHelper(date) {
   const thisDate = new Date();
   const currentDate = moment(thisDate).format(); 
   const expDate = moment(date).format(); 
+  console.log(expDate);
   return currentDate > expDate; 
 }
 
