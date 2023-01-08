@@ -83,7 +83,7 @@ router.get("/users/:user", (req, res, next) => {
     // Authorized: Admin or logged in user, if active:
     if (
       thisUser.role === "admin" ||
-      (thisUser.loggedInUser === user && thisUser.active)
+      (thisUser.username === user && thisUser.active)
     ) {
       Account.find({ username: { $eq: user } }, (err, foundUser) => {
         if (err) {
@@ -118,7 +118,7 @@ router.get("/users/:user/edit_user", (req, res, next) => {
     // Authorized: Admin or logged in user, if active:
     if (
       thisUser.role === "admin" ||
-      (thisUser.loggedInUser === user && thisUser.active)
+      (thisUser.username === user && thisUser.active)
     ) {
       Account.find({ username: { $eq: user } }, (err, foundUser) => {
         if (err) {
