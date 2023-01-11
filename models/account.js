@@ -10,7 +10,7 @@ const Account = new Schema({
   role: String, //null, user, supervisor, admin
   active: Boolean,
   loggedIn: Boolean, // track logged in status
-  lastLoggedIn: Date, 
+  lastLoggedIn: String, 
 });
 
 Account.plugin(passportLocalMongoose);
