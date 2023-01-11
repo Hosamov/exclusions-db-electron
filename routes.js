@@ -1,5 +1,5 @@
 const passport = require('passport');
-const moment = require('moment');
+const moment = require('moment-timezone');
 const reCAPTCHA = require('recaptcha2');
 
 const Account = require('./models/account');
@@ -55,7 +55,7 @@ module.exports = function (app) {
                     } else {
                       if (foundUser.active) {
                         foundUser.loggedIn = true;
-                        foundUser.lastLoggedIn = moment(currentDate).format(); // Update lastLoggedIn
+                        foundUser.lastLoggedIn = moment(currentDate).tz('America/Los_Angeles').format(); // Update lastLoggedIn
                         await foundUser.save((err) => {
                           if (err) {
                             console.log(err);
