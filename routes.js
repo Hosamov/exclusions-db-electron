@@ -31,6 +31,9 @@ module.exports = function (app) {
       username: req.body.username,
       password: req.body.password,
     });
+
+    const currentDate = new Date(); // Store current date & time
+
     req.login(account, (err) => {
       if (err) {
         console.log(err);
@@ -52,6 +55,7 @@ module.exports = function (app) {
                     } else {
                       if (foundUser.active) {
                         foundUser.loggedIn = true;
+                        foundUser.lastLoggedIn = moment(currentDate).format(); // Update lastLoggedIn
                         await foundUser.save((err) => {
                           if (err) {
                             console.log(err);
