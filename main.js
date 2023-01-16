@@ -23,7 +23,11 @@ const createWindow = () => {
 
 // Call function when app is ready:
 app.whenReady().then(() => {
-  createWindow()
+  createWindow();
+
+  app.on('activate', () => {
+    if(BrowserWindow.getAllWindows().length === 0) createWindow()
+  })
 })
 
 app.on("resize", function (e, x, y) {
@@ -33,12 +37,4 @@ app.on("resize", function (e, x, y) {
 app.on('window-all-closed', () => {
   if(process.platform !== 'darwin') app.quit()
 });
-
-app.whenReady().then(() => {
-  createWindow();
-
-  app.on('activate', () => {
-    if(BrowserWindow.getAllWindows().length === 0) createWindow()
-  })
-})
 

@@ -4,8 +4,10 @@
   "description": "An exclusions database that is web-based using Node, Express, and MongoDB/Mongoose",
   "main": "app.js",
   "scripts": {
-    "start": "electron main.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron-forge start",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "repository": {
     "type": "git",
@@ -20,6 +22,7 @@
   "dependencies": {
     "body-parser": "^1.20.1",
     "dotenv": "^16.0.3",
+    "electron-squirrel-startup": "^1.0.0",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "memorystore": "^1.6.7",
@@ -35,6 +38,11 @@
     "recaptcha2": "^1.3.3"
   },
   "devDependencies": {
+    "@electron-forge/cli": "^6.0.4",
+    "@electron-forge/maker-deb": "^6.0.4",
+    "@electron-forge/maker-rpm": "^6.0.4",
+    "@electron-forge/maker-squirrel": "^6.0.4",
+    "@electron-forge/maker-zip": "^6.0.4",
     "electron": "^22.0.2"
   }
 }
