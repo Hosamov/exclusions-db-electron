@@ -4,7 +4,7 @@
   "description": "An exclusions database that is web-based using Node, Express, and MongoDB/Mongoose",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon ./app.js",
+    "start": "electron main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
